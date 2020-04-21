@@ -1,0 +1,94 @@
+struct user{
+	passwd
+	username
+	type = 0 / 1 / 2 
+	
+}
+struct lecturer+staff+student{
+	lastname
+	firstname
+	DoB
+	gender
+	list_course[] //lecturer > list_course day // student > list_course hoc
+	class = null ??	
+}
+
+struct class{
+	nameclass
+	student_in_class[50]
+}    
+struct course_time{
+		startDate
+		endDate
+		(start+end)Hour
+		(start+end)Minute
+}
+struct course{
+	scoreboard
+	attendance
+	course_time
+	semester = 1 / 2 / 3
+	name_course
+	course_ID
+	class
+	Lecturer
+	room	
+}
+struct scoreboard{
+	course_ID
+	midterm
+	final
+	lab
+	bonus
+}
+struct attendance{
+	username	
+	list_checkin[] // kiem tra ngay sinh vien di hoc		
+}
+
+//----------------------------------//
+-data:
+ +-user:
+	+-studnet.txt
+	+-staff.txt
+	+lecturer.txt
+ +-academicyead:
+	+-2018-2019:
+		+-fall-semester:
+			+cs162:
+				+-cs162.txt
+				+-scoreboard.txt
+				+-attendance.txt
+			+-cs407:
+				+-cs407.txt
+				+-scoreboard.txt
+				+-attendance.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
