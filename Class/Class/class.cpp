@@ -1,7 +1,7 @@
-#include "class.h"
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "class.h"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ void import_students_csv(ifstream& f, string csv_name)
 	f.open(csv_name, ios::in);
 
 	//Init a new class object to store the new csv file.
-	Class *new_class = new Class;
+	Class* new_class = new Class;
 	new_class->class_name = csv_name;
 
 	string data;
@@ -43,5 +43,41 @@ void import_students_csv(ifstream& f, string csv_name)
 		new_class->student_in_class[stt] = new_user; //Student class assignment
 	}
 	f.close();
+	return;
+}
+
+void add_new_student(ifstream& f, string class_name)
+{
+
+	return;
+}
+
+void edit_student(ifstream& f, string class_name)
+{
+
+	return;
+}
+
+void remove_student(ifstream& f, string class_name)
+{
+
+	return;
+}
+
+void change_students(ifstream& f, string class_name_A, string class_name_B)
+{
+
+	return;
+}
+
+void view_list_classes(string class_name)
+{
+
+	return;
+}
+
+void view_list_students(string class_name)
+{
+
 	return;
 }

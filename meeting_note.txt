@@ -1,9 +1,9 @@
-struct user{
-	passwd
-	username
-	type = 0 / 1 / 2 
-	
-}
+struct User {
+	string password;
+	string username;
+	int type = -1;(default: -1)(1: staff, 2: lecturer, 3: student)
+};
+
 struct lecturer+staff+student{
 	lastname
 	firstname
@@ -13,10 +13,20 @@ struct lecturer+staff+student{
 	class = null ??	
 }
 
-struct class{
-	nameclass
-	student_in_class[50]
-}    
+struct Student {
+	string lastname;
+	string firstname;
+	string DoB;
+	bool gender;
+	string list_course[20];
+	Class* student_class;
+};
+
+struct Class {
+	string class_name;
+	User* student_in_class[50];
+};
+    
 struct course_time{
 		startDate
 		endDate
