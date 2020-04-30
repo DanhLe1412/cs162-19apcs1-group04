@@ -41,6 +41,7 @@ void import_students_csv(ifstream& f, string csv_name)
 		new_user->password = "12345678"; // Default password
 		new_user->username = new_student->firstname + new_student->lastname; // Default username
 		new_class->student_in_class[stt] = new_user; //Student class assignment
-	}	
+	}
+	f.close();
 	return;
 }
