@@ -7,16 +7,6 @@
 
 using namespace std;
 
-struct Student
-{
-	string lastname;
-	string firstname;
-	int ID;
-	string DoB;
-	bool gender;
-	string list_course[20];
-	Class *student_class;
-};
 
 struct User
 {
@@ -29,6 +19,17 @@ struct Class
 {
 	string class_name;
 	User *student_in_class[50];
+};
+
+struct Student
+{
+	string lastname;
+	string firstname;
+	int ID;
+	string DoB;
+	bool gender;
+	string list_course[20];
+	Class* student_class;
 };
 
 void import_students_csv(ifstream &fi, ofstream &fo, string csv_name);

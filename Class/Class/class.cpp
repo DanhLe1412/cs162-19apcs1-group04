@@ -1,10 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <string>
+
 #include "class.h"
 
 using namespace std;
-
+/*
 void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 {
 	int stt;
@@ -82,7 +80,7 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name)
 {
 	int stt;
 	bool check = true;
-	string data = '', temp, gender;
+	string data = "", temp, gender;
 	fi.open(class_name, ios::app);
 	fo.open(class_name, ios::app);
 	if (!(fi.is_open() && fo.is_open()))
@@ -99,7 +97,7 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name)
 			cin >> data;
 			for (int i = 0; i < data.length(); ++i)
 			{
-				if (!(data - '0' <= 9 && data - '0' >= 0))
+				if (!((data - "0") <= 9 && (data - "0") >= 0))
 					break;
 				check = false;
 			}
@@ -109,13 +107,13 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name)
 		getline(cin, new_student->lastname);
 		cout << "First name: ";
 		getline(cin, new_student->firstname);
-		cout << cout << "Gender: ";
+		cout << "Gender: ";
 		getline(cin, data);
 		while (!(data.compare("Male") == 0 || data.compare("male") == 0 || data.compare("Female") == 0 || data.compare("female") == 0))
 		{
 			cout << "Enter male or female for gender: ";
 			getline(cin, data);
-			strcpy(gender, data);
+			data.copy(gender,data.length());
 		}
 		if (data.compare("Male") == 0 || data.compare("male") == 0)
 			new_student->gender = true;
@@ -140,7 +138,7 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name)
 	return;
 }
 
-void edit_student(ifstream &f, string class_name, )
+void edit_student(ifstream &f, string class_name)
 {
 
 	return;
@@ -150,7 +148,7 @@ void remove_student(ifstream &fi, ofstream &fo, string class_name, string studen
 {
 	bool check = false;
 	int counter = 0, i = 0;
-	string data, backup_file_name = 'backup_' + class_name;
+	string data, backup_file_name = "backup_" + class_name;
 	class_name += '.csv';
 
 	fi.open(class_name);
@@ -191,7 +189,7 @@ void remove_student(ifstream &fi, ofstream &fo, string class_name, string studen
 				getline(fi, data);
 				fo << data;
 			}
-			if (remove(class_name) == 0 && rename("temp.csv", class_name) == 0) //Remove the original class csv and rename the temp.csv
+			if (erase(class_name.length()) == 0 && rename(class_name,"temp.csv") == 0) //Remove the original class csv and rename the temp.csv
 			{
 				cout << "Sucessfully remove the student" << endl;
 				remove(backup_file_name);
@@ -227,3 +225,4 @@ void view_list_students(string class_name)
 
 	return;
 }
+*/

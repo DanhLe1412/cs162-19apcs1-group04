@@ -125,9 +125,11 @@
   <ItemGroup>
     <ClCompile Include="class.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="cli_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="class.h" />
+    <ClInclude Include="define_cli_menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
