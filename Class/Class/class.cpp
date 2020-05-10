@@ -1,6 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <string>
+
 #include "class.h"
 
 using namespace std;
