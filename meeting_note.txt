@@ -4,6 +4,17 @@ struct User {
 	int type = -1;(default: -1)(1: staff, 2: lecturer, 3: student)
 };
 
+struct Student
+{
+	string lastname;
+	string firstname;
+	int ID;
+	string DoB;
+	bool gender; // 0: Female, 1: Male
+	string list_course[20];
+	Class *student_class;
+};
+
 struct lecturer+staff+student{
 	lastname
 	firstname
@@ -12,15 +23,6 @@ struct lecturer+staff+student{
 	list_course[] //lecturer > list_course day // student > list_course hoc
 	class = null ??	
 }
-
-struct Student {
-	string lastname;
-	string firstname;
-	string DoB;
-	bool gender;
-	string list_course[20];
-	Class* student_class;
-};
 
 struct Class {
 	string class_name;
