@@ -7,16 +7,7 @@
 
 using namespace std;
 
-struct Student
-{
-	string lastname;
-	string firstname;
-	int ID;
-	string DoB;
-	bool gender; // 0: Female, 1: Male
-	string list_course[20];
-	Class *student_class;
-};
+
 
 struct User
 {
@@ -29,6 +20,17 @@ struct Class
 {
 	string class_name;
 	User *student_in_class[50];
+};
+
+struct Student
+{
+	string lastname;
+	string firstname;
+	int ID;
+	string DoB;
+	bool gender; // 0: Female, 1: Male
+	string list_course[20];
+	Class* student_class;
 };
 
 void input_student_info(Student *&student);

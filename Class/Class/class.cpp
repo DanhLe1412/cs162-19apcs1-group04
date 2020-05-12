@@ -2,7 +2,7 @@
 #include "class.h"
 
 using namespace std;
-
+/*
 void input_student_info(Student *&student)
 {
 	cout << "Please type in all the student's information." << endl;
@@ -39,7 +39,7 @@ void input_student_info(Student *&student)
 	cin >> student->DoB;
 	return;
 }
-
+*/
 void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 {
 	int stt;
@@ -115,7 +115,7 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 	}
 	return;
 }
-
+/*
 void add_new_student(ifstream &fi, ofstream &fo, string class_name)
 {
 	int stt = 0;
@@ -353,3 +353,4 @@ void view_list_students(ifstream &fi, string class_name)
 	fi.close();
 	return;
 }
+*/
