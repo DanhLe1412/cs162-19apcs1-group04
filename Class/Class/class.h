@@ -7,13 +7,12 @@
 
 using namespace std;
 
-
-
 struct User
 {
-	string password;
 	string username;
+	string password;
 	int type = -1; //(default: -1)(1: staff, 2 : lecturer, 3 : student)
+	User* next;
 };
 
 struct Class
@@ -39,7 +38,7 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name);
 void edit_student(ifstream &f, string class_name);
 string remove_student(ifstream &fi, ofstream &fo, string class_name, string student_id);
 void change_students(ifstream &fi, ofstream &fo, string class_name_A, string class_name_B, string student_id);
-void view_list_classes(ifstream &fi, string class_name);
+void view_list_classes(ifstream &fi);
 void view_list_students(ifstream &fi, string class_name);
 
 #endif
