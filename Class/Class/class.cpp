@@ -1,5 +1,6 @@
-
 #include "class.h"
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -43,10 +44,11 @@ void input_student_info(Student *&student)
 void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 {
 	int stt;
-	string data, temp, new_file_name = "class_" + csv_name, class_name, pwd;
+	string data = "", new_file_name = "class_" + csv_name + ".csv", class_name, pwd;
+	csv_name += ".csv";
 
-	fi.open(csv_name.c_str(), ios::in); //Open the loaded csv file
-	fo.open(new_file_name.c_str(), ios::app); //Create a new csv file to store the data
+	fi.open(csv_name.c_str());		//Open the loaded csv file
+	fo.open(new_file_name.c_str()); //Create a new csv file to store the data
 
 	if (!(fi.is_open() && fo.is_open()))
 	{
@@ -55,7 +57,7 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 	}
 	else
 	{
-		User* student_users = new User; //Student users linked list init
+		User *student_users = nullptr; //Student users linked list init
 
 		for (int i = 0; i < csv_name.length(); ++i)
 		{
@@ -68,8 +70,8 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 
 		while (!fi.eof())
 		{
+			string temp;
 			Student *new_student = new Student; //Init a student object
-
 			//Read every line in the loaded csv file
 			getline(fi, data, ',');
 			stt = stoi(data) - 1;
@@ -88,9 +90,9 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 			else if (data.compare("Female") == 0 || data.compare("female") == 0)
 				new_student->gender = false;
 			if (new_student->gender)
-				temp += '1,';
+				temp += "1,";
 			else
-				temp += '0,';
+				temp += "0,";
 			getline(fi, data);
 			new_student->DoB = data;
 			temp += data;
@@ -112,11 +114,13 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 
 			//Store the current user to the linked list
 			if (!student_users)
+			{
 				student_users = new_user;
+			}
 			else
 			{
-				User* cur = student_users;
-				while (cur->next)
+				User *cur = student_users;
+				while (cur && cur->next)
 					cur = cur->next;
 				cur->next = new_user;
 			}
@@ -126,9 +130,9 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 
 		//Output the linked list to the students.txt
 		fo.open("students.txt", ios::app);
-		User* del;
+		User *del;
 		while (student_users)
-		{ 
+		{
 			del = student_users;
 			fo << student_users->username << endl;
 			fo << student_users->password << endl;
