@@ -107,8 +107,8 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 			//Init an user object (Type 2(student))
 			User *new_user = new User;
 			new_user->type = 2;
-			new_user->password = pwd;											 // Default password: DoB
-			new_user->username = new_student->firstname + new_student->lastname; // Default username: first + last name
+			new_user->password = pwd;			  // Default password: DoB
+			new_user->username = new_student->ID; // Default username: student ID
 
 			//Store the current user to the linked list
 			if (!student_users)
