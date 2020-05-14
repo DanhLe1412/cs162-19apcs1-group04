@@ -2,7 +2,7 @@
 #include "class.h"
 
 using namespace std;
-/*
+
 void input_student_info(Student *&student)
 {
 	cout << "Please type in all the student's information." << endl;
@@ -39,7 +39,7 @@ void input_student_info(Student *&student)
 	cin >> student->DoB;
 	return;
 }
-*/
+
 void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 {
 	int stt;
@@ -144,7 +144,7 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 	}
 	return;
 }
-/*
+
 void add_new_student(ifstream &fi, ofstream &fo, string class_name)
 {
 	int stt = 0;
@@ -182,7 +182,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 	int stt = 0, i = 0;
 	string data, backup_file_name = "backup_" + class_name;
 	char *classname = new char[class_name.length() + 1 + 4]; // a char* version of the string class_name, +4 for ".csv"
-	strcpy(classname, (class_name + ".csv").c_str());
+	strcpy_s(classname, class_name.length() + 1 + 4, (class_name + ".csv").c_str());
 
 	fi.open(class_name.c_str());
 	fo.open(backup_file_name.c_str());
@@ -282,7 +282,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 		else
 		{
 			char *classname = new char[class_name.length() + 1 + 4]; // a char* version of the string class_name, +4 for ".csv"
-			strcpy(classname, (class_name + ".csv").c_str());
+			strcpy_s(classname, class_name.length() + 1 + 4, (class_name + ".csv").c_str());
 			fi.open(class_name);
 			fo.open("temp.csv");
 			while (!fi.eof()) //Remove the student by passing data from old csv file to a new one without that student info
@@ -382,4 +382,3 @@ void view_list_students(ifstream &fi, string class_name)
 	fi.close();
 	return;
 }
-*/
