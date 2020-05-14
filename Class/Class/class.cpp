@@ -12,7 +12,7 @@ void input_student_info(Student *&student)
 	while (check)
 	{
 		cout << "Student ID: ";
-		cin >> data;
+		getline(cin, data);
 		for (int i = 0; i < data.length(); ++i)
 		{
 			if (!(data[i] - '0' <= 9 && data[i] - '0' >= 0))
@@ -20,7 +20,7 @@ void input_student_info(Student *&student)
 			check = false;
 		}
 	}
-	student->ID = stoi(data);
+	student->ID = data;
 	cout << "Last name: ";
 	getline(cin, student->lastname);
 	cout << "First name: ";
@@ -44,7 +44,7 @@ void input_student_info(Student *&student)
 void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 {
 	int stt;
-	string data = "", new_file_name = "class_" + csv_name + ".csv", class_name, pwd;
+	string data = "", new_file_name = "class_" + csv_name + ".csv", class_name;
 	csv_name += ".csv";
 
 	fi.open(csv_name.c_str());		//Open the loaded csv file
@@ -70,14 +70,15 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 
 		while (!fi.eof())
 		{
-			string temp;
+			string temp, pwd;
 			Student *new_student = new Student; //Init a student object
 			//Read every line in the loaded csv file
 			getline(fi, data, ',');
 			stt = stoi(data) - 1;
 			temp += data + ',';
 			getline(fi, data, ',');
-			new_student->ID = stoi(data);
+			new_student->ID = data;
+			temp += data + ',';
 			getline(fi, data, ',');
 			new_student->lastname = data;
 			temp += data + ',';
@@ -151,19 +152,19 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name)
 
 void add_new_student(ifstream &fi, ofstream &fo, string class_name)
 {
-	int stt = 0;
+	int stt = -1;
 	bool check = true;
-	string data, temp;
-	fi.open(class_name.c_str());
-	fo.open(class_name.c_str(), ios::app);
-	if (!(fi.is_open() && fo.is_open()))
+	string data, temp, classname = "class_" + class_name + ".csv", pwd;
+	Student *new_student = new Student;
+	fo.open(classname.c_str(), ios::app);
+	fi.open(classname.c_str());
+	if (!(fo.is_open() && fi.is_open()))
 	{
 		cout << "Failed to open the class file." << endl;
 		return;
 	}
 	else
 	{
-		Student *new_student = new Student;
 		input_student_info(new_student);
 
 		while (!fi.eof())
@@ -171,12 +172,25 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name)
 			++stt;
 			getline(fi, data);
 		}
-
-		fo << ++stt << "," << new_student->ID << ',' << new_student->lastname << "," << new_student->firstname << ","
+		cout << "stt: " << stt << endl;
+		fo << stt << "," << new_student->ID << ',' << new_student->lastname << "," << new_student->firstname << ","
 		   << new_student->gender << "," << new_student->DoB << '\n';
 	}
 	fi.close();
 	fo.close();
+
+	//Create new student's account
+	fo.open("students.txt", ios::app);
+	fo << new_student->ID << endl;
+	for (int i = 0; i < new_student->DoB.length(); ++i)
+	{
+		if (new_student->DoB[i] != '-')
+			pwd += new_student->DoB[i];
+	}
+	fo << pwd << endl;
+	fo.close();
+
+	delete new_student;
 	return;
 }
 
