@@ -75,6 +75,7 @@ void home_cli(){
 			string file_csv;
 			cout << "choose file import (ex: 19Apcs.csv): ";
 			cin >> file_csv;
+			cin.ignore(100, '\n');
 			import_students_csv(fin, fout, file_csv);
 			break;
 		}
