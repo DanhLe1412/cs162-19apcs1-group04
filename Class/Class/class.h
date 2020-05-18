@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-
+#include <windows.h>
 using namespace std;
 
 struct User
@@ -33,8 +33,8 @@ struct Student
 };
 
 void input_student_info(Student *&student);
-void import_students_csv(ifstream &fi, ofstream &fo, string csv_name);
-void add_new_student(ifstream &fi, ofstream &fo, string class_name);
+void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int& status);
+void add_new_student(ifstream& fi, ofstream& fo, string class_name, int& status);
 void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_id);
 string remove_student(ifstream &fi, ofstream &fo, string class_name, string student_id);
 void change_students(ifstream &fi, ofstream &fo, string class_name_A, string class_name_B, string student_id);

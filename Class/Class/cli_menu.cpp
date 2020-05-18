@@ -60,28 +60,54 @@ void Print_home_page(int& i, int type){
 	cin >> i;
 }
 
-void home_cli(){
-	system ("CLS");		
+void home_cli(int type){
 	int checksign = 0;
 	while(checksign==0){
 		int i = 0;
-		Print_home_page(i,1);
+		system ("CLS");		
+		Print_home_page(i,type);
 		switch (i)
 		{
-		case 1:{
+		case 1:
+		{
+			int check_import = 0;
 			ifstream fin;
 			ofstream fout;
 			system("ls -a");
 			string file_csv;
-			cout << "choose file import (ex: 19Apcs.csv): ";
-			cin >> file_csv;
-			cin.ignore(100, '\n');
-			import_students_csv(fin, fout, file_csv);
+			while (check_import == 0)
+			{
+				cout << "choose file import (ex: 19Apcs.csv): ";
+				cin >> file_csv;
+				cin.ignore(100, '\n');
+				import_students_csv(fin, fout, file_csv, check_import);
+			}
 			break;
 		}
 		case 2:
 		{
 			//add new student to class
+			int check_add = 0;
+			ifstream fin;
+			ofstream fout;
+			ifstream class_file;
+			class_file.open("classes.txt");
+			if (class_file.is_open())
+			{
+				string file_class;
+				while(!class_file.eof()){
+					class_file >> file_class;
+					cout << file_class << endl;		
+				}
+
+				while (check_add == 0)
+				{
+					cout << "choose class (ex: 19apcs): ";
+					cin >> file_class;
+					cin.ignore(100, '\n');
+					add_new_student(fin, fout, file_class, check_add);
+				}
+			}
 			break;
 		}
 		case 3:
@@ -181,13 +207,13 @@ void home_cli(){
 		}
 		case 32:
 		{
+			checksign = 1;
 			break;
 		}
 		default:
 			break;
 		}
 
-		checksign = 1;
 	}
 }
 void SignIn_Menu()
@@ -205,7 +231,7 @@ void SignIn_Menu()
 		cout << "***************************************" << endl;
 		cout << "You are: [1] :staff    [2]: student    [3]: lecturer" << endl;
 		cin >> type;
-		cout << "studentID: ";
+		cout << "userID: ";
 		cin >> username;
 		cout << "passwd: ";
 		char s[100] = { 0 };
@@ -226,7 +252,7 @@ void SignIn_Menu()
 	if (checkUser(username, passw, type))
 	{
 		checksign_in = 1;
-		home_cli();
+		home_cli(type);
 	}
 	else
 		cout << "your user not valid!" << endl;

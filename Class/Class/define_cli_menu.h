@@ -2,10 +2,11 @@
 #define _CLI
 #include<iostream>
 #include <conio.h>
+#include <windows.h>
 using namespace std;
 
 void SignIn_Menu();
-void home_cli();
+void home_cli(int type);
 bool checkUser(string username, string pass, int type);
 void student_cli();
 void staff_cli();
