@@ -281,7 +281,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 	delete[] classname;
 	return;
 }
-
+*/
 string remove_student(ifstream &fi, ofstream &fo, string class_name, string student_id)
 {
 	bool check = false;
@@ -345,6 +345,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 			if (remove(classname) == 0 && rename("temp.csv", classname) == 0) //Remove the original class csv and rename the temp.csv
 			{
 				cout << "Sucessfully removed the student!" << endl;
+				Sleep(3000);
 				remove(backup_file_name.c_str());
 				return removed_student;
 			}
@@ -358,6 +359,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 			delete[] classname;
 		}
 	}
+	Sleep(3000);
 	return "Null";
 }
 
@@ -421,6 +423,7 @@ void view_list_classes(ifstream &fi)
 
 void view_list_students(ifstream &fi, string class_name)
 {
+	cout << "There are student of class" << class_name << endl;
 	class_name = "class_" + class_name + ".csv";
 	fi.open(class_name.c_str());
 	if (!fi.is_open())
@@ -449,5 +452,6 @@ void view_list_students(ifstream &fi, string class_name)
 		}
 	}
 	fi.close();
+	Sleep(5000);
 	return;
-}*/
+}

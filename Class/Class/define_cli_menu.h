@@ -1,6 +1,7 @@
 #ifndef _CLI
 #define _CLI
 #include<iostream>
+#include <cstring>
 #include <conio.h>
 #include <windows.h>
 using namespace std;

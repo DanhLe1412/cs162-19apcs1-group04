@@ -5,41 +5,43 @@ void staff_cli(){
 	cout << "[1]: import student as csv file" << endl;
 	cout << "[2]: add new student to class" << endl;
 	cout << "[3]: Edit an existing student" << endl;
-	cout << "[4]: View list of classes" << endl;
-	cout << "[5]: View list of students in a class" << endl;
-	cout << "[6]: Academic yead" << endl;
-	cout << "[7]: import course" << endl;
-	cout << "[8]: Manually add new course" << endl;
-	cout << "[9]: Remove a course" << endl;
-	cout << "[10]:  Remove student in course" << endl;
-	cout << "[11]: Add student in course" << endl;
-	cout << "[12]: View list course" << endl;
-	cout << "[13]: Lecturers" << endl;
+	cout << "[4]: Remove a student" << endl;
+	cout << "[5]: Change student to other class" << endl;
+	cout << "[6]: View list of classes" << endl;
+	cout << "[7]: View list of students in a class" << endl;
+	cout << "[8]: Academic yead" << endl;
+	cout << "[9]: import course" << endl;
+	cout << "[10]: Manually add new course" << endl;
+	cout << "[11]: Remove a course" << endl;
+	cout << "[12]:  Remove student in course" << endl;
+	cout << "[13]: Add student in course" << endl;
+	cout << "[14]: View list course" << endl;
+	cout << "[15]: Lecturers" << endl;
 }
 
 void student_cli(){
-	cout << "[14]: Check-in" << endl;
-	cout << "[15]: View check-in result" << endl;
-	cout << "[16]: View schedules" << endl;
-	cout << "[17]: View scores of a course" << endl;
+	cout << "[16]: Check-in" << endl;
+	cout << "[17]: View check-in result" << endl;
+	cout << "[18]: View schedules" << endl;
+	cout << "[19]: View scores of a course" << endl;
 
 }
 
 void lecturer_cli(){
-	cout << "[18]: View list course in current semester" << endl;
-	cout << "[19]: View list of students of a course" << endl;
-	cout << "[20]: View attendance list of a course" << endl;
-	cout << "[21]: Edit an attendance" << endl;
-	cout << "[22]: Import scoreboard of a course" << endl;
-	cout << "[23]: Edit grade of a student" << endl;
-	cout << "[24]: View scoreboard" << endl;
+	cout << "[20]: View list course in current semester" << endl;
+	cout << "[21]: View list of students of a course" << endl;
+	cout << "[22]: View attendance list of a course" << endl;
+	cout << "[23]: Edit an attendance" << endl;
+	cout << "[24]: Import scoreboard of a course" << endl;
+	cout << "[25]: Edit grade of a student" << endl;
+	cout << "[26]: View scoreboard" << endl;
 
 }
 
 void Print_home_page(int& i, int type){
 	cout << "This is Home page of Program" << endl;
 	cout << "what do you want ??" << endl; 
-	cout << "[0]: View Profile" << endl;
+
 	switch (type)
 		{
 		case 1:
@@ -56,7 +58,7 @@ void Print_home_page(int& i, int type){
 			break;
 		}
 	cout << "[30]: Change Password" << endl;
-	cout << "[32]: Log out" << endl;
+	cout << "[32]: Exit program" << endl;
 	cin >> i;
 }
 
@@ -71,15 +73,17 @@ void home_cli(int type){
 		case 1:
 		{
 			int check_import = 0;
-			ifstream fin;
-			ofstream fout;
-			system("ls -a");
+			
+			system("dir *.csv");
 			string file_csv;
 			while (check_import == 0)
 			{
 				cout << "choose file import (ex: 19Apcs.csv): ";
 				cin >> file_csv;
 				cin.ignore(100, '\n');
+				//-----------------------------
+				ifstream fin;
+				ofstream fout;
 				import_students_csv(fin, fout, file_csv, check_import);
 			}
 			break;
@@ -88,23 +92,26 @@ void home_cli(int type){
 		{
 			//add new student to class
 			int check_add = 0;
-			ifstream fin;
-			ofstream fout;
+		
 			ifstream class_file;
 			class_file.open("classes.txt");
-			if (class_file.is_open())
+			if (!class_file.is_open())
 			{
+				cout << "Empty class" << endl;
+			}
+			else
+			{
+				class_file.close();
+				system("type classes.txt");
 				string file_class;
-				while(!class_file.eof()){
-					class_file >> file_class;
-					cout << file_class << endl;		
-				}
-
 				while (check_add == 0)
 				{
 					cout << "choose class (ex: 19apcs): ";
 					cin >> file_class;
 					cin.ignore(100, '\n');
+					//--------------
+					ifstream fin;
+					ofstream fout;
 					add_new_student(fin, fout, file_class, check_add);
 				}
 			}
@@ -115,89 +122,140 @@ void home_cli(int type){
 			//Edit an existing student
 			break;
 		}
-		case 4:
-		{	//View list of classes
+		case 4:{
+			//Remove a student;
+			//--------Get class to remove student-----
+			string class_file;
+			system("type classes.txt");
+			cout << "choose class to remove student: ";
+			cin >> class_file;
+			//--------------------
+
+			string tmp_typeOpen_csv_class = "type class_" + class_file + ".csv";
+			int n = tmp_typeOpen_csv_class.length()+1;
+			char* ctr=new char[n];
+			for(int i = 0; i < n; ++i) ctr[i] = tmp_typeOpen_csv_class[i];
+			system("CLS");
+			system(ctr);
+			string studentId;
+			cout << "choose student to remove(Pls, input student ID):";
+			cin >> studentId;
+			//----------------
+			ifstream fin;
+			ofstream fout;
+			if(remove_student(fin,fout,class_file,studentId)=="Null")
+			Sleep(3000);
+			delete [] ctr;
 			break;
 		}
-		case 5:
-		{	// View list of students in a class
+		case 5:{
+			// Change student to other class;
 			break;
 		}
 		case 6:
-		{	//Academic yead
+		{	//View list of classes
+			ifstream fin;
+			view_list_classes(fin);
 			break;
 		}
 		case 7:
-		{	// import course
+		{	// View list of students in a class
+
+			ifstream class_file;
+			class_file.open("classes.txt");
+			if(!class_file.is_open()){
+				cout << "Empty class" << endl;
+			}
+			else
+			{
+				//----- Show list class --------
+				class_file.close();
+				cout << "List of classes:" << endl;
+				system("type classes.txt");
+				string file_class;
+				cout << "choose class to view student: ";
+				cin >> file_class;
+				//-------------
+				ifstream fin; // argument
+				view_list_students(fin, file_class);
+			}
 			break;
 		}
 		case 8:
-		{	//Manually add new course
+		{	//Academic yead
 			break;
 		}
 		case 9:
-		{	// Remove a course
+		{	// import course
 			break;
 		}
 		case 10:
-		{	//Remove student in course
+		{	//Manually add new course
 			break;
 		}
 		case 11:
-		{	//Add student in course
+		{	// Remove a course
 			break;
 		}
 		case 12:
+		{	//Remove student in course
+			break;
+		}
+		case 13:
+		{	//Add student in course
+			break;
+		}
+		case 14:
 		{
 			//View list course
 			break;
 		}
-		case 13:
+		case 15:
 		{	//Lecturers
 			break;
 		}
-		case 14:
+		case 16:
 		{	// Check-in
 			break;
 		}
-		case 15:
+		case 17:
 		{	//View check-in result
 			break;
 		}
-		case 16:
+		case 18:
 		{	// View schedules
 			break;
 		}
-		case 17:
+		case 19:
 		{	//View scores of a course
 			break;
 		}
-		case 18:
+		case 20:
 		{	//View list course in current semester
 			break;
 		}
-		case 19:
+		case 21:
 		{	// View list of students of a course
 			break;
 		}
-		case 20:
+		case 22:
 		{	// View attendance list of a course
 			break;
 		}
-		case 21:
+		case 23:
 		{	//Edit an attendance
 			break;
 		}
-		case 22:
+		case 24:
 		{
 			// Import scoreboard of a course"
 			break;
 		}
-		case 23:
+		case 25:
 		{	//Edit grade of a student
 			break;
 		}
-		case 24:
+		case 26:
 		{	//View scoreboard
 			break;
 		}
