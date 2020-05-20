@@ -198,8 +198,8 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name, int& status)
 	delete new_student;
 	return;
 }
-/*
-void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_id)
+
+void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_id,int& status)
 {
 	bool check = false;
 	int stt = 0, i = -1;
@@ -269,6 +269,8 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 		{
 			cout << "Sucessfully edited the student!" << endl;
 			remove(backup_file_name.c_str());
+			status = 1;
+			Sleep(3000);
 		}
 		else
 		{
@@ -281,7 +283,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 	delete[] classname;
 	return;
 }
-*/
+
 string remove_student(ifstream &fi, ofstream &fo, string class_name, string student_id)
 {
 	bool check = false;
@@ -363,7 +365,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 	return "Null";
 }
 
-void change_students(ifstream &fi, ofstream &fo, string class_name_A, string class_name_B, string student_id)
+void change_students(ifstream &fi, ofstream &fo, string class_name_A, string class_name_B, string student_id, int& status)
 {
 	string removed_student = remove_student(fi, fo, class_name_A, student_id);
 	string classname = "class_" + class_name_B + ".csv";
@@ -392,6 +394,8 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 		fo.open(classname.c_str(), ios::app);
 		fo << stt << "," << removed_student << endl;
 		cout << "Successfully changed the student " << student_id << " from class " << class_name_A << " to class " << class_name_B << endl;
+		Sleep(3000);
+		status = 1;
 		fo.close();
 	}
 	else
@@ -418,6 +422,7 @@ void view_list_classes(ifstream &fi)
 		}
 	}
 	fi.close();
+	Sleep(3000);
 	return;
 }
 

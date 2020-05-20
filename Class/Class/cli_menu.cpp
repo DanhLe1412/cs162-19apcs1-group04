@@ -48,10 +48,10 @@ void Print_home_page(int& i, int type){
 			staff_cli();
 			break;
 		case 2:
-			student_cli();
+			lecturer_cli();
 			break;	
 		case 3:
-			staff_cli();
+			student_cli();
 			break;
 		default:
 			cout << "---" << endl;
@@ -81,7 +81,7 @@ void home_cli(int type){
 				cout << "choose file import (ex: 19Apcs.csv): ";
 				cin >> file_csv;
 				cin.ignore(100, '\n');
-				//-----------------------------
+				//-----------------Call function ----------
 				ifstream fin;
 				ofstream fout;
 				import_students_csv(fin, fout, file_csv, check_import);
@@ -109,7 +109,7 @@ void home_cli(int type){
 					cout << "choose class (ex: 19apcs): ";
 					cin >> file_class;
 					cin.ignore(100, '\n');
-					//--------------
+					//--------------Call function -------
 					ifstream fin;
 					ofstream fout;
 					add_new_student(fin, fout, file_class, check_add);
@@ -120,6 +120,30 @@ void home_cli(int type){
 		case 3:
 		{
 			//Edit an existing student
+				//--------choose class to edit student-----
+			string class_file;
+			system("type classes.txt");
+			cout << "choose class to edit student: ";
+			cin >> class_file;
+			//--------------------Choose student from file class csv ----------
+
+			string tmp_typeOpen_csv_class = "type class_" + class_file + ".csv";
+			int n = tmp_typeOpen_csv_class.length()+1;
+			char* ctr=new char[n];
+			for(int i = 0; i < n; ++i) ctr[i] = tmp_typeOpen_csv_class[i];
+			system("CLS");
+			system(ctr);
+			string studentId;
+			cout << endl;
+			cout << "choose student to edit(input student ID):";
+			cin >> studentId;
+			//--------------Call Function-----------------
+			int check_edit = 0;
+			ifstream fin;
+			ofstream fout;
+			while(check_edit == 0){
+				edit_student(fin,fout,class_file,studentId,check_edit);
+			}
 			break;
 		}
 		case 4:{
@@ -129,8 +153,7 @@ void home_cli(int type){
 			system("type classes.txt");
 			cout << "choose class to remove student: ";
 			cin >> class_file;
-			//--------------------
-
+			//--------------Choose student from file class csv---------
 			string tmp_typeOpen_csv_class = "type class_" + class_file + ".csv";
 			int n = tmp_typeOpen_csv_class.length()+1;
 			char* ctr=new char[n];
@@ -138,9 +161,10 @@ void home_cli(int type){
 			system("CLS");
 			system(ctr);
 			string studentId;
+			cout << endl;
 			cout << "choose student to remove(Pls, input student ID):";
 			cin >> studentId;
-			//----------------
+			//----------------Call Function-----------
 			ifstream fin;
 			ofstream fout;
 			if(remove_student(fin,fout,class_file,studentId)=="Null")
@@ -150,10 +174,37 @@ void home_cli(int type){
 		}
 		case 5:{
 			// Change student to other class;
+			//-----------------Choose class A and class B-------------------
+			string class_a;
+			string class_b;
+			system("type classes.txt");
+			cout << "Which class get student (Class A):";
+			cin >> class_a;
+			cout << "Choose class remove to (class B):";
+			cin >> class_b;
+			//---------- Get Student To Moving in Class A ------------
+			string tmp_typeOpen_csv_class = "type class_" + class_a + ".csv";
+			int n = tmp_typeOpen_csv_class.length()+1;
+			char* ctr=new char[n];
+			for(int i = 0; i < n; ++i) ctr[i] = tmp_typeOpen_csv_class[i];
+			system("CLS");
+			system(ctr);
+			string studentId;
+			cout << endl;
+			cout << "Choose student to Move (Input student ID):";
+			cin >> studentId;
+			//--------Call Function----------------
+			ifstream fin;
+			ofstream fout;
+			int check_change = 0;
+			while(check_change ==0){
+				change_students(fin,fout,class_a,class_b,studentId,check_change);
+			}
 			break;
 		}
 		case 6:
 		{	//View list of classes
+			cout << "There are class in course" << endl;
 			ifstream fin;
 			view_list_classes(fin);
 			break;
@@ -173,9 +224,10 @@ void home_cli(int type){
 				cout << "List of classes:" << endl;
 				system("type classes.txt");
 				string file_class;
+				cout << endl;
 				cout << "choose class to view student: ";
 				cin >> file_class;
-				//-------------
+				//-------------Call Function --------------
 				ifstream fin; // argument
 				view_list_students(fin, file_class);
 			}
@@ -283,11 +335,11 @@ void SignIn_Menu()
 		cout << "***************************************" << endl;
 		cout << "***************************************" << endl;
 		cout << "**                                   **" << endl;
-		cout << "**        MANAGE STUGENT SYSTEM      **" << endl;
+		cout << "**        MANAGE STUDENT SYSTEM      **" << endl;
 		cout << "**                                   **" << endl;
 		cout << "***************************************" << endl;
 		cout << "***************************************" << endl;
-		cout << "You are: [1] :staff    [2]: student    [3]: lecturer" << endl;
+		cout << "You are: [1] :staff    [2]: lecturer    [3]: student" << endl;
 		cin >> type;
 		cout << "userID: ";
 		cin >> username;
@@ -313,40 +365,83 @@ void SignIn_Menu()
 		home_cli(type);
 	}
 	else
-		cout << "your user not valid!" << endl;
+		
+		system("CLS");
+		cout << "User not valid !!" << endl;
+		cout << "May username or password were uncorrect !!" << endl;
 	}
 
 	
 }
 
 bool checkUser(string username, string pass, int type){
-	ifstream fin;/*
-	if(type == 1){
-		fin.open("staff.txt");
-		while (!fin.eof())
+	ifstream fin;
+	pass.erase(pass.end()-1,pass.end());	
+	if (type == 1)
+	{
+		fin.open("Staff.txt");
+		if (fin.is_open())
 		{
-			//Read data
-		}
+			Staff* staff;
+			int amount_staff;
+			fin >> amount_staff;
+			staff = new Staff[amount_staff];
+			system("CLS");
+			cout << "username: " << username << endl;
+			cout << "pass:" << pass << endl;
+			for(int i = 0; i < amount_staff; ++i){
+				fin >> staff[i].user.username;
+				fin >> staff[i].user.password;
+				fin.ignore(100, '\n');
+				getline(fin,staff[i].Fullname);
+				fin >> staff[i].gender;
+				if(username.compare(staff[i].user.username) == 0 && pass.compare(staff[i].user.password) == 0) {
+					return true;
+				}
+			}
+			delete [] staff;
+			return false;
+		} else cout << "Cannot open file !!" << endl;
 	}
 	else if (type == 2)
 	{
 		fin.open("lecturer.txt");
-		while (!fin.eof())
+		if (fin.is_open())
 		{
-			//Read data
-		}
+			while (!fin.eof())
+			{
+				//Read data
+			}
+		}else cout << "Cannot open file !!" << endl;
 	}
 	else if (type == 3)
 	{
-		fin.open("student.txt");
-		while (!fin.eof())
+		fin.open("students.txt");
+		if (fin.is_open())
 		{
-			//Read data
-		}
+			User user;
+			fin >> user.username;
+			fin >> user.password;
+			while (!fin.eof())
+			{
+				if (username.compare(user.username) == 0 && pass.compare(user.password)==0)
+				{
+					return true;
+				}
+				else
+				{
+					fin >> user.username;
+					fin >> user.password;
+				}
+			}
+			return false;
+		}else cout << "Cannot open file !!" << endl;
 	}
 	else
 	{
-		cout << "user not valid!!" << endl;
-	}*/
-	return true;
+		cout << "\n Pls, input user from 1-3" << endl;
+		Sleep(3000);
+		return false;
+	}
+//	return true;
 }

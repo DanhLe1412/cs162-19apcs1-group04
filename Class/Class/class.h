@@ -32,12 +32,17 @@ struct Student
 	Class *student_class;
 };
 
+struct Staff{
+	User user;
+	string Fullname;
+	bool gender; // 0 Female, 1 Male
+};
 void input_student_info(Student *&student);
 void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int& status);
 void add_new_student(ifstream& fi, ofstream& fo, string class_name, int& status);
-void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_id);
+void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_id, int& status);
 string remove_student(ifstream &fi, ofstream &fo, string class_name, string student_id);
-void change_students(ifstream &fi, ofstream &fo, string class_name_A, string class_name_B, string student_id);
+void change_students(ifstream &fi, ofstream &fo, string class_name_A, string class_name_B, string student_id,int& status);
 void view_list_classes(ifstream &fi);
 void view_list_students(ifstream &fi, string class_name);
 
