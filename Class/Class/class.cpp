@@ -336,6 +336,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 					getline(fi, data);
 					removed_student = data;
 					cout << stt << "," << removed_student << endl;
+					--i;
 					continue;
 				}
 				else
