@@ -327,16 +327,18 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 			fi.open(classname);
 			fo.open("temp.csv");
 			getline(fi, data);  //Read the first line which is the class name
+			check = true;
 			while (!fi.eof()) //Remove the student by passing data from old csv file to a new one without that student info
 			{
 				++i;
-				if (i == stt)
+				if (i == stt && check)
 				{
 					getline(fi, data, ',');
 					getline(fi, data);
 					removed_student = data;
 					cout << stt << "," << removed_student << endl;
 					--i;
+					check = false;
 					continue;
 				}
 				else
