@@ -338,8 +338,12 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 					continue;
 				}
 				else
+				{
+					getline(fi, data, ',');
+					fo << i << ",";
 					getline(fi, data);
-				fo << data << endl;
+					fo << data << endl;
+				}
 			}
 			fi.close();
 			fo.close();
@@ -392,7 +396,7 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 		fi.close();
 
 		fo.open(classname.c_str(), ios::app);
-		fo << stt << "," << removed_student << endl;
+		fo << "\n" << stt << "," << removed_student << endl;
 		cout << "Successfully changed the student " << student_id << " from class " << class_name_A << " to class " << class_name_B << endl;
 		Sleep(3000);
 		status = 1;
