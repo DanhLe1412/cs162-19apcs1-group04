@@ -287,7 +287,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 string remove_student(ifstream &fi, ofstream &fo, string class_name, string student_id)
 {
 	bool check = false;
-	int stt = 0, i = -1;
+	int stt = 0, i = 0;
 	string data, backup_file_name = "backup_" + class_name + ".csv", removed_student;
 	char *classname = new char[class_name.length() + 11]; // a char* version of the string class_name
 	strcpy_s(classname, class_name.length() + 11, ("class_" + class_name + ".csv").c_str());
@@ -326,6 +326,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 		{
 			fi.open(classname);
 			fo.open("temp.csv");
+			getline(fi, data);  //Read the first line which is the class name
 			while (!fi.eof()) //Remove the student by passing data from old csv file to a new one without that student info
 			{
 				++i;
@@ -340,9 +341,9 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 				else
 				{
 					getline(fi, data, ',');
-					fo << i << ",";
 					getline(fi, data);
-					fo << data << endl;
+					if (data.length() > 1)
+						fo << i << "," << data << endl;
 				}
 			}
 			fi.close();
@@ -396,7 +397,7 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 		fi.close();
 
 		fo.open(classname.c_str(), ios::app);
-		fo << "\n" << stt << "," << removed_student << endl;
+		fo << stt << "," << removed_student << endl;
 		cout << "Successfully changed the student " << student_id << " from class " << class_name_A << " to class " << class_name_B << endl;
 		Sleep(3000);
 		status = 1;
