@@ -9,7 +9,7 @@ void staff_cli(){
 	cout << "[5]: Change student to other class" << endl;
 	cout << "[6]: View list of classes" << endl;
 	cout << "[7]: View list of students in a class" << endl;
-	cout << "[8]: Academic yead" << endl;
+	cout << "[8]: Academic year" << endl;
 	cout << "[9]: import course" << endl;
 	cout << "[10]: Manually add new course" << endl;
 	cout << "[11]: Remove a course" << endl;
@@ -62,7 +62,8 @@ void Print_home_page(int& i, int type){
 	cin >> i;
 }
 
-void home_cli(int type){
+void home_cli(string username, string pass, int type){
+	pass.erase(pass.end()-1,pass.end());	
 	int checksign = 0;
 	while(checksign==0){
 		int i = 0;
@@ -312,7 +313,10 @@ void home_cli(int type){
 			break;
 		}
 		case 30:
-		{
+		{	
+			// Change password
+			changePassword(username,pass,type);
+			Sleep(5000);
 			break;
 		}
 		case 32:
@@ -362,7 +366,7 @@ void SignIn_Menu()
 	if (checkUser(username, passw, type))
 	{
 		checksign_in = 1;
-		home_cli(type);
+		home_cli(username,passw,type);
 	}
 	else
 		
@@ -370,8 +374,6 @@ void SignIn_Menu()
 		cout << "User not valid !!" << endl;
 		cout << "May username or password were uncorrect !!" << endl;
 	}
-
-	
 }
 
 bool checkUser(string username, string pass, int type){
@@ -444,4 +446,117 @@ bool checkUser(string username, string pass, int type){
 		return false;
 	}
 //	return true;
+}
+
+void changePassword(string username, string& pass, int type)
+{	
+	// -------------- CONFIRM ----------------------
+	string oldpass = "oldpass";
+	string newPass = "newpass";
+	string confirm_newPass = "confirm";
+	while (newPass.compare(confirm_newPass) && pass.compare(oldpass))
+	{
+		system("CLS");
+		cout << "Your userID: " << username << endl;
+		cout << "Current Password: ";
+		cin.ignore(100, '\n');
+		getline(cin, oldpass);
+		cout << "New passord: ";
+		getline(cin, newPass);
+		cout << "Confirm password:";
+		getline(cin, confirm_newPass);
+	}
+	//----------------CHANGE PASSWORD------------
+	ifstream fin;
+	if (type == 1)
+	{
+		Staff* staff = nullptr;
+		int amount_staff;
+		fin.open("Staff.txt");
+		if (fin.is_open())
+		{
+			fin >> amount_staff;
+			staff = new Staff[amount_staff];
+			for (int i = 0; i < amount_staff; ++i)
+			{
+				fin >> staff[i].user.username;
+				fin >> staff[i].user.password;
+				fin.ignore(100, '\n');
+				getline(fin, staff[i].Fullname);
+				fin >> staff[i].gender;
+				if (username.compare(staff[i].user.username) == 0 && pass.compare(staff[i].user.password) == 0)
+				{
+					staff[i].user.password = newPass;
+					pass = newPass;
+					cout << "Success changing password" << endl;
+				}
+			}
+		}
+		else
+		{
+			cout << "Cannot open file !!" << endl;
+		}
+		fin.close();
+		ofstream fout;
+		fout.open("Staff.txt");
+		if(fout.is_open()){
+			fout << amount_staff << endl;
+			for(int i = 0 ; i < amount_staff; ++i){
+				fout << staff[i].user.username << endl;
+				fout << staff[i].user.password << endl;
+				fout << staff[i].Fullname<< endl;
+				fout << staff[i].gender << endl;
+			}
+			
+		}
+		delete [] staff;
+		return;
+	}
+	else if (type == 2)
+	{
+		fin.open("lecturer.txt");
+		if (fin.is_open())
+		{
+			while (!fin.eof())
+			{
+				//Read data
+			}
+		}else cout << "Cannot open file !!" << endl;
+	}
+	else if (type == 3)
+	{	
+		int size=0;
+		User user[300];
+		fin.open("students.txt");
+		if (fin.is_open())
+		{
+			while (!fin.eof())
+			{
+				fin >> user[size].username;
+				fin >> user[size].password;
+				if (username.compare(user[size].username) == 0 && pass.compare(user[size].password))
+				{
+					user[size].password = newPass;
+					cout << "success changing password" << endl;
+				}
+				size++;
+			}
+		}
+		else
+			cout << "Cannot open file !!" << endl;
+		fin.close();
+		ofstream fout;
+		fout.open("students.txt");
+		if(fout.is_open()){
+			for(int i = 0 ; i< size; ++i){
+				fout << user[i].username << endl;
+				fout << user[i].password << endl;
+			}
+		}
+		for(int i = 0; i < size; ++i){
+			cout << user[i].username << endl;
+			cout << user[i].password << endl;
+		}
+		return;
+	}
 }
