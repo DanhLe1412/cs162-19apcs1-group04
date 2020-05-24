@@ -400,7 +400,7 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 		fi.close();
 
 		fo.open(classname.c_str(), ios::app);
-		fo << stt << "," << removed_student << endl;
+		fo << stt + 1 << "," << removed_student << endl;
 		cout << "Successfully changed the student " << student_id << " from class " << class_name_A << " to class " << class_name_B << endl;
 		Sleep(3000);
 		status = 1;
