@@ -1,0 +1,28 @@
+2
+CS162
+Introduction to Programming
+19CLC1
+dbtien
+Dinh Ba Tien
+TS
+0
+2020 04 01
+2020 06 01
+2
+7 30
+11 30
+I42
+
+MTH252
+Calculus II
+19CLC1
+nttvan
+Nguyen Thi Thu Van
+TS
+0
+2020 04 01
+2020 06 01
+7
+13 30
+17 30
+I35

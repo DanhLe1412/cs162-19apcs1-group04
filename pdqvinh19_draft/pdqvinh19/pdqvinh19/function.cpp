@@ -58,6 +58,13 @@ void menu()
 			cin >> choose2;
 			switch (choose2)
 			{
+
+			case 20:
+			{
+				displayListCoursesSemester();
+				break;
+			}
+
 			case 21:
 			{
 				ifstream fin;
@@ -158,6 +165,30 @@ void menu()
 			// Need to change student ID input
 			int iD = 19127001;
 			chooseCourseAndCheckIn(iD);
+			break;
+		}
+
+		case 17:
+		{
+			// Need to change student ID input
+			int iD = 19127001;
+			chooseCourseAndDisplayCheckInResult(iD);
+			break;
+		}
+
+		case 18:
+		{
+			// Need to change student ID input
+			int iD = 19127001;
+			viewSchedule(iD);
+			break;
+		}
+
+		case 19:
+		{
+			// Need to change student ID input
+			int iD = 19127001;
+			viewScore(iD);
 			break;
 		}
 
@@ -905,4 +936,332 @@ void chooseCourseAndCheckIn(int iD)
 
 	if (one == 1)
 		checkInCourseName(courseName[choice - 1].longName, iD, currentTime());
+}
+
+string displayCheckInResult(checkInType checkIn)
+{
+	string display;
+	if (checkIn.checkIn == 1)
+		display = to_string(checkIn.time.startTime.tm_mday) + "/" + to_string(checkIn.time.startTime.tm_mon + 1) + "/" + to_string(checkIn.time.startTime.tm_year + 1900) + " Checked";
+	else if (checkIn.checkIn == 0)
+		display = to_string(checkIn.time.startTime.tm_mday) + "/" + to_string(checkIn.time.startTime.tm_mon + 1) + "/" + to_string(checkIn.time.startTime.tm_year + 1900) + " Unchecked";
+	else
+		display = "";
+	return display;
+}
+
+void displayCheckInResultList(checkInType checkIn[], int size)
+{
+	for (int i = 0; i < size; ++i)
+		if (displayCheckInResult(checkIn[i]) != "")
+			cout << displayCheckInResult(checkIn[i]) << endl;
+}
+
+studentCheckInType* loadStudentCheckInCourseArrayFromName(string courseName, int& size)
+{
+	ifstream fin;
+	string dir = "pdqvinh19data/2019-2020-HK2-" + courseName + "-Student+Time.txt";
+	studentCheckInType* student = nullptr;
+
+	fin.open(dir);
+	if (!fin.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		student = loadStudentCheckInCourseArray(fin, size);
+		fin.close();
+	}
+
+	return student;
+}
+
+void chooseCourseAndDisplayCheckInResult(int iD)
+{
+	classAndCourse* classCourseArray;
+	int classCourseSize;
+	int size;
+
+	classCourseArray = initializeClassCourseArray(classCourseSize);
+	courseNameLongAndShort* courseName;
+	courseName = availableCoursesOfStudentID(classCourseArray, classCourseSize, iD, size);
+
+	cout << "Please choose the course you would like to view check-in result: " << endl;
+	for (int i = 0; i < size; ++i)
+		cout << i + 1 << ". " << courseName[i].shortName << endl;
+
+	int choice;
+	cin >> choice;
+
+	studentCheckInType* student;
+	int n;
+	student = loadStudentCheckInCourseArrayFromName(courseName[choice - 1].longName, n);
+	int k = findIDStudentCheckInCourseArray(student, n, iD);
+
+	cout << "Check-in result of course " + courseName[choice - 1].shortName + ": " << endl;
+	displayCheckInResultList(student[k].checkIn, 10);
+}
+
+void displaySchedule(scheduleType schedule)
+{
+	cout << schedule.courseNameShort << endl;
+	cout << schedule.courseNameFull << endl;
+	cout << schedule.className << endl;
+	cout << schedule.lecturerFull << endl;
+	cout << schedule.lecturerDegree << endl;
+	cout << schedule.startTime.tm_mday << "/" << schedule.startTime.tm_mon + 1 << "/" << schedule.startTime.tm_year + 1900 << endl;
+	cout << schedule.endTime.tm_mday << "/" << schedule.endTime.tm_mon + 1 << "/" << schedule.endTime.tm_year + 1900 << endl;
+	cout << schedule.startTime.tm_wday + 1 << endl;
+	cout << schedule.startTime.tm_hour << ":" << schedule.startTime.tm_min << endl;
+	cout << schedule.endTime.tm_hour << ":" << schedule.endTime.tm_min << endl;
+	cout << schedule.room << endl;
+	cout << endl;
+}
+
+scheduleType loadSchedule(ifstream& fin)
+{
+	scheduleType schedule;
+	string tmp;
+	int n;
+	
+	fin.ignore();
+	getline(fin, schedule.courseNameShort, '\n');
+	getline(fin, schedule.courseNameFull, '\n');
+	getline(fin, schedule.className, '\n');
+	getline(fin, schedule.lecturer, '\n');
+	getline(fin, schedule.lecturerFull, '\n');
+	getline(fin, schedule.lecturerDegree, '\n');
+	fin >> schedule.status;
+	fin.ignore();
+	getline(fin, tmp, ' ');
+	schedule.startTime.tm_year = stoi(tmp) - 1900;
+	getline(fin, tmp, ' ');
+	schedule.startTime.tm_mon = stoi(tmp) - 1;
+	getline(fin, tmp, '\n');
+	schedule.startTime.tm_mday = stoi(tmp);
+	getline(fin, tmp, ' ');
+	schedule.endTime.tm_year = stoi(tmp) - 1900;
+	getline(fin, tmp, ' ');
+	schedule.endTime.tm_mon = stoi(tmp) - 1;
+	getline(fin, tmp, '\n');
+	schedule.endTime.tm_mday = stoi(tmp);
+	fin >> n;
+	schedule.startTime.tm_wday = n - 1;
+	schedule.endTime.tm_wday = schedule.startTime.tm_wday;
+	fin.ignore();
+	getline(fin, tmp, ' ');
+	schedule.startTime.tm_hour = stoi(tmp);
+	getline(fin, tmp, '\n');
+	schedule.startTime.tm_min = stoi(tmp);
+	getline(fin, tmp, ' ');
+	schedule.endTime.tm_hour = stoi(tmp);
+	getline(fin, tmp, '\n');
+	schedule.endTime.tm_min = stoi(tmp);
+	schedule.startTime = { 0, schedule.startTime.tm_min, schedule.startTime.tm_hour, schedule.startTime.tm_mday, schedule.startTime.tm_mon, schedule.startTime.tm_year, schedule.startTime.tm_wday };
+	schedule.endTime = { 0, schedule.endTime.tm_min, schedule.endTime.tm_hour, schedule.endTime.tm_mday, schedule.endTime.tm_mon, schedule.endTime.tm_year, schedule.endTime.tm_wday };
+	getline(fin, schedule.room, '\n');
+
+	return schedule;
+}
+
+scheduleType* loadScheduleArray(ifstream& fin, int& size)
+{
+	size = loadN(fin);
+	scheduleType* scheduleArray;
+	scheduleArray = new scheduleType[size];
+
+	for (int i = 0; i < size; ++i)
+		scheduleArray[i] = loadSchedule(fin);
+
+	return scheduleArray;
+}
+
+scheduleType* loadScheduleArrayFromClass(string className, int& size)
+{
+	ifstream fin;
+	string dir;
+	dir = "pdqvinh19data/2019-2020-HK2-Schedule-" + className + "+Time.txt";
+	scheduleType* scheduleArray = nullptr;
+
+	fin.open(dir);
+	if (!fin.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		scheduleArray = loadScheduleArray(fin, size);
+		fin.close();
+	}
+
+	return scheduleArray;
+}
+
+int findCourseScheduleArray(scheduleType* scheduleArray, int size, string courseName)
+{
+	for (int i = 0; i < size; ++i)
+		if (scheduleArray[i].courseNameShort == courseName)
+			return i;
+	return -1;
+}
+
+string getClassName(string courseNameLong)
+{
+	stringstream s(courseNameLong);
+	string className;
+
+	getline(s, className, '-');
+
+	return className;
+}
+
+void viewSchedule(int iD)
+{
+	classAndCourse* classCourseArray;
+	int classCourseSize;
+	int size;
+
+	classCourseArray = initializeClassCourseArray(classCourseSize);
+	courseNameLongAndShort* courseName;
+	courseName = availableCoursesOfStudentID(classCourseArray, classCourseSize, iD, size);
+
+	scheduleType* scheduleArray;
+	int scheduleSize;
+	int j;
+
+	cout << "Your schedule: " << endl;
+	cout << endl;
+
+	for (int i = 0; i < size; ++i)
+	{
+		scheduleArray = loadScheduleArrayFromClass(getClassName(courseName[i].longName), scheduleSize);
+		j = findCourseScheduleArray(scheduleArray, scheduleSize, courseName[i].shortName);
+		displaySchedule(scheduleArray[j]);
+	}
+}
+
+void displayScoreStudent(studentCourseFullType student)
+{
+	cout << "Midterm: " << student.point.midterm << endl;
+	cout << "Final:   " << student.point.final << endl;
+	cout << "Bonus:   " << student.point.bonus << endl;
+	cout << "Total:   " << student.point.total << endl;
+}
+
+studentCourseFullType loadStudentCourseFull(ifstream& fin)
+{
+	string tmp;
+	studentCourseFullType student;
+	
+	fin.ignore();
+	fin >> student.iD;
+	fin.ignore();
+	fin >> student.password;
+	fin.ignore();
+	getline(fin, student.fullName, '\n');
+	getline(fin, tmp, ' ');
+	student.dOB.tm_year = stoi(tmp) - 1900;
+	getline(fin, tmp, ' ');
+	student.dOB.tm_mon = stoi(tmp) - 1;
+	getline(fin, tmp, '\n');
+	student.dOB.tm_mday = stoi(tmp);
+	student.dOB = { 0, 0, 0, student.dOB.tm_mday, student.dOB.tm_mon, student.dOB.tm_year };
+	getline(fin, student.className, '\n');
+	fin >> student.attendingStatus;
+	fin >> student.point.midterm;
+	fin >> student.point.final;
+	fin >> student.point.bonus;
+	fin >> student.point.total;
+	fin.ignore();
+	for (int i = 0; i < 10; ++i)
+	{
+		student.checkIn[i].time = loadDuration(fin);
+		getline(fin, tmp, '\n');
+		student.checkIn[i].checkIn = stoi(tmp);
+	}
+	fin >> student.droppedStatus;
+	fin.ignore();
+
+	return student;
+}
+
+studentCourseFullType* loadStudentCourseFullArray(ifstream& fin, int& size)
+{
+	studentCourseFullType* studentArray;
+	size = loadN(fin);
+	studentArray = new studentCourseFullType[size];
+
+	for (int i = 0; i < size; ++i)
+		studentArray[i] = loadStudentCourseFull(fin);
+
+	return studentArray;
+}
+
+studentCourseFullType* loadStudentCourseFullArrayFromName(string courseNameLong, int& size)
+{
+	ifstream fin;
+	studentCourseFullType* studentArray = nullptr;
+	string dir = "pdqvinh19data/2019-2020-HK2-" + courseNameLong + "-Student+Full.txt";
+
+	fin.open(dir);
+	if (!fin.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		studentArray = loadStudentCourseFullArray(fin, size);
+		fin.close();
+	}
+
+	return studentArray;
+}
+
+int findIDStudentCourseFullArray(studentCourseFullType* studentArray, int size, int iD)
+{
+	for (int i = 0; i < size; ++i)
+		if (studentArray[i].iD == iD)
+			return i;
+	return -1;
+}
+
+void viewScore(int iD)
+{
+	classAndCourse* classCourseArray;
+	int classCourseSize;
+	int size;
+
+	classCourseArray = initializeClassCourseArray(classCourseSize);
+	courseNameLongAndShort* courseName;
+	courseName = availableCoursesOfStudentID(classCourseArray, classCourseSize, iD, size);
+
+	cout << "Please choose the course you would like to view your scores: " << endl;
+	for (int i = 0; i < size; ++i)
+		cout << i + 1 << ". " << courseName[i].shortName << endl;
+
+	int choice;
+	cin >> choice;
+
+	studentCourseFullType* student;
+	int n;
+
+	student = loadStudentCourseFullArrayFromName(courseName[choice - 1].longName, n);
+	int k = findIDStudentCourseFullArray(student, n, iD);
+
+	cout << "Your scores of course " + courseName[choice - 1].shortName + ": " << endl;
+	displayScoreStudent(student[k]);
+}
+
+void displayListCoursesSemester()
+{
+	classAndCourse* classCourseArray;
+	int classCourseSize;
+
+	classCourseArray = initializeClassCourseArray(classCourseSize);
+
+	cout << "List of courses in the current semester: " << endl;
+	cout << endl;
+
+	for (int i = 0; i < classCourseSize; ++i)
+	{
+		cout << "Courses of class " << classCourseArray[i].className << ": " << endl;
+		for (int j = 0; j < classCourseArray[i].courseQuantity; ++j)
+			cout << classCourseArray[i].courseName[j] << endl;
+		cout << endl;
+	}
 }

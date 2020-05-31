@@ -1,10 +1,9 @@
 #pragma once
 
-#pragma warning(disable : 4996)
-
 #include <iostream>
 #include <Windows.h>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <iomanip>
 #include <ctime>
@@ -49,6 +48,31 @@ struct courseNameLongAndShort
 {
 	string longName;
 	string shortName;
+};
+
+struct scheduleType
+{
+	string courseNameShort, courseNameFull, className, lecturer, lecturerFull, lecturerDegree, room;
+	bool status;
+	tm startTime, endTime;
+};
+
+struct pointFullType
+{
+	float midterm, final, bonus, total;
+};
+
+struct studentCourseFullType
+{
+	int iD;
+	int password;
+	string fullName;
+	tm dOB;
+	string className;
+	bool attendingStatus;
+	pointFullType point;
+	checkInType checkIn[10];
+	bool droppedStatus;
 };
 
 void menu();
@@ -97,3 +121,21 @@ classAndCourse* initializeClassCourseArray(int& size);
 courseNameLongAndShort* availableCoursesOfStudentID(classAndCourse* classCourseArray, int classCourseSize, int iD, int& size);
 bool checkStudentCourseAttendanceCheckIn(string courseName, int iD);
 void chooseCourseAndCheckIn(int iD);
+string displayCheckInResult(checkInType checkIn);
+void displayCheckInResultList(checkInType checkIn[], int size);
+studentCheckInType* loadStudentCheckInCourseArrayFromName(string courseName, int& size);
+void chooseCourseAndDisplayCheckInResult(int iD);
+void displaySchedule(scheduleType schedule);
+scheduleType loadSchedule(ifstream& fin);
+scheduleType* loadScheduleArray(ifstream& fin, int& size);
+scheduleType* loadScheduleArrayFromClass(string className, int& size);
+int findCourseScheduleArray(scheduleType* scheduleArray, int size, string courseName);
+string getClassName(string courseNameLong);
+void viewSchedule(int iD);
+void displayScoreStudent(studentCourseFullType student);
+studentCourseFullType loadStudentCourseFull(ifstream& fin);
+studentCourseFullType* loadStudentCourseFullArray(ifstream& fin, int& size);
+studentCourseFullType* loadStudentCourseFullArrayFromName(string courseNameLong, int& size);
+int findIDStudentCourseFullArray(studentCourseFullType* studentArray, int size, int iD);
+void viewScore(int iD);
+void displayListCoursesSemester();
