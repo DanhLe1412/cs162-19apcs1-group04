@@ -13,5 +13,5 @@ Le Thi Anh Thao
 0
 admin
 123
-This is account tester of Staff
+This is account for testing
 1
