@@ -45,7 +45,7 @@ void input_student_info(Student *&student)
 void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int &status)
 {
 	int stt;
-	string data = "", new_file_name = "data\\class_" + csv_name + ".txt", class_name;
+	string data = "", new_file_name = "data/class_" + csv_name + ".txt", class_name;
 	csv_name += ".txt";
 
 	fi.open(csv_name.c_str());		//Open the loaded csv file
@@ -136,8 +136,9 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int &statu
 		while (student_users)
 		{
 			del = student_users;
+			fo << endl;
 			fo << student_users->username << endl;
-			fo << student_users->password << endl;
+			fo << student_users->password;
 			student_users = student_users->next;
 			delete del;
 		}
@@ -158,7 +159,7 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name, int &status)
 {
 	int stt = -1;
 	bool check = true;
-	string data, temp, classname = "data\\class_" + class_name + ".txt", pwd;
+	string data, temp, classname = "data/class_" + class_name + ".txt", pwd;
 	Student *new_student = new Student;
 	fo.open(classname.c_str(), ios::app);
 	fi.open(classname.c_str());
@@ -203,9 +204,9 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 {
 	bool check = false;
 	int stt = 0, i = -1;
-	string data, backup_file_name = "data\\backup_" + class_name + ".txt";
+	string data, backup_file_name = "data/backup_" + class_name + ".txt";
 	char *classname = new char[class_name.length() + 16]; // a char* version of the string class_name
-	strcpy_s(classname, class_name.length() + 16, ("data\\class_" + class_name + ".txt").c_str());
+	strcpy_s(classname, class_name.length() + 16, ("data/class_" + class_name + ".txt").c_str());
 
 	fi.open(classname);
 	fo.open(backup_file_name.c_str());
@@ -248,7 +249,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 		input_student_info(new_student);
 
 		fi.open(classname);
-		fo.open("data\\temp.txt");
+		fo.open("data/temp.txt");
 		while (!fi.eof()) //Remove the old student info and replace with the new one
 		{
 			++i;
@@ -265,7 +266,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 		fi.close();
 		fo.close();
 
-		if (remove(classname) == 0 && rename("data\\temp.txt", classname) == 0) //Remove the original class csv and rename the temp.csv
+		if (remove(classname) == 0 && rename("data/temp.txt", classname) == 0) //Remove the original class csv and rename the temp.csv
 		{
 			cout << "Sucessfully edited the student!" << endl;
 			remove(backup_file_name.c_str());
@@ -288,9 +289,9 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 {
 	bool check = false;
 	int stt = 0, i = 0;
-	string data, backup_file_name = "data\\backup_" + class_name + ".txt", removed_student;
+	string data, backup_file_name = "data/backup_" + class_name + ".txt", removed_student;
 	char *classname = new char[class_name.length() + 16]; // a char* version of the string class_name
-	strcpy_s(classname, class_name.length() + 16, ("data\\class_" + class_name + ".txt").c_str());
+	strcpy_s(classname, class_name.length() + 16, ("data/class_" + class_name + ".txt").c_str());
 
 	fi.open(classname);
 	fo.open(backup_file_name.c_str());
@@ -325,7 +326,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 		else
 		{
 			fi.open(classname);
-			fo.open("data\\temp.txt");
+			fo.open("data/temp.txt");
 			getline(fi, data); //Read the first line which is the class name
 			check = true;
 			while (!fi.eof()) //Remove the student by passing data from old csv file to a new one without that student info
@@ -352,7 +353,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 			fi.close();
 			fo.close();
 
-			if (remove(classname) == 0 && rename("data\\temp.txt", classname) == 0) //Remove the original class csv and rename the temp.csv
+			if (remove(classname) == 0 && rename("data/temp.txt", classname) == 0) //Remove the original class csv and rename the temp.csv
 			{
 				cout << "Sucessfully removed the student!" << endl;
 				Sleep(3000);
@@ -376,7 +377,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 void change_students(ifstream &fi, ofstream &fo, string class_name_A, string class_name_B, string student_id, int &status)
 {
 	string removed_student = remove_student(fi, fo, class_name_A, student_id);
-	string classname = "data\\class_" + class_name_B + ".txt";
+	string classname = "data/class_" + class_name_B + ".txt";
 	string temp;
 	int stt = 0;
 
@@ -437,7 +438,7 @@ void view_list_classes(ifstream &fi)
 void view_list_students(ifstream &fi, string class_name)
 {
 	cout << "Students of class " << class_name << endl;
-	class_name = "data\\class_" + class_name + ".txt";
+	class_name = "data/class_" + class_name + ".txt";
 	fi.open(class_name.c_str());
 	if (!fi.is_open())
 	{
