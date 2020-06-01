@@ -28,14 +28,14 @@ GS
 I23
 
 CS422
-lalal
+lalala
 19APCS1
 dbtien
 Dinh Ba Tien
 TS
 0
-2020 06 01
-2020 08 01
+2020 04 06
+2020 06 08
 3
 7 30
 11 30

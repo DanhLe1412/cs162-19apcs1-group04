@@ -4,6 +4,9 @@
 #include <string.h>
 #include <fstream>
 #include <sstream>
+#include <stdio.h>
+#include <ctime>
+#include <iomanip>
 using namespace std;
 
 enum gender {
@@ -52,8 +55,12 @@ void view_years_semesters();
 void CRUD_years_semesters();
 
 // [14]
+void makeFileCourse(string years, string semester, string Class, Course* course);
 string convertDate(string date);
 void importCourses();
 
 // [15]
 void addCourseManually();
+
+// 16
+void editExistingCourse();
