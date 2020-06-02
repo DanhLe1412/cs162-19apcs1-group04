@@ -71,7 +71,7 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int &statu
 			fo << data << endl;
 			getline(fi, data, ',');
 			new_student->lastname = data;
-			fo << data << endl;
+			fo << data << " ";
 			getline(fi, data, ',');
 			new_student->firstname = data;
 			fo << data << endl;
@@ -165,8 +165,7 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name, int &status)
 			getline(fi, data);
 
 		fo << new_student->ID << endl;
-		fo << new_student->lastname << endl;
-		fo << new_student->firstname << endl;
+		fo << new_student->lastname << " " << new_student->firstname << endl;
 		fo << new_student->gender << endl;
 		fo << new_student->DoB << endl;
 	}
@@ -237,7 +236,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 			else
 			{
 				//Go to next student
-				for (j = 0; j < 4; ++j)
+				for (j = 0; j < 3; ++j)
 					getline(fi, data);
 			}
 		}
@@ -263,19 +262,19 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 			{
 				// Paste the new student in the right index
 				fo << new_student->ID << endl;
-				fo << new_student->lastname << endl;
-				fo << new_student->firstname << endl;
+				fo << new_student->lastname << " " << new_student->firstname << endl;
 				fo << new_student->gender << endl;
 				fo << new_student->DoB << endl;
-				for (j = 0; j < 5; ++j)
+				for (j = 0; j < 4; ++j)
 					getline(fi, data);
 			}
 			else
 			{
-				for (j = 0; j < 5; ++j)
+				for (j = 0; j < 4; ++j)
 				{
 					getline(fi, data);
-					fo << data << endl;
+					if(data != "\n")
+						fo << data << endl;
 				}
 			}
 		}
@@ -333,7 +332,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 			else
 			{
 				//Go to next student
-				for (j = 0; j < 4; ++j)
+				for (j = 0; j < 3; ++j)
 					getline(fi, data);
 			}
 		}
@@ -352,7 +351,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 				if (i == count && check)
 				{
 					//If the current student is the student to be removed, output his/her info
-					for (j = 0; j < 5; ++j)
+					for (j = 0; j < 4; ++j)
 					{
 						getline(fi, data);
 						removed_student += data + " ";
@@ -362,7 +361,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 				}
 				else
 				{
-					for (j = 0; j < 5; ++j)
+					for (j = 0; j < 4; ++j)
 					{
 						getline(fi, data);
 						if (data != "\n" && data != " ")
@@ -407,10 +406,23 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 			cout << "Failed to open class_" << class_name_B << ".txt file" << endl;
 		else
 		{
+			int count = 0, index;
+			for (int i = removed_student.length() - 2; i >= 0; --i)
+			{
+				if (removed_student[i] == ' ')
+				{
+					index = i;
+					break;
+				}
+			}
 			for (int i = 0; i < removed_student.length(); ++i)
 			{
 				if (removed_student[i] == ' ')
-					fo << endl;
+				{
+					++count;
+					if (count == 1 || i == index)
+						fo << endl;
+				}
 				else
 					fo << removed_student[i];
 			}
@@ -464,21 +476,30 @@ void view_list_students(ifstream &fi, string class_name)
 		string data;
 		while (!fi.eof())
 		{
-			++count;
-			cout << count << ", "; //stt
 			getline(fi, data);
-			cout << data << ", "; //ID
-			getline(fi, data);
-			cout << data << " "; //lastname
-			getline(fi, data);
-			cout << data << ", "; //firstname
-			getline(fi, data);
-			//Gender
-			if (data == "1")
-				cout << "Male, ";
-			else cout << "Female, ";
-			getline(fi, data);
-			cout << data << endl; //DoB
+			if (data != "\n");
+			{
+				++count;
+				cout << count << ", " << data << ", ";
+				for (int i = 0; i < 3; ++i)
+				{
+					getline(fi, data);
+					if (data != "\n")
+					{
+						if (i == 2)
+						{
+							cout << data << endl;
+							break;
+						}
+						else if (data == "0")
+							cout << "Female, ";
+						else if (data == "1")
+							cout << "Male, ";
+						else cout << data << ", ";
+					}
+				}
+			}
+			
 		}
 	}
 	fi.close();
