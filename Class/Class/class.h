@@ -12,7 +12,6 @@ struct User
 	string username;
 	string password;
 	int type = -1; //(default: -1)(1: staff, 2 : lecturer, 3 : student)
-	User *next = nullptr;
 };
 
 struct Class
@@ -30,6 +29,7 @@ struct Student
 	bool gender; // 0: Female, 1: Male
 	string list_course[20];
 	Class *student_class;
+	Student* next = nullptr;
 };
 
 struct Staff{
