@@ -44,7 +44,6 @@ void input_student_info(Student *&student)
 
 void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int &status)
 {
-	int stt;
 	string data = "", new_file_name = "data/class_" + csv_name + ".txt", class_name = csv_name;
 	csv_name = "data/" + csv_name + ".csv";
 
@@ -245,7 +244,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 			if (count == i)
 			{
 				// Paste the new student in the right index
-				fo << new_student->id << endl;
+				fo << new_student->ID << endl;
 				fo << new_student->lastname << endl;
 				fo << new_student->firstname << endl;
 				fo << new_student->gender << endl;
@@ -392,7 +391,7 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 		{
 			for (int i = 0; i < removed_student.length(); ++i)
 			{
-				if (removed_student[i].compare(" ") == 0)
+				if (removed_student[i] == ' ')
 					fo << endl;
 				else
 					fo << removed_student[i];
