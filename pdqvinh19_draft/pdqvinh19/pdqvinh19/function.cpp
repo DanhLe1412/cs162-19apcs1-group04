@@ -1265,3 +1265,781 @@ void displayListCoursesSemester()
 		cout << endl;
 	}
 }
+
+semesterType loadSemester(ifstream& fin)
+{
+	semesterType semester;
+	getline(fin, semester.academicYear, '\n');
+	getline(fin, semester.semester, '\n');
+	return semester;
+}
+
+semesterType* loadSemesterArray(ifstream& fin, int& size)
+{
+	semesterType* semesterArray;
+	size = loadN(fin);
+	semesterArray = new semesterType[size];
+
+	for (int i = 0; i < size; ++i)
+	{
+		fin.ignore();
+		semesterArray[i] = loadSemester(fin);
+	}
+
+	return semesterArray;
+}
+
+semesterType* loadSemesterArrayFromDir(string dir, int& size)
+{
+	semesterType* semesterArray = nullptr;
+	ifstream fin;
+
+	fin.open(dir);
+	if (!fin.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		size = loadN(fin);
+		semesterArray = new semesterType[size];
+
+		for (int i = 0; i < size; ++i)
+		{
+			fin.ignore();
+			semesterArray[i] = loadSemester(fin);
+		}
+	}
+
+	return semesterArray;
+}
+
+void displaySemesterListFromDir(string dir, semesterType*& semesterArray, int& size)
+{
+	semesterArray = loadSemesterArrayFromDir(dir, size);
+
+	for (int i = 0; i < size; ++i)
+	{
+		cout << i + 1 << ". " << semesterArray[i].academicYear << " - " << semesterArray[i].semester << endl;
+	}
+}
+
+string* loadClassNamesArrayFromDir(string dir, int& size)
+{
+	ifstream fin;
+	string* classNamesArray = nullptr;
+
+	fin.open(dir);
+	if (!fin.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		size = loadN(fin);
+		classNamesArray = new string[size];
+
+		fin.ignore();
+
+		for (int i = 0; i < size; ++i)
+			getline(fin, classNamesArray[i], '\n');
+	}
+
+	return classNamesArray;
+}
+
+bool checkFileAvailable(string dir)
+{
+	ifstream fin(dir);
+	return fin.good();
+}
+
+string* arrayOfClassesWithAvailableSchedule(string preDir, string postDir, string* classNamesArray, int classNamesArraySize, int& classesWithAvailableScheduleArraySize)
+{
+	string* classesWithAvailableScheduleArray = nullptr;
+	classesWithAvailableScheduleArraySize = 0;
+
+	for (int i = 0; i < classNamesArraySize; ++i)
+		if (checkFileAvailable(preDir + classNamesArray[i] + postDir) == true)
+			++classesWithAvailableScheduleArraySize;
+
+	classesWithAvailableScheduleArray = new string[classesWithAvailableScheduleArraySize];
+	int j = 0;
+	for (int i = 0; i < classNamesArraySize; ++i)
+		if (checkFileAvailable(preDir + classNamesArray[i] + postDir) == true)
+		{
+			classesWithAvailableScheduleArray[j] = classNamesArray[i];
+			++j;
+		}
+
+	return classesWithAvailableScheduleArray;
+}
+
+scheduleType* loadSchedulesArrayFromDir(string dir, int& size)
+{
+	ifstream fin;
+	scheduleType* schedulesArray = nullptr;
+
+	fin.open(dir);
+	if (!fin.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		schedulesArray = loadScheduleArray(fin, size);
+		fin.close();
+	}
+
+	return schedulesArray;
+}
+
+string* arrayOfCoursesInClassWithAvailableStudentsList(string preDir, string postDir, scheduleType* schedulesArray, int schedulesArraySize, int& coursesArraySize)
+{
+	string* coursesArray = nullptr;
+	coursesArraySize = 0;
+	string dir = "";
+
+	for (int i = 0; i < schedulesArraySize; ++i)
+	{
+		dir = preDir + schedulesArray[i].className + "-" + schedulesArray[i].courseNameShort + postDir;
+		if (checkFileAvailable(dir) == true)
+			++coursesArraySize;
+	}
+
+	coursesArray = new string[coursesArraySize];
+	int j = 0;
+	for (int i = 0; i < schedulesArraySize; ++i)
+	{
+		dir = preDir + schedulesArray[i].className + "-" + schedulesArray[i].courseNameShort + postDir;
+		if (checkFileAvailable(dir) == true)
+		{
+			coursesArray[j] = schedulesArray[i].courseNameShort;
+			++j;
+		}
+	}
+
+	return coursesArray;
+}
+
+classAndCourse* arrayOfAvailableCoursesInClasses(string preDir, int& size)
+{
+	classAndCourse* coursesInClassesArray = nullptr;
+
+	string dir = preDir + "Class-Full.txt";
+	string* classesArray;
+	int classesArraySize;
+
+	classesArray = loadClassNamesArrayFromDir(dir, classesArraySize);
+	preDir += "2019-2020-HK2-Schedule-";
+	classesArray = arrayOfClassesWithAvailableSchedule(preDir, "+Time.txt", classesArray, classesArraySize, classesArraySize);
+
+	size = classesArraySize;
+	coursesInClassesArray = new classAndCourse[size];
+
+	for (int i = 0; i < size; ++i)
+		coursesInClassesArray[i].className = classesArray[i];
+
+	scheduleType* schedulesArray;
+	int schedulesArraySize;
+	for (int i = 0; i < size; ++i)
+	{
+		dir = preDir + classesArray[i] + "+Time.txt";
+		schedulesArray = loadSchedulesArrayFromDir(dir, schedulesArraySize);
+		coursesInClassesArray[i].courseName = arrayOfCoursesInClassWithAvailableStudentsList("pdqvinh19data/2019-2020-HK2-", "-Student+Time.txt", schedulesArray, schedulesArraySize, coursesInClassesArray[i].courseQuantity);
+	}
+
+	return coursesInClassesArray;
+}
+
+studentCourseFullType* loadStudentsCourseFullArrayFromDirNew(string folderDir, semesterType semester, string className, string courseName, string postDir, int& size)
+{
+	studentCourseFullType* studentsArray = nullptr;
+	string dir = folderDir + semester.academicYear + "-" + semester.semester + "-" + className + "-" + courseName + "-Student" + postDir;
+	ifstream fin;
+
+	fin.open(dir);
+	if (!fin.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		studentsArray = loadStudentCourseFullArray(fin, size);
+		fin.close();
+	}
+
+	return studentsArray;
+}
+
+bool checkStudentAttendanceCourseFull(studentCourseFullType student)
+{
+	if (student.attendingStatus == 1)
+		return true;
+	return false;
+}
+
+studentCourseFullType* arrayOfAttendances(studentCourseFullType* studentsArray, int studentsArraySize, int& size)
+{
+	size = 0;
+	for (int i = 0; i < studentsArraySize; ++i)
+		if (checkStudentAttendanceCourseFull(studentsArray[i]) == 1)
+			++size;
+
+	studentCourseFullType* studentsArrayNew = nullptr;
+	studentsArrayNew = new studentCourseFullType[size];
+	int j = 0;
+	for (int i = 0; i < studentsArraySize; ++i)
+		if (checkStudentAttendanceCourseFull(studentsArray[i]) == 1)
+		{
+			studentsArrayNew[j] = studentsArray[i];
+			++j;
+		}
+
+	return studentsArrayNew;
+}
+
+void displayAttendances(studentCourseFullType* studentsArray, int size)
+{
+	string space = "                         ";
+
+	for (int i = 0; i < size; ++i)
+	{
+		space = space.replace(0, studentsArray[i].fullName.length(), studentsArray[i].fullName);
+		cout << i + 1 << ". " << studentsArray[i].iD << "  " << space << studentsArray[i].className << endl;
+	}
+}
+
+void searchAndViewAttendances(string folderDir, string& className, string& courseName, studentCourseFullType*& attendancesArray, int& size)
+{
+	classAndCourse* c;
+	int p;
+
+	c = arrayOfAvailableCoursesInClasses(folderDir, p);
+
+	cout << "Enter class: " << endl;
+	for (int i = 0; i < p; ++i)
+	{
+		cout << i + 1 << ". " << c[i].className << endl;
+	}
+	int k;
+	cin >> k;
+	--k;
+
+	cout << "Enter course: " << endl;
+	for (int i = 0; i < c[k].courseQuantity; ++i)
+	{
+		cout << i + 1 << ". " << c[k].courseName[i] << endl;
+	}
+	int h;
+	cin >> h;
+	--h;
+
+	className = c[k].className;
+	courseName = c[k].courseName[h];
+
+	studentCourseFullType* b;
+	int m;
+
+	semesterType sm;
+	sm.academicYear = "2019-2020";
+	sm.semester = "HK2";
+
+	b = loadStudentsCourseFullArrayFromDirNew(folderDir, sm, c[k].className, c[k].courseName[h], "+Full.txt", m);
+
+	b = arrayOfAttendances(b, m, m);
+
+	attendancesArray = b;
+	size = m;
+
+	cout << "List of attendances: " << endl;
+	displayAttendances(b, m);
+}
+
+void writeAttendancesListToCSV(string className, string courseName, string folderDir, studentCourseFullType* studentsArray, int size)
+{
+	string dir = folderDir + className + "-" + courseName + "-Attendances.csv";
+	ofstream fout;
+	fout.open(dir);
+	if (!fout.is_open())
+		cout << "Cannot write file." << endl;
+	else
+	{
+		fout << "No,Student ID,Fullname,Class" << endl;
+		for (int i = 0; i < size; ++i)
+			fout << i + 1 << "," << studentsArray[i].iD << "," << studentsArray[i].fullName << "," << studentsArray[i].className << endl;
+		fout.close();
+	}
+}
+
+studentCourseFullType readStudent_element(ifstream& fin)
+{
+	studentCourseFullType student;
+	string tmp;
+	int n;
+
+	fin >> student.iD;
+	fin >> student.password;
+	fin.ignore();
+	getline(fin, student.fullName, '\n');
+	getline(fin, tmp, ' ');
+	n = stoi(tmp) - 1900;
+	student.dOB.tm_year = n;
+	getline(fin, tmp, ' ');
+	n = stoi(tmp) - 1;
+	student.dOB.tm_mon = n;
+	getline(fin, tmp, '\n');
+	n = stoi(tmp);
+	student.dOB.tm_mday = n;
+	student.dOB = { 0, 0, 0, student.dOB.tm_mday, student.dOB.tm_mon, student.dOB.tm_year };
+	getline(fin, student.className, '\n');
+	fin >> student.attendingStatus;
+
+	return student;
+}
+
+studentCourseFullType* readStudent_array(ifstream& fin, int& size)
+{
+	fin >> size;
+	studentCourseFullType* array;
+	array = new studentCourseFullType[size];
+
+	for (int i = 0; i < size; ++i)
+		array[i] = readStudent_element(fin);
+
+	return array;
+}
+
+studentCourseFullType* readStudent(string dir, int& size)
+{
+	ifstream fin;
+	studentCourseFullType* array = nullptr;
+	
+	fin.open(dir);
+	if (!fin.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		fin >> size;
+
+		array = new studentCourseFullType[size];
+
+		for (int i = 0; i < size; ++i)
+			array[i] = readStudent_element(fin);
+
+		fin.close();
+	}
+
+	return array;
+}
+
+int positionInStudent_array(int iD, studentCourseFullType* studentsArray, int size)
+{
+	for (int i = 0; i < size; ++i)
+		if (studentsArray[i].iD == iD)
+			return i;
+	return -1;
+}
+
+void writeStudent(studentCourseFullType* students, int size, string dir)
+{
+	ofstream fout;
+
+	fout.open(dir);
+	if (!fout.is_open())
+		cout << "Cannot write file." << endl;
+	else
+	{
+		fout << size << endl;
+
+		for (int i = 0; i < size; ++i)
+		{
+			fout << students[i].iD << endl;
+			fout << students[i].password << endl;
+			fout << students[i].fullName << endl;
+			fout << students[i].dOB.tm_year + 1900 << " " << setw(2) << setfill('0') << students[i].dOB.tm_mon + 1 << " " << setw(2) << setfill('0') << students[i].dOB.tm_mday << endl;
+			fout << students[i].className << endl;
+			fout << students[i].attendingStatus << endl;
+			fout << endl;
+		}
+
+		fout.close();
+	}
+}
+
+studentCourseFullType readCourse_element(ifstream& fin)
+{
+	string tmp;
+	studentCourseFullType student;
+
+	fin.ignore();
+	fin >> student.iD;
+	fin.ignore();
+	fin >> student.password;
+	fin.ignore();
+	getline(fin, student.fullName, '\n');
+	getline(fin, tmp, ' ');
+	student.dOB.tm_year = stoi(tmp) - 1900;
+	getline(fin, tmp, ' ');
+	student.dOB.tm_mon = stoi(tmp) - 1;
+	getline(fin, tmp, '\n');
+	student.dOB.tm_mday = stoi(tmp);
+	student.dOB = { 0, 0, 0, student.dOB.tm_mday, student.dOB.tm_mon, student.dOB.tm_year };
+	getline(fin, student.className, '\n');
+	fin >> student.attendingStatus;
+	fin >> student.point.midterm;
+	fin >> student.point.final;
+	fin >> student.point.bonus;
+	fin >> student.point.total;
+	fin.ignore();
+	for (int i = 0; i < 10; ++i)
+	{
+		student.checkIn[i].time = loadDuration(fin);
+		getline(fin, tmp, '\n');
+		student.checkIn[i].checkIn = stoi(tmp);
+	}
+	fin >> student.droppedStatus;
+	fin.ignore();
+
+	return student;
+}
+
+studentCourseFullType* readCourse_array(ifstream& fin, int& size)
+{
+	studentCourseFullType* students;
+	size = loadN(fin);
+	students = new studentCourseFullType[size];
+
+	for (int i = 0; i < size; ++i)
+		students[i] = readCourse_element(fin);
+
+	return students;
+}
+
+studentCourseFullType* readCourse(string dir, int& size)
+{
+	ifstream fin;
+	studentCourseFullType* students = nullptr;
+
+	fin.open(dir);
+	if (!fin.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		students = readCourse_array(fin, size);
+		fin.close();
+	}
+
+	return students;
+}
+
+void writeCourse(studentCourseFullType* students, int size, string dir)
+{
+	ofstream fout;
+
+	fout.open(dir);
+	if (!fout.is_open())
+		cout << "Cannot open file." << endl;
+	else
+	{
+		fout << size << endl;
+		for (int i = 0; i < size; ++i)
+		{
+			fout << students[i].iD << endl;
+			fout << students[i].password << endl;
+			fout << students[i].fullName << endl;
+			fout << students[i].dOB.tm_year + 1900 << " " << setw(2) << setfill('0') << students[i].dOB.tm_mon + 1 << " " << setw(2) << setfill('0') << students[i].dOB.tm_mday << endl;
+			fout << students[i].className << endl;
+			fout << students[i].attendingStatus << endl;
+			fout << students[i].point.midterm << endl;
+			fout << students[i].point.final << endl;
+			fout << students[i].point.bonus << endl;
+			fout << students[i].point.total << endl;
+			for (int j = 0; j < 10; ++j)
+			{
+				fout << students[i].checkIn[j].time.startTime.tm_year + 1900 << " ";
+				fout << setw(2) << setfill('0') << students[i].checkIn[j].time.startTime.tm_mon + 1 << " ";
+				fout << setw(2) << setfill('0') << students[i].checkIn[j].time.startTime.tm_mday << " ";
+				fout << setw(2) << setfill('0') << students[i].checkIn[j].time.startTime.tm_hour << " ";
+				fout << setw(2) << setfill('0') << students[i].checkIn[j].time.startTime.tm_min << " ";
+				fout << setw(2) << setfill('0') << students[i].checkIn[j].time.endTime.tm_hour << " ";
+				fout << setw(2) << setfill('0') << students[i].checkIn[j].time.endTime.tm_min << " ";
+				fout << students[i].checkIn[j].checkIn << endl;
+			}
+			fout << students[i].droppedStatus << endl;
+			fout << endl;
+		}
+
+		fout.close();
+	}
+}
+
+int positionOfStudent_array(int& no, studentCourseFullType* students, int size)
+{
+	int iD = 0;
+	int n = 0;
+	
+	if (no < 500)
+	{
+		n = no - 1;
+		iD = students[n].iD;
+		no = iD;
+		return n;
+	}
+	else
+		iD = no;
+
+	for (int i = 0; i < size; ++i)
+		if (students[i].iD == iD)
+			return i;
+
+	return -1;
+}
+
+studentCourseFullType* attendanceCourse_array(studentCourseFullType* students, int size, int& newSize)
+{
+	studentCourseFullType* attendance;
+	newSize = 0;
+
+	for (int i = 0; i < size; ++i)
+		if (students[i].attendingStatus == 1)
+			++newSize;
+
+	attendance = new studentCourseFullType[newSize];
+	int j = 0;
+
+	for (int i = 0; i < size; ++i)
+		if (students[i].attendingStatus == 1)
+		{
+			attendance[j] = students[i];
+			++j;
+		}
+
+	return attendance;
+}
+
+void viewCourse(studentCourseFullType* students, int size)
+{
+	string space = "                         ";
+
+	space = space.replace(0, 8, "Fullname");
+	cout << "No ID        " << space << "DOB       " << "  Class" << endl;
+
+	space = "                         ";
+	for (int i = 0; i < size; ++i)
+	{
+		space = space.replace(0, students[i].fullName.length(), students[i].fullName);
+		cout << i + 1 << ". " << students[i].iD << "  " << space;
+		cout << setw(2) << setfill('0') << students[i].dOB.tm_mday << "/" << setw(2) << setfill('0') << students[i].dOB.tm_mon + 1 << "/" << students[i].dOB.tm_year + 1900;
+		cout << "  " <<	students[i].className << endl;
+		space = "                         ";
+	}
+}
+
+string* availableCourses_array(classAndCourse* classes, int classesSize, int iD, int& size)
+{
+	studentCourseFullType* students;
+	int n;
+
+	string* courses = nullptr;
+	int m = 0;
+	
+	for (int i = 0; i < classesSize; ++i)
+		for (int j = 0; j < classes[i].courseQuantity; ++j)
+		{
+			students = readCourse("pdqvinh19data/2019-2020-HK2-" + classes[i].className + "-" + classes[i].courseName[j] + "-Student+Full.txt", n);
+			for (int k = 0; k < n; ++k)
+				if (students[k].iD == iD)
+					++m;
+		}
+
+	size = m;
+
+	courses = new string[m];
+	int h = 0;
+
+	for (int i = 0; i < classesSize; ++i)
+		for (int j = 0; j < classes[i].courseQuantity; ++j)
+		{
+			students = readCourse("pdqvinh19data/2019-2020-HK2-" + classes[i].className + "-" + classes[i].courseName[j] + "-Student+Full.txt", n);
+			for (int k = 0; k < n; ++k)
+				if (students[k].iD == iD)
+				{
+					courses[h] = classes[i].courseName[j];
+					++h;
+				}
+		}
+
+	return courses;
+}
+
+classAndCourse* arrayOfAvailableCoursesInClassesNew(string preDir, int& size)
+{
+	classAndCourse* coursesInClassesArray = nullptr;
+
+	string dir = preDir + "Class-Full.txt";
+	string* classesArray;
+	int classesArraySize;
+
+	classesArray = loadClassNamesArrayFromDir(dir, classesArraySize);
+	preDir += "2019-2020-HK2-Schedule-";
+	classesArray = arrayOfClassesWithAvailableSchedule(preDir, "+Full.txt", classesArray, classesArraySize, classesArraySize);
+
+	size = classesArraySize;
+	coursesInClassesArray = new classAndCourse[size];
+
+	for (int i = 0; i < size; ++i)
+		coursesInClassesArray[i].className = classesArray[i];
+
+	scheduleType* schedulesArray;
+	int schedulesArraySize;
+	for (int i = 0; i < size; ++i)
+	{
+		dir = preDir + classesArray[i] + "+Full.txt";
+		schedulesArray = loadSchedulesArrayFromDir(dir, schedulesArraySize);
+		coursesInClassesArray[i].courseName = arrayOfCoursesInClassWithAvailableStudentsList("pdqvinh19data/2019-2020-HK2-", "-Student+Full.txt", schedulesArray, schedulesArraySize, coursesInClassesArray[i].courseQuantity);
+	}
+
+	return coursesInClassesArray;
+}
+
+void editAttendance()
+{
+	string folderDir = "pdqvinh19data/";
+	string className, courseName;
+
+	classAndCourse* c;
+	int p;
+
+	c = arrayOfAvailableCoursesInClasses(folderDir, p);
+
+	cout << "Enter class: " << endl;
+	for (int i = 0; i < p; ++i)
+	{
+		cout << i + 1 << ". " << c[i].className << endl;
+	}
+	int k;
+	cin >> k;
+	--k;
+
+	cout << "Enter course: " << endl;
+	for (int i = 0; i < c[k].courseQuantity; ++i)
+	{
+		cout << i + 1 << ". " << c[k].courseName[i] << endl;
+	}
+	int h;
+	cin >> h;
+	--h;
+
+	className = c[k].className;
+	courseName = c[k].courseName[h];
+
+	studentCourseFullType* a1, * a2, * a3, * b;
+	int n1, n2, n3, m;
+
+	string newName;
+	int day, month, year;
+
+	a1 = readStudent("pdqvinh19data/Student.txt", n1);
+	a3 = readCourse("pdqvinh19data/2019-2020-HK2-" + className + "-" + courseName + "-Student+Full.txt", n3);
+	b = attendanceCourse_array(a3, n3, m);
+
+	cout << "Attendance list of " + className + " - " + courseName + ": " << endl;
+	viewCourse(b, m);
+	cout << "Enter ordinal number / student ID of attendance you would like to edit: " << endl;
+	int choice;
+	cin >> choice;
+	positionOfStudent_array(choice, b, m);
+	int iD = choice;
+	int pos = positionOfStudent_array(iD, a3, n3);
+	cout << "Please choose the kind of info: " << endl;
+	cout << "1. Fullname" << endl;
+	cout << "2. Date of birth" << endl;
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+	{
+		cout << "Current fullname: " << endl;
+		cout << a3[pos].fullName << endl;
+		cout << "Enter new fullname: " << endl;
+		cin.ignore();
+		getline(cin, newName, '\n');
+		a3[pos].fullName = newName;
+		writeCourse(a3, n3, "pdqvinh19data/2019-2020-HK2-" + className + "-" + courseName + "-Student+Full.txt");
+
+		// classes and courses initialization
+		classAndCourse* c;
+		int p = 1;
+		c = new classAndCourse[p];
+		c[0].className = "19APCS1";
+		c[0].courseQuantity = 1;
+		string* name = new string[1];
+		name[0] = "CM101";
+		c[0].courseName = name;
+		string* y;
+		int z;
+		y = availableCourses_array(c, p, 19127001, z);
+		for (int i = 0; i < z; ++i)
+		{
+			studentCourseFullType* b1;
+			int m1;
+			b1 = readCourse("pdqvinh19data/2019-2020-HK2-" + className + "-" + y[i] + "-Student+Full.txt", m1);
+			pos = positionOfStudent_array(iD, b1, m1);
+			b1[pos].fullName = newName;
+			writeCourse(b1, m1, "pdqvinh19data/2019-2020-HK2-" + className + "-" + y[i] + "-Student+Full.txt");
+		}
+
+		pos = positionOfStudent_array(iD, a1, n1);
+		a1[pos].fullName = newName;
+		writeStudent(a1, n1, "pdqvinh19data/Student.txt");
+		className = a1[pos].className;
+		a2 = readStudent("pdqvinh19data/Student-" + className + ".txt", n2);
+		pos = positionOfStudent_array(iD, a2, n2);
+		a2[pos].fullName = newName;
+		writeStudent(a2, n2, "pdqvinh19data/Student-" + className + ".txt");
+
+		break;
+	}
+
+	case 2:
+	{
+		cout << "Current date of birth: " << endl;
+		cout << setw(2) << setfill('0') << a3[pos].dOB.tm_mday << "/" << setw(2) << setfill('0') << a3[pos].dOB.tm_mon + 1 << "/" << a3[pos].dOB.tm_year + 1900 << endl;
+		cout << "Enter new date of birth (input \"dd mm yyyy\"): " << endl;
+		cin >> day >> month >> year;
+		month -= 1;
+		year -= 1900;
+		a3[pos].dOB = { 0, 0, 0, day, month, year };
+		writeCourse(a3, n3, "pdqvinh19data/2019-2020-HK2-" + className + "-" + courseName + "-Student+Time.txt");
+
+		// classes and courses initialization
+		classAndCourse* c;
+		int p = 1;
+		c = new classAndCourse[p];
+		c[0].className = "19APCS1";
+		c[0].courseQuantity = 1;
+		string* name = new string[1];
+		name[0] = "CM101";
+		c[0].courseName = name;
+		string* y;
+		int z;
+		y = availableCourses_array(c, p, 19127001, z);
+		for (int i = 0; i < z; ++i)
+		{
+			studentCourseFullType* b1;
+			int m1;
+			b1 = readCourse("pdqvinh19data/2019-2020-HK2-" + className + "-" + y[i] + "-Student+Full.txt", m1);
+			pos = positionOfStudent_array(iD, b1, m1);
+			b1[pos].dOB = { 0, 0, 0, day, month, year };
+			writeCourse(b1, m1, "pdqvinh19data/2019-2020-HK2-" + className + "-" + y[i] + "-Student+Full.txt");
+		}
+
+		pos = positionOfStudent_array(iD, a1, n1);
+		a1[pos].dOB = { 0, 0, 0, day, month, year };
+		writeStudent(a1, n1, "pdqvinh19data/Student.txt");
+		className = a1[pos].className;
+		a2 = readStudent("pdqvinh19data/Student-" + className + ".txt", n2);
+		pos = positionOfStudent_array(iD, a2, n2);
+		a2[pos].dOB = { 0, 0, 0, day, month, year };
+		writeStudent(a2, n2, "pdqvinh19data/Student-" + className + ".txt");
+
+		break;
+	}
+
+	default:
+		break;
+	}
+}

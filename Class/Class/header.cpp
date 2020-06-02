@@ -1,5 +1,18 @@
 #include "header.h"
 
+void lalala() {
+    struct dirent *entry;
+    DIR *dir = opendir("data/");
+
+    if (dir == NULL) {
+        return;
+    }
+    while ((entry = readdir(dir)) != NULL) {
+        cout << entry->d_name << endl;
+    }
+    closedir(dir);
+}
+
 // [13]
 void create_years_semesters(Semester* pHead)
 {
@@ -308,6 +321,7 @@ void makeFileCourse(string years, string semester, string Class, Course* course)
     time_t sec;
     time(&sec);
     t = *localtime(&sec);
+    fout << n << endl;
     for (int i = 0; i < n; i++) {
         fin >> student;
         fout << student << endl;
@@ -324,40 +338,40 @@ void makeFileCourse(string years, string semester, string Class, Course* course)
         fout << student << endl;
         fout << -1 << endl << -1 << endl << -1 << endl << -1 << endl;
         sscanf(course->StartDate.c_str(), "%4d %2d %2d", &t.tm_year, &t.tm_mon, &t.tm_mday);
-        fout << t.tm_year << " " << setw(2) << setfill('0') << t.tm_mon << " " << setw(2) << setfill('0') << t.tm_mday << endl;
+        fout << t.tm_year << " " << setw(2) << setfill('0') << t.tm_mon << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         t.tm_year -= 1900;
         t.tm_mon -= 1;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
         t = *localtime(&sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
         t = *localtime(&sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
         t = *localtime(&sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
         t = *localtime(&sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
         t = *localtime(&sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
         t = *localtime(&sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
         t = *localtime(&sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
         t = *localtime(&sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
         t = *localtime(&sec);
         if (i + 1 == n) {
-            fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << endl << endl;
+            fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1;
         }
         else {
-            fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday;
+            fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl << endl;
         }
     }
     fin.close();
@@ -512,6 +526,8 @@ void importCourses() {
     cout << "Import courses successfully!" << endl;
     system("pause");
 }
+
+// [15]
 void addCourseManually(){
     cout << ">>> Manually add a new course. <<<" << endl;
     ifstream fin;
@@ -699,6 +715,7 @@ void addCourseManually(){
     system("pause");
 }
 
+// [16]
 void editExistingCourse()
 {
     cout << ">>> Editing an existing course. <<<" << endl;
@@ -803,6 +820,9 @@ void editExistingCourse()
     CHOOSE_COURSE: {
         system("cls");
         cout << ">>> Editing an existing course. <<<" << endl;
+        cout << "Academic Years: " + y << endl;
+        cout << "Semester: " + s << endl;
+        cout << "Class: " + c << endl;
         cur = pHead;
         for (int i = 0; i < n; i++) {
             cout << i + 1 << ": " << cur->CourseId << " - " << cur->CourseName << endl;
@@ -912,7 +932,7 @@ void editExistingCourse()
     ofstream fout;
     fout.open("data/" + y + "-" + s + "-Schedule-" + c + ".txt");
     cur = pHead;
-    fout << ++n << endl;
+    fout << n << endl;
     while(cur) {
         fout << cur->CourseId << endl;
         fout << cur->CourseName << endl;
@@ -936,6 +956,1166 @@ void editExistingCourse()
         cur = cur->pNext;
     }
     fout.close();
-    cout << "Add new course successfully!" << endl;
+    cout << "Edit course successfully!" << endl;
     system("pause");
 }
+
+// [17]
+void removeCourse()
+{
+    cout << ">>> Remove an existing course. <<<" << endl;
+    ifstream fin;
+    int n;
+    bool check = false;
+    string c, Class, y, s, years, semester;
+    CHECK_SEMESTER: {
+        fin.open("data/Semester.txt");
+        if (!fin.is_open()) return;
+        cout << "Input Academic Years: ";
+        cin >> y;
+        cout << "Input Semester: ";
+        cin >> s;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> years;
+            fin >> semester;
+            if (s == semester && years == y) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Semester does not exist!" << endl;
+            system("pause");
+            goto CHECK_SEMESTER;
+        }
+    }
+    Course* pHead = nullptr, *cur, *tmp = new Course;
+    CHECK_CLASS: {
+        cout << "Input class: ";
+        cin >> c;
+        fin.open("data/Class.txt");
+        if (!fin.is_open()) return;
+        check = false;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> Class;
+            if (Class == c) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Class does not exist!" << endl;
+            system("pause");
+            goto CHECK_CLASS;
+        }
+    }
+    fin.open("data/" + y + "-" + s + "-Schedule-" + c + ".txt");
+    if (fin.is_open()) {
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            if (!pHead) {
+                pHead = new Course;
+                fin >> pHead->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->CourseName, '\n');
+                fin >> pHead->Class;
+                fin >> pHead->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->LecturerName, '\n');
+                fin >> pHead->LecturerDegree;
+                fin >> pHead->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->StartDate, '\n');
+                getline(fin, pHead->EndDate, '\n');
+                fin >> pHead->DayOfWeek;
+                fin >> pHead->StartHour >> pHead->StartMinutes;
+                fin >> pHead->EndHour >> pHead->EndMinutes;
+                fin >> pHead->room;
+                pHead->pNext = nullptr;
+                cur = pHead;
+            }
+            else {
+                cur->pNext = new Course;
+                cur = cur->pNext;
+                fin >> cur->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->CourseName, '\n');
+                fin >> cur->Class;
+                fin >> cur->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->LecturerName, '\n');
+                fin >> cur->LecturerDegree;
+                fin >> cur->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->StartDate, '\n');
+                getline(fin, cur->EndDate, '\n');
+                fin >> cur->DayOfWeek;
+                fin >> cur->StartHour >> cur->StartMinutes;
+                fin >> cur->EndHour >> cur->EndMinutes;
+                fin >> cur->room;
+                cur->pNext = nullptr;
+            }
+        }
+        fin.close();
+    }
+    CHOOSE_COURSE: {
+        system("cls");
+        cout << ">>> Remove an existing course. <<<" << endl;
+        cout << "Academic Years: " + y << endl;
+        cout << "Semester: " + s << endl;
+        cout << "Class: " + c << endl;
+        cur = pHead;
+        for (int i = 0; i < n; i++) {
+            cout << i + 1 << ": " << cur->CourseId << " - " << cur->CourseName << endl;
+            cur = cur->pNext;
+        }
+        cout << "[0]: Back" << endl;
+    }
+    int choice;
+    cout << "Choose course to remove or 0 to go back: ";
+    cin >> choice;
+    if (choice == 0) {
+        return;
+    }
+    if (1 > choice || choice > n) {
+        cout << "Wrong choice! choose again!" << endl;
+        system("pause");
+        goto CHOOSE_COURSE;
+    }
+    cur = pHead;
+    if (choice == 1) {
+        tmp = pHead;
+        pHead = pHead->pNext;
+    }
+    else {
+        for(int i = 2; i < choice; i++) {
+            cur = cur->pNext;
+        }
+        tmp = cur->pNext;
+        cur->pNext = cur->pNext->pNext;
+    }
+    delete tmp;
+    ofstream fout;
+    fout.open("data/" + y + "-" + s + "-Schedule-" + c + ".txt");
+    cur = pHead;
+    fout << --n << endl;
+    while(cur) {
+        fout << cur->CourseId << endl;
+        fout << cur->CourseName << endl;
+        fout << cur->Class << endl;
+        fout << cur->LecturerUsername << endl;
+        fout << cur->LecturerName << endl;
+        fout << cur->LecturerDegree << endl;
+        fout << cur->LecturerGender << endl;
+        fout << cur->StartDate << endl;
+        fout << cur->EndDate << endl;
+        fout << cur->DayOfWeek << endl;
+        fout << cur->StartHour << " " << cur->StartMinutes << endl;
+        fout << cur->EndHour << " " << cur->EndMinutes << endl;
+        if (cur->pNext) {
+            fout << cur->room << endl << endl;
+        }
+        else {
+            fout << cur->room;
+        }
+        makeFileCourse(y, s, cur->Class, cur);
+        cur = cur->pNext;
+    }
+    fout.close();
+    cout << "Remove course successfully!" << endl;
+    system("pause");
+}
+
+void removeStudentFromScore()
+{
+    cout << ">>> Remove a Student from Course. <<<" << endl;
+    ifstream fin;
+    int n;
+    bool check = false;
+    string c, Class, y, s, years, semester;
+    CHECK_SEMESTER: {
+        fin.open("data/Semester.txt");
+        if (!fin.is_open()) return;
+        cout << "Input Academic Years: ";
+        cin >> y;
+        cout << "Input Semester: ";
+        cin >> s;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> years;
+            fin >> semester;
+            if (s == semester && years == y) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Semester does not exist!" << endl;
+            system("pause");
+            goto CHECK_SEMESTER;
+        }
+    }
+    Course* pHead = nullptr, *cur;
+    CHECK_CLASS: {
+        cout << "Input class: ";
+        cin >> c;
+        fin.open("data/Class.txt");
+        if (!fin.is_open()) return;
+        check = false;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> Class;
+            if (Class == c) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Class does not exist!" << endl;
+            system("pause");
+            goto CHECK_CLASS;
+        }
+    }
+    fin.open("data/" + y + "-" + s + "-Schedule-" + c + ".txt");
+    if (fin.is_open()) {
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            if (!pHead) {
+                pHead = new Course;
+                fin >> pHead->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->CourseName, '\n');
+                fin >> pHead->Class;
+                fin >> pHead->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->LecturerName, '\n');
+                fin >> pHead->LecturerDegree;
+                fin >> pHead->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->StartDate, '\n');
+                getline(fin, pHead->EndDate, '\n');
+                fin >> pHead->DayOfWeek;
+                fin >> pHead->StartHour >> pHead->StartMinutes;
+                fin >> pHead->EndHour >> pHead->EndMinutes;
+                fin >> pHead->room;
+                pHead->pNext = nullptr;
+                cur = pHead;
+            }
+            else {
+                cur->pNext = new Course;
+                cur = cur->pNext;
+                fin >> cur->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->CourseName, '\n');
+                fin >> cur->Class;
+                fin >> cur->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->LecturerName, '\n');
+                fin >> cur->LecturerDegree;
+                fin >> cur->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->StartDate, '\n');
+                getline(fin, cur->EndDate, '\n');
+                fin >> cur->DayOfWeek;
+                fin >> cur->StartHour >> cur->StartMinutes;
+                fin >> cur->EndHour >> cur->EndMinutes;
+                fin >> cur->room;
+                cur->pNext = nullptr;
+            }
+        }
+        fin.close();
+    }
+    CHOOSE_COURSE: {
+        system("cls");
+        cout << ">>> Remove a Student from Course. <<<" << endl;
+        cout << "Academic Years: " + y << endl;
+        cout << "Semester: " + s << endl;
+        cout << "Class: " + c << endl;
+        cur = pHead;
+        for (int i = 0; i < n; i++) {
+            cout << i + 1 << ": " << cur->CourseId << " - " << cur->CourseName << endl;
+            cur = cur->pNext;
+        }
+        cout << "[0]: Back" << endl;
+    }
+    int choice;
+    cout << "Choose Course or [0] to go back to menu: ";
+    cin >> choice;
+    if (choice == 0) {
+        return;
+    }
+    if (1 > choice || choice > n) {
+        cout << "Wrong choice! choose again!" << endl;
+        system("pause");
+        goto CHOOSE_COURSE;
+    }
+    cur = pHead;
+    for(int i = 1; i < choice; i++) {
+        cur = cur->pNext;
+    }
+    fin.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
+    fin >> n;
+    StudentInCourse* pStudent = nullptr, *curStudent;
+    for (int i = 0; i < n; i++) {
+        if (!pStudent) {
+            pStudent = new StudentInCourse;
+            fin >> pStudent->username;
+            fin >> pStudent->password;
+            fin.ignore(1000, '\n');
+            getline(fin, pStudent->fullname, '\n');
+            getline(fin, pStudent->dob, '\n');
+            fin >> pStudent->Class;
+            fin >> pStudent->status;
+            fin >> pStudent->midterm >> pStudent->Final >> pStudent->bonus >> pStudent->total;
+            fin.ignore(1000, '\n');
+            for(int j = 0; j < 10; j++)
+            {
+                getline(fin, pStudent->attendance[j], '\n');
+            }
+            fin.ignore(1000, '\n');
+            pStudent->pNext = nullptr;
+            curStudent = pStudent;
+        }
+        else {
+            curStudent->pNext = new StudentInCourse;
+            curStudent = curStudent->pNext;
+            fin >> curStudent->username;
+            fin >> curStudent->password;
+            fin.ignore(1000, '\n');
+            getline(fin, curStudent->fullname, '\n');
+            getline(fin, curStudent->dob, '\n');
+            fin >> curStudent->Class;
+            fin >> curStudent->status;
+            fin >> curStudent->midterm >> curStudent->Final >> curStudent->bonus >> curStudent->total;
+            fin.ignore(1000, '\n');
+            for(int j = 0; j < 10; j++)
+            {
+                getline(fin, curStudent->attendance[j], '\n');
+            }
+            fin.ignore(1000, '\n');
+            curStudent->pNext = nullptr;
+        }
+    }
+    fin.close();
+    CHOOSE_STUDENT: {
+        system("cls");
+        cout << ">>> Remove a Student from Course. <<<" << endl;
+        cout << "Academic Years: " + y << endl;
+        cout << "Semester: " + s << endl;
+        cout << "Class: " + c << endl;
+        cout << "Course: " + cur->CourseId << ": " + cur->CourseName << endl;
+        curStudent = pStudent;
+        for (int i = 0; i < n; i++) {
+            cout << i + 1 << ": " << curStudent->username << endl;
+            curStudent = curStudent->pNext;
+        }
+        cout << "[0]: Back" << endl;
+    }
+    cout << "Choose Student or [0] to go back to menu: ";
+    cin >> choice;
+    if (choice == 0) {
+        return;
+    }
+    if (1 > choice || choice > n) {
+        cout << "Wrong choice! Choose again!" << endl;
+        system("pause");
+        goto CHOOSE_STUDENT;
+    }
+    curStudent = pStudent;
+    StudentInCourse* tmpStudent;
+    if (choice == 1) {
+        tmpStudent = pStudent;
+        pStudent = pStudent->pNext;
+    }
+    else {
+        for (int i = 2; i < choice; i++) {
+            curStudent = curStudent->pNext;
+        }
+        tmpStudent = curStudent->pNext;
+        curStudent->pNext = curStudent->pNext->pNext;
+    }
+    cout << "Student ID: " << tmpStudent->username << endl;
+    cout << "Full name: " << tmpStudent->fullname << endl;
+    cout << "Date of birth: " << tmpStudent->dob << endl;
+    cout << "Class: " << tmpStudent->Class << endl;
+    cout << "Status: " << tmpStudent->status << endl;
+    delete tmpStudent;
+    ofstream fout;
+    fout.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
+    curStudent = pStudent;
+    fout << --n << endl;
+    for (int i = 0; i < n; i++) {
+        fout << curStudent->username << endl;
+        fout << curStudent->password << endl;
+        fout << curStudent->fullname << endl;
+        fout << curStudent->dob << endl;
+        fout << curStudent->Class << endl;
+        fout << curStudent->status << endl;
+        fout << curStudent->midterm << endl;
+        fout << curStudent->Final << endl;
+        fout << curStudent->bonus << endl;
+        fout << curStudent->total << endl;
+        for(int j = 0; j < 9; j++) {
+            fout << curStudent->attendance[j] << endl;
+        }
+        if (curStudent->pNext) {
+            fout << curStudent->attendance[9] << endl << endl;
+        }
+        else {
+            fout << curStudent->attendance[9];
+        }
+        curStudent = curStudent->pNext;
+    }
+    cout << "Remove Student successfully!" << endl;
+    system("pause");
+}
+
+void addStudentToScore()
+{
+    cout << ">>> Add a Student to Course. <<<" << endl;
+    ifstream fin;
+    int n;
+    bool check = false;
+    string c, Class, y, s, years, semester;
+    CHECK_SEMESTER: {
+        fin.open("data/Semester.txt");
+        if (!fin.is_open()) return;
+        cout << "Input Academic Years: ";
+        cin >> y;
+        cout << "Input Semester: ";
+        cin >> s;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> years;
+            fin >> semester;
+            if (s == semester && years == y) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Semester does not exist!" << endl;
+            system("pause");
+            goto CHECK_SEMESTER;
+        }
+    }
+    Course* pHead = nullptr, *cur;
+    CHECK_CLASS: {
+        cout << "Input class: ";
+        cin >> c;
+        fin.open("data/Class.txt");
+        if (!fin.is_open()) return;
+        check = false;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> Class;
+            if (Class == c) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Class does not exist!" << endl;
+            system("pause");
+            goto CHECK_CLASS;
+        }
+    }
+    fin.open("data/" + y + "-" + s + "-Schedule-" + c + ".txt");
+    if (fin.is_open()) {
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            if (!pHead) {
+                pHead = new Course;
+                fin >> pHead->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->CourseName, '\n');
+                fin >> pHead->Class;
+                fin >> pHead->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->LecturerName, '\n');
+                fin >> pHead->LecturerDegree;
+                fin >> pHead->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->StartDate, '\n');
+                getline(fin, pHead->EndDate, '\n');
+                fin >> pHead->DayOfWeek;
+                fin >> pHead->StartHour >> pHead->StartMinutes;
+                fin >> pHead->EndHour >> pHead->EndMinutes;
+                fin >> pHead->room;
+                pHead->pNext = nullptr;
+                cur = pHead;
+            }
+            else {
+                cur->pNext = new Course;
+                cur = cur->pNext;
+                fin >> cur->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->CourseName, '\n');
+                fin >> cur->Class;
+                fin >> cur->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->LecturerName, '\n');
+                fin >> cur->LecturerDegree;
+                fin >> cur->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->StartDate, '\n');
+                getline(fin, cur->EndDate, '\n');
+                fin >> cur->DayOfWeek;
+                fin >> cur->StartHour >> cur->StartMinutes;
+                fin >> cur->EndHour >> cur->EndMinutes;
+                fin >> cur->room;
+                cur->pNext = nullptr;
+            }
+        }
+        fin.close();
+    }
+    CHOOSE_COURSE: {
+        system("cls");
+        cout << ">>> Add a Student to Course. <<<" << endl;
+        cout << "Academic Years: " + y << endl;
+        cout << "Semester: " + s << endl;
+        cout << "Class: " + c << endl;
+        cur = pHead;
+        for (int i = 0; i < n; i++) {
+            cout << i + 1 << ": " << cur->CourseId << " - " << cur->CourseName << endl;
+            cur = cur->pNext;
+        }
+        cout << "[0]: Back" << endl;
+    }
+    int choice;
+    cout << "Choose Course or [0] to go back to menu: ";
+    cin >> choice;
+    if (choice == 0) {
+        return;
+    }
+    if (1 > choice || choice > n) {
+        cout << "Wrong choice! choose again!" << endl;
+        system("pause");
+        goto CHOOSE_COURSE;
+    }
+    cur = pHead;
+    for(int i = 1; i < choice; i++) {
+        cur = cur->pNext;
+    }
+    fin.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
+    fin >> n;
+    StudentInCourse* pStudent = nullptr, *curStudent;
+    for (int i = 0; i < n; i++) {
+        if (!pStudent) {
+            pStudent = new StudentInCourse;
+            fin >> pStudent->username;
+            fin >> pStudent->password;
+            fin.ignore(1000, '\n');
+            getline(fin, pStudent->fullname, '\n');
+            getline(fin, pStudent->dob, '\n');
+            fin >> pStudent->Class;
+            fin >> pStudent->status;
+            fin >> pStudent->midterm >> pStudent->Final >> pStudent->bonus >> pStudent->total;
+            fin.ignore(1000, '\n');
+            for(int j = 0; j < 10; j++)
+            {
+                getline(fin, pStudent->attendance[j], '\n');
+            }
+            fin.ignore(1000, '\n');
+            pStudent->pNext = nullptr;
+            curStudent = pStudent;
+        }
+        else {
+            curStudent->pNext = new StudentInCourse;
+            curStudent = curStudent->pNext;
+            fin >> curStudent->username;
+            fin >> curStudent->password;
+            fin.ignore(1000, '\n');
+            getline(fin, curStudent->fullname, '\n');
+            getline(fin, curStudent->dob, '\n');
+            fin >> curStudent->Class;
+            fin >> curStudent->status;
+            fin >> curStudent->midterm >> curStudent->Final >> curStudent->bonus >> curStudent->total;
+            fin.ignore(1000, '\n');
+            for(int j = 0; j < 10; j++)
+            {
+                getline(fin, curStudent->attendance[j], '\n');
+            }
+            fin.ignore(1000, '\n');
+            curStudent->pNext = nullptr;
+        }
+    }
+    fin.close();
+    string ID, studentID;
+    system("cls");
+    cout << ">>> Add a Student to Course. <<<" << endl;
+    cout << "Academic Years: " + y << endl;
+    cout << "Semester: " + s << endl;
+    cout << "Class: " + c << endl;
+    cout << "Course: " + cur->CourseId << ": " + cur->CourseName << endl;
+    cout << "Input Student ID: ";
+    cin >> ID;
+    string attendance[10] = curStudent->attendance;
+    int nStudent;
+    fin.open("data/Student.txt");
+    fin >> nStudent;
+    for (int i = 0; i < nStudent; i++) {
+        fin >> studentID;
+        if (studentID == ID) {
+            curStudent->pNext = new StudentInCourse;
+            curStudent = curStudent->pNext;
+            curStudent->username = studentID;
+            fin >> curStudent->password;
+            fin.ignore(1000, '\n');
+            getline(fin, curStudent->fullname, '\n');
+            getline(fin, curStudent->dob, '\n');
+            fin >> curStudent->Class;
+            fin >> curStudent->status;
+            curStudent->midterm = curStudent->Final = curStudent->bonus = curStudent->total = "-1";
+            for (int i = 0; i < 10; i++) {
+                curStudent->attendance[i] = attendance[i];
+            }
+            curStudent->pNext = nullptr;
+            break;
+        }
+        else {
+            // Skip info
+            fin >> studentID;
+            fin.ignore(1000, '\n');
+            getline(fin, studentID, '\n');
+            getline(fin, studentID, '\n');
+            fin >> studentID;
+            fin >> studentID;
+        }
+    }
+    ofstream fout;
+    fout.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
+    curStudent = pStudent;
+    fout << ++n << endl;
+    for (int i = 0; i < n; i++) {
+        fout << curStudent->username << endl;
+        fout << curStudent->password << endl;
+        fout << curStudent->fullname << endl;
+        fout << curStudent->dob << endl;
+        fout << curStudent->Class << endl;
+        fout << curStudent->status << endl;
+        fout << curStudent->midterm << endl;
+        fout << curStudent->Final << endl;
+        fout << curStudent->bonus << endl;
+        fout << curStudent->total << endl;
+        for(int j = 0; j < 9; j++) {
+            fout << curStudent->attendance[j] << endl;
+        }
+        if (curStudent->pNext) {
+            fout << curStudent->attendance[9] << endl << endl;
+        }
+        else {
+            fout << curStudent->attendance[9];
+        }
+        curStudent = curStudent->pNext;
+    }
+    cout << "Add Student successfully!" << endl;
+    system("pause");
+}
+
+// [20]
+void viewCourseInSemester()
+{
+    cout << ">>> View Course in Semester <<<" << endl;
+    ifstream fin;
+    int n;
+    bool check = false;
+    string c, Class, y, s, years, semester;
+    CHECK_SEMESTER: {
+        fin.open("data/Semester.txt");
+        if (!fin.is_open()) return;
+        cout << "Input Academic Years: ";
+        cin >> y;
+        cout << "Input Semester: ";
+        cin >> s;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> years;
+            fin >> semester;
+            if (s == semester && years == y) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Semester does not exist!" << endl;
+            system("pause");
+            goto CHECK_SEMESTER;
+        }
+    }
+    CHECK_CLASS: {
+        cout << "Input class: ";
+        cin >> c;
+        fin.open("data/Class.txt");
+        if (!fin.is_open()) return;
+        check = false;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> Class;
+            if (Class == c) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Class does not exist!" << endl;
+            system("pause");
+            goto CHECK_CLASS;
+        }
+    }
+    system("cls");
+    Course* pHead = nullptr, *cur;
+    cout << ">>> View Course in Semester <<<" << endl;
+    cout << "Academic Years: " << y << endl;
+    cout << "Semester: " << s << endl;
+    cout << "Class: " << c << endl;
+    fin.open("data/" + y + "-" + s + "-Schedule-" + c + ".txt");
+    if (fin.is_open()) {
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            if (!pHead) {
+                pHead = new Course;
+                fin >> pHead->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->CourseName, '\n');
+                fin >> pHead->Class;
+                fin >> pHead->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->LecturerName, '\n');
+                fin >> pHead->LecturerDegree;
+                fin >> pHead->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->StartDate, '\n');
+                getline(fin, pHead->EndDate, '\n');
+                fin >> pHead->DayOfWeek;
+                fin >> pHead->StartHour >> pHead->StartMinutes;
+                fin >> pHead->EndHour >> pHead->EndMinutes;
+                fin >> pHead->room;
+                pHead->pNext = nullptr;
+                cur = pHead;
+            }
+            else {
+                cur->pNext = new Course;
+                cur = cur->pNext;
+                fin >> cur->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->CourseName, '\n');
+                fin >> cur->Class;
+                fin >> cur->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->LecturerName, '\n');
+                fin >> cur->LecturerDegree;
+                fin >> cur->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->StartDate, '\n');
+                getline(fin, cur->EndDate, '\n');
+                fin >> cur->DayOfWeek;
+                fin >> cur->StartHour >> cur->StartMinutes;
+                fin >> cur->EndHour >> cur->EndMinutes;
+                fin >> cur->room;
+                cur->pNext = nullptr;
+            }
+        }
+        fin.close();
+    }
+    cur = pHead;
+    for (int i = 0; i < n; i++) {
+        cout << i + 1 << ": " << cur->CourseId << " - " << cur->CourseName << endl;
+        cur = cur->pNext;
+    }
+    system("pause");
+}
+
+// [21]
+void viewStudentsInCourse()
+{
+    cout << ">>> View list of Students of a Course. <<<" << endl;
+    ifstream fin;
+    int n;
+    bool check = false;
+    string c, Class, y, s, years, semester;
+    CHECK_SEMESTER: {
+        fin.open("data/Semester.txt");
+        if (!fin.is_open()) return;
+        cout << "Input Academic Years: ";
+        cin >> y;
+        cout << "Input Semester: ";
+        cin >> s;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> years;
+            fin >> semester;
+            if (s == semester && years == y) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Semester does not exist!" << endl;
+            system("pause");
+            goto CHECK_SEMESTER;
+        }
+    }
+    Course* pHead = nullptr, *cur;
+    CHECK_CLASS: {
+        cout << "Input class: ";
+        cin >> c;
+        fin.open("data/Class.txt");
+        if (!fin.is_open()) return;
+        check = false;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> Class;
+            if (Class == c) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Class does not exist!" << endl;
+            system("pause");
+            goto CHECK_CLASS;
+        }
+    }
+    fin.open("data/" + y + "-" + s + "-Schedule-" + c + ".txt");
+    if (fin.is_open()) {
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            if (!pHead) {
+                pHead = new Course;
+                fin >> pHead->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->CourseName, '\n');
+                fin >> pHead->Class;
+                fin >> pHead->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->LecturerName, '\n');
+                fin >> pHead->LecturerDegree;
+                fin >> pHead->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->StartDate, '\n');
+                getline(fin, pHead->EndDate, '\n');
+                fin >> pHead->DayOfWeek;
+                fin >> pHead->StartHour >> pHead->StartMinutes;
+                fin >> pHead->EndHour >> pHead->EndMinutes;
+                fin >> pHead->room;
+                pHead->pNext = nullptr;
+                cur = pHead;
+            }
+            else {
+                cur->pNext = new Course;
+                cur = cur->pNext;
+                fin >> cur->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->CourseName, '\n');
+                fin >> cur->Class;
+                fin >> cur->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->LecturerName, '\n');
+                fin >> cur->LecturerDegree;
+                fin >> cur->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->StartDate, '\n');
+                getline(fin, cur->EndDate, '\n');
+                fin >> cur->DayOfWeek;
+                fin >> cur->StartHour >> cur->StartMinutes;
+                fin >> cur->EndHour >> cur->EndMinutes;
+                fin >> cur->room;
+                cur->pNext = nullptr;
+            }
+        }
+        fin.close();
+    }
+    CHOOSE_COURSE: {
+        system("cls");
+        cout << ">>> View list of Students of a Course. <<<" << endl;
+        cout << "Academic Years: " + y << endl;
+        cout << "Semester: " + s << endl;
+        cout << "Class: " + c << endl;
+        cur = pHead;
+        for (int i = 0; i < n; i++) {
+            cout << i + 1 << ": " << cur->CourseId << " - " << cur->CourseName << endl;
+            cur = cur->pNext;
+        }
+        cout << "[0]: Back" << endl;
+    }
+    int choice;
+    cout << "Choose Course or [0] to go back to menu: ";
+    cin >> choice;
+    if (choice == 0) {
+        return;
+    }
+    if (1 > choice || choice > n) {
+        cout << "Wrong choice! choose again!" << endl;
+        system("pause");
+        goto CHOOSE_COURSE;
+    }
+    cur = pHead;
+    for(int i = 1; i < choice; i++) {
+        cur = cur->pNext;
+    }
+    system("cls");
+    cout << ">>> View list of Students of a Course. <<<" << endl;
+    cout << "Academic Years: " + y << endl;
+    cout << "Semester: " + s << endl;
+    cout << "Class: " + c << endl;
+    cout << "Course: " + cur->CourseId << endl;
+    fin.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
+    fin >> n;
+    StudentInCourse* pStudent = nullptr, *curStudent;
+    for (int i = 0; i < n; i++) {
+        if (!pStudent) {
+            pStudent = new StudentInCourse;
+            fin >> pStudent->username;
+            fin >> pStudent->password;
+            fin.ignore(1000, '\n');
+            getline(fin, pStudent->fullname, '\n');
+            getline(fin, pStudent->dob, '\n');
+            fin >> pStudent->Class;
+            fin >> pStudent->status;
+            fin >> pStudent->midterm >> pStudent->Final >> pStudent->bonus >> pStudent->total;
+            fin.ignore(1000, '\n');
+            for(int j = 0; j < 10; j++)
+            {
+                getline(fin, pStudent->attendance[j], '\n');
+            }
+            fin.ignore(1000, '\n');
+            pStudent->pNext = nullptr;
+            curStudent = pStudent;
+        }
+        else {
+            curStudent->pNext = new StudentInCourse;
+            curStudent = curStudent->pNext;
+            fin >> curStudent->username;
+            fin >> curStudent->password;
+            fin.ignore(1000, '\n');
+            getline(fin, curStudent->fullname, '\n');
+            getline(fin, curStudent->dob, '\n');
+            fin >> curStudent->Class;
+            fin >> curStudent->status;
+            fin >> curStudent->midterm >> curStudent->Final >> curStudent->bonus >> curStudent->total;
+            fin.ignore(1000, '\n');
+            for(int j = 0; j < 10; j++)
+            {
+                getline(fin, curStudent->attendance[j], '\n');
+            }
+            fin.ignore(1000, '\n');
+            curStudent->pNext = nullptr;
+        }
+    }
+    fin.close();
+    curStudent = pStudent;
+    for (int i = 0; i < n; i++) {
+        cout << "ID: " << curStudent->username << endl;
+        cout << "Full name: " << curStudent->fullname << endl;
+        cout << "Date of birth: " << curStudent->dob << endl;
+        cout << "Class: " << curStudent->Class << endl;
+        cout << "Status: " << curStudent->status << endl << endl;
+    }
+}
+
+void viewAttendanceList()
+{
+    cout << ">>> View Attendance list of a Course. <<<" << endl;
+    ifstream fin;
+    int n;
+    bool check = false;
+    string c, Class, y, s, years, semester;
+    CHECK_SEMESTER: {
+        fin.open("data/Semester.txt");
+        if (!fin.is_open()) return;
+        cout << "Input Academic Years: ";
+        cin >> y;
+        cout << "Input Semester: ";
+        cin >> s;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> years;
+            fin >> semester;
+            if (s == semester && years == y) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Semester does not exist!" << endl;
+            system("pause");
+            goto CHECK_SEMESTER;
+        }
+    }
+    Course* pHead = nullptr, *cur;
+    CHECK_CLASS: {
+        cout << "Input class: ";
+        cin >> c;
+        fin.open("data/Class.txt");
+        if (!fin.is_open()) return;
+        check = false;
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            fin >> Class;
+            if (Class == c) {
+                check = true;
+                break;
+            }
+        }
+        fin.close();
+        if (!check) {
+            cout << "Class does not exist!" << endl;
+            system("pause");
+            goto CHECK_CLASS;
+        }
+    }
+    fin.open("data/" + y + "-" + s + "-Schedule-" + c + ".txt");
+    if (fin.is_open()) {
+        fin >> n;
+        for (int i = 0; i < n; i++) {
+            if (!pHead) {
+                pHead = new Course;
+                fin >> pHead->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->CourseName, '\n');
+                fin >> pHead->Class;
+                fin >> pHead->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->LecturerName, '\n');
+                fin >> pHead->LecturerDegree;
+                fin >> pHead->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, pHead->StartDate, '\n');
+                getline(fin, pHead->EndDate, '\n');
+                fin >> pHead->DayOfWeek;
+                fin >> pHead->StartHour >> pHead->StartMinutes;
+                fin >> pHead->EndHour >> pHead->EndMinutes;
+                fin >> pHead->room;
+                pHead->pNext = nullptr;
+                cur = pHead;
+            }
+            else {
+                cur->pNext = new Course;
+                cur = cur->pNext;
+                fin >> cur->CourseId;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->CourseName, '\n');
+                fin >> cur->Class;
+                fin >> cur->LecturerUsername;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->LecturerName, '\n');
+                fin >> cur->LecturerDegree;
+                fin >> cur->LecturerGender;
+                fin.ignore(1000, '\n');
+                getline(fin, cur->StartDate, '\n');
+                getline(fin, cur->EndDate, '\n');
+                fin >> cur->DayOfWeek;
+                fin >> cur->StartHour >> cur->StartMinutes;
+                fin >> cur->EndHour >> cur->EndMinutes;
+                fin >> cur->room;
+                cur->pNext = nullptr;
+            }
+        }
+        fin.close();
+    }
+    CHOOSE_COURSE: {
+        system("cls");
+        cout << ">>> View Attendance list of a Course. <<<" << endl;
+        cout << "Academic Years: " + y << endl;
+        cout << "Semester: " + s << endl;
+        cout << "Class: " + c << endl;
+        cur = pHead;
+        for (int i = 0; i < n; i++) {
+            cout << i + 1 << ": " << cur->CourseId << " - " << cur->CourseName << endl;
+            cur = cur->pNext;
+        }
+        cout << "[0]: Back" << endl;
+    }
+    int choice;
+    cout << "Choose Course or [0] to go back to menu: ";
+    cin >> choice;
+    if (choice == 0) {
+        return;
+    }
+    if (1 > choice || choice > n) {
+        cout << "Wrong choice! choose again!" << endl;
+        system("pause");
+        goto CHOOSE_COURSE;
+    }
+    cur = pHead;
+    for(int i = 1; i < choice; i++) {
+        cur = cur->pNext;
+    }
+    system("cls");
+    cout << ">>> View Attendance list of a Course. <<<" << endl;
+    cout << "Academic Years: " + y << endl;
+    cout << "Semester: " + s << endl;
+    cout << "Class: " + c << endl;
+    cout << "Course: " + cur->CourseId << endl;
+    fin.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
+    fin >> n;
+    StudentInCourse* pStudent = nullptr, *curStudent;
+    for (int i = 0; i < n; i++) {
+        if (!pStudent) {
+            pStudent = new StudentInCourse;
+            fin >> pStudent->username;
+            fin >> pStudent->password;
+            fin.ignore(1000, '\n');
+            getline(fin, pStudent->fullname, '\n');
+            getline(fin, pStudent->dob, '\n');
+            fin >> pStudent->Class;
+            fin >> pStudent->status;
+            fin >> pStudent->midterm >> pStudent->Final >> pStudent->bonus >> pStudent->total;
+            fin.ignore(1000, '\n');
+            for(int j = 0; j < 10; j++)
+            {
+                getline(fin, pStudent->attendance[j], '\n');
+            }
+            fin.ignore(1000, '\n');
+            pStudent->pNext = nullptr;
+            curStudent = pStudent;
+        }
+        else {
+            curStudent->pNext = new StudentInCourse;
+            curStudent = curStudent->pNext;
+            fin >> curStudent->username;
+            fin >> curStudent->password;
+            fin.ignore(1000, '\n');
+            getline(fin, curStudent->fullname, '\n');
+            getline(fin, curStudent->dob, '\n');
+            fin >> curStudent->Class;
+            fin >> curStudent->status;
+            fin >> curStudent->midterm >> curStudent->Final >> curStudent->bonus >> curStudent->total;
+            fin.ignore(1000, '\n');
+            for(int j = 0; j < 10; j++)
+            {
+                getline(fin, curStudent->attendance[j], '\n');
+            }
+            fin.ignore(1000, '\n');
+            curStudent->pNext = nullptr;
+        }
+    }
+    fin.close();
+    curStudent = pStudent;
+    for (int i = 0; i < n; i++) {
+        cout << "ID: " << curStudent->username << endl;
+        cout << "Full name: " << curStudent->fullname << endl;
+        cout << "Date of birth: " << curStudent->dob << endl;
+        cout << "Class: " << curStudent->Class << endl;
+        cout << "Status: " << curStudent->status << endl;
+        for (int j = 0; j < 10; j++) {
+            cout << curStudent->attendance[j] << endl;
+        }
+        cout << endl;
+    }
+}
+
