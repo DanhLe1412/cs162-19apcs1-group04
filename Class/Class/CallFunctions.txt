@@ -1,0 +1,10 @@
+CRUD_years_semesters();
+importCourses();
+addCourseManually();
+editExistingCourse();
+removeCourse();
+removeStudentFromScore();
+addStudentToScore();
+viewCourseInSemester();
+viewStudentsInCourse();
+viewAttendanceList();
