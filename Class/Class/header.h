@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <ctime>
 #include <iomanip>
+#include <sys/types.h>
+#include <dirent.h>
 using namespace std;
 
 enum gender {
@@ -47,6 +49,18 @@ struct Course {
     Course* pNext;
 };
 
+struct StudentInCourse {
+    string username;
+    string password;
+    string fullname;
+    string dob;
+    string Class;
+    string status;
+    string midterm, Final, bonus, total;
+    string attendance[10];
+    StudentInCourse* pNext;
+};
+
 // [13]
 void create_years_semesters(Semester* pHead);
 void update_years_semesters(Semester* pHead);
@@ -54,9 +68,10 @@ void delete_years_semesters(Semester* pHead);
 void view_years_semesters();
 void CRUD_years_semesters();
 
-// [14]
 void makeFileCourse(string years, string semester, string Class, Course* course);
 string convertDate(string date);
+
+// [14]
 void importCourses();
 
 // [15]
@@ -66,3 +81,20 @@ void addCourseManually();
 void editExistingCourse();
 
 // [23]
+// [17]
+void removeCourse();
+
+// [18]
+void removeStudentFromScore();
+
+// [19]
+void addStudentToScore();
+
+// [20]
+void viewCourseInSemester();
+
+// [21]
+void viewStudentsInCourse();
+
+// [22]
+void viewAttendanceList();

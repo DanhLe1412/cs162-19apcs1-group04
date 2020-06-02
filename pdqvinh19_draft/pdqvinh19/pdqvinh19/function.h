@@ -75,6 +75,11 @@ struct studentCourseFullType
 	bool droppedStatus;
 };
 
+struct semesterType
+{
+	string academicYear, semester;
+};
+
 void menu();
 int loadN(ifstream &fin);
 studentType loadStudent(ifstream &fin);
@@ -139,3 +144,38 @@ studentCourseFullType* loadStudentCourseFullArrayFromName(string courseNameLong,
 int findIDStudentCourseFullArray(studentCourseFullType* studentArray, int size, int iD);
 void viewScore(int iD);
 void displayListCoursesSemester();
+semesterType loadSemester(ifstream& fin);
+semesterType* loadSemesterArray(ifstream& fin, int& size);
+semesterType* loadSemesterArrayFromDir(string dir, int& size);
+void displaySemesterListFromDir(string dir, semesterType*& semesterArray, int& size);
+string* loadClassNamesArrayFromDir(string dir, int& size);
+bool checkFileAvailable(string dir);
+string* arrayOfClassesWithAvailableSchedule(string preDir, string postDir, string* classNamesArray, int classNamesArraySize, int& classesWithAvailableScheduleArraySize);
+scheduleType* loadSchedulesArrayFromDir(string dir, int& size);
+string* arrayOfCoursesInClassWithAvailableStudentsList(string preDir, string postDir, scheduleType* schedulesArray, int schedulesArraySize, int& coursesArraySize);
+classAndCourse* arrayOfAvailableCoursesInClasses(string preDir, int& size);
+studentCourseFullType* loadStudentsCourseFullArrayFromDirNew(string folderDir, semesterType semester, string className, string courseName, string postDir, int& size);
+bool checkStudentAttendanceCourseFull(studentCourseFullType student);
+studentCourseFullType* arrayOfAttendances(studentCourseFullType* studentsArray, int studentsArraySize, int& size);
+void displayAttendances(studentCourseFullType* studentsArray, int size);
+void searchAndViewAttendances(string folderDir, string& className, string& courseName, studentCourseFullType*& attendancesArray, int& size);
+void writeAttendancesListToCSV(string className, string courseName, string folderDir, studentCourseFullType* studentsArray, int size);
+studentCourseFullType readStudent_element(ifstream& fin);
+studentCourseFullType* readStudent_array(ifstream& fin, int& size);
+
+studentCourseFullType* readStudent(string dir, int& size);
+
+int positionInStudent_array(int iD, studentCourseFullType* studentsArray, int size);
+void writeStudent(studentCourseFullType* students, int size, string dir);
+studentCourseFullType readCourse_element(ifstream& fin);
+studentCourseFullType* readCourse_array(ifstream& fin, int& size);
+
+studentCourseFullType* readCourse(string dir, int& size);
+
+void writeCourse(studentCourseFullType* students, int size, string dir);
+int positionOfStudent_array(int& no, studentCourseFullType* studentsArray, int size);
+studentCourseFullType* attendanceCourse_array(studentCourseFullType* students, int size, int& newSize);
+void viewCourse(studentCourseFullType* students, int size);
+string* availableCourses_array(classAndCourse* classes, int classesSize, int iD, int& size);
+classAndCourse* arrayOfAvailableCoursesInClassesNew(string preDir, int& size);
+void editAttendance();
