@@ -460,15 +460,25 @@ void view_list_students(ifstream &fi, string class_name)
 	}
 	else
 	{
+		int count = 0;
 		string data;
 		while (!fi.eof())
 		{
-			for (int i = 0; i < 5; ++i)
-			{
-				getline(fi, data);
-				cout << data << " ";
-			}
-			cout << endl;
+			++count;
+			cout << count << ", "; //stt
+			getline(fi, data);
+			cout << data << ", "; //ID
+			getline(fi, data);
+			cout << data << " "; //lastname
+			getline(fi, data);
+			cout << data << ", "; //firstname
+			getline(fi, data);
+			//Gender
+			if (data == "1")
+				cout << "Male, ";
+			else cout << "Female, ";
+			getline(fi, data);
+			cout << data << endl; //DoB
 		}
 	}
 	fi.close();
