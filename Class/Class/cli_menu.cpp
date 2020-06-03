@@ -84,9 +84,6 @@ void home_cli(string username, string pass, int type){
 				cin >> file_csv;
 				cin.ignore(100, '\n');
 				//-----------------Call function ----------
-				
-				cout << file_csv << endl ;
-				Sleep(3000);
 				ifstream fin;
 				ofstream fout;
 				import_students_csv(fin, fout, file_csv, check_import);
@@ -443,12 +440,20 @@ bool checkUser(string username, string pass, int type){
 		if (fin.is_open())
 		{
 			for(int i = 0; !fin.eof(); i++){
-				getline(fin,tmp->userID);
-				getline(fin,tmp->password);
+				fin >> tmp->userID;
+				fin >> tmp->password;
+				fin.ignore(100,'\n');
 				getline(fin,tmp->FullName);
 				getline(fin,tmp->DoB);
-				getline(fin,tmp->class_name);
+				fin >> tmp->class_name;
 				fin >> tmp->gender;
+
+				cout << tmp->userID << endl;
+				cout << tmp->password << endl;
+				cout << tmp->FullName << endl;
+				cout << tmp->DoB << endl;
+				cout << tmp->class_name << endl;
+				cout << tmp->gender << endl;
 				//
 				if (username.compare(tmp->userID)==0 && pass.compare(tmp->password)==0)
 				{
