@@ -426,7 +426,7 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 				if (removed_student[i] == ' ')
 				{
 					++count;
-					if (count == 1 || i == index1 || i == index2)
+					if (count == 1 || i == index1 || i == index2 || i == removed_student.length() - 1)
 						fo << endl;
 					else fo << removed_student[i];
 				}
