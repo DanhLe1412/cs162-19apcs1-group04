@@ -144,8 +144,6 @@ void exportScore();
 void searchViewAttendance();
 // Case 27
 void exportAttendances();
-// Case 28 29
-void searchViewCourse();
 // Case 31
 void editAttendance();
 // Case 32
@@ -154,3 +152,11 @@ void importScore();
 void searchEditGrade();
 // Case 34
 void searchViewScore();
+// Case 35
+void searchCheckIn(int iD);
+// Case 36
+void searchViewCheckIn(int iD);
+// Case 37
+void searchViewSchedule(int iD);
+// Case 38
+void searchViewScore_student(int iD);

@@ -71,21 +71,31 @@ void menu()
 
 		case 22:
 		{
+			searchViewAttendance();
+			break;
+		}
+
+		case 23:
+		{
+			editAttendance();
 			break;
 		}
 
 		case 24:
 		{
+			importScore();
 			break;
 		}
 
 		case 25:
 		{
+			searchEditGrade();
 			break;
 		}
 
 		case 26:
 		{
+			searchViewScore();
 			break;
 		}
 
@@ -115,21 +125,29 @@ void menu()
 
 		case 16:
 		{
+			int iD = 19127001; // sample ID
+			searchCheckIn(iD);
 			break;
 		}
 
 		case 17:
 		{
+			int iD = 19127001; // sample ID
+			searchViewCheckIn(iD);
 			break;
 		}
 
 		case 18:
 		{
+			int iD = 19127001; // sample ID
+			searchViewSchedule(iD);
 			break;
 		}
 
 		case 19:
 		{
+			int iD = 19127001; // sample ID
+			searchViewScore_student(iD);
 			break;
 		}
 
@@ -1357,19 +1375,6 @@ void viewScore_student(int iD, string dir)
 	}
 }
 
-void searchViewScore()
-{
-	string folder = "Files";
-	academicYear_courseType* A;
-	int n, a, s, c, cs;
-	A = initAcademicYear_courses(folder, n);
-
-	chooseCourse(A, n, a, s, c, cs);
-	string dir;
-	dir = getDir_course(folder, A[a].academicYear, A[a].semester_courses[s].semesterName, A[a].semester_courses[s].class_courses[c].className, A[a].semester_courses[s].class_courses[c].courseName[cs]);
-	viewScore(dir);
-}
-
 void exportScore()
 {
 	string folder = "Files";
@@ -1427,20 +1432,6 @@ void exportAttendances()
 	dir = getDir_course_csv(folder, A[a].academicYear, A[a].semester_courses[s].semesterName, A[a].semester_courses[s].class_courses[c].className, A[a].semester_courses[s].class_courses[c].courseName[cs]);
 	writeCourse_csv(students, size, dir);
 	cout << "Mission complete." << endl;
-}
-
-void searchViewCourse()
-{
-	string folder = "Files";
-	academicYear_courseType* A;
-	int n, a, s, c, cs;
-	A = initAcademicYear_courses(folder, n);
-
-	chooseCourse(A, n, a, s, c, cs);
-	string dir;
-	dir = getDir_course(folder, A[a].academicYear, A[a].semester_courses[s].semesterName, A[a].semester_courses[s].class_courses[c].className, A[a].semester_courses[s].class_courses[c].courseName[cs]);
-
-	viewCourse(dir);
 }
 
 void editAttendance()
@@ -1707,4 +1698,71 @@ void searchViewScore()
 
 	cout << "Scoreboard of " << A[a].semester_courses[s].class_courses[c].className << " - " << A[a].semester_courses[s].class_courses[c].courseName[cs] << ":" << endl;
 	viewScore(dir);
+}
+
+void searchCheckIn(int iD)
+{
+	string folder = "Files";
+	academicYear_courseType* A;
+	int n, a, s, c, cs;
+	A = initAcademicYear_courses_student(iD, folder, n);
+
+	chooseCourse(A, n, a, s, c, cs);
+	string dir;
+	dir = getDir_course(folder, A[a].academicYear, A[a].semester_courses[s].semesterName, A[a].semester_courses[s].class_courses[c].className, A[a].semester_courses[s].class_courses[c].courseName[cs]);
+
+	studentType* students;
+	int size;
+	students = readCourse(dir, size);
+
+	cout << "Enter 1 to check-in: ";
+	int one;
+	cin >> one;
+	if (one == 1)
+		checkIn(iD, dir);
+}
+
+void searchViewCheckIn(int iD)
+{
+	string folder = "Files";
+	academicYear_courseType* A;
+	int n, a, s, c, cs;
+	A = initAcademicYear_courses_student(iD, folder, n);
+
+	chooseCourse(A, n, a, s, c, cs);
+	string dir;
+	dir = getDir_course(folder, A[a].academicYear, A[a].semester_courses[s].semesterName, A[a].semester_courses[s].class_courses[c].className, A[a].semester_courses[s].class_courses[c].courseName[cs]);
+
+	viewCheckIn(iD, dir);
+}
+
+void searchViewSchedule(int iD)
+{
+	string folder = "Files";
+	academicYear_courseType* A;
+	int n, a, s, c, cs;
+	A = initAcademicYear_courses_student(iD, folder, n);
+
+	chooseCourse(A, n, a, s, c, cs);
+	string dir;
+	dir = getDir_course(folder, A[a].academicYear, A[a].semester_courses[s].semesterName, A[a].semester_courses[s].class_courses[c].className, A[a].semester_courses[s].class_courses[c].courseName[cs]);
+
+	dir = getDir_schedule(folder, A[a].academicYear, A[a].semester_courses[s].semesterName, A[a].semester_courses[s].class_courses[c].className);
+	cout << "Schedule: " << endl;
+	viewSchedule(A[a].semester_courses[s].class_courses[c].courseName[cs], dir);
+}
+
+void searchViewScore_student(int iD)
+{
+	string folder = "Files";
+	academicYear_courseType* A;
+	int n, a, s, c, cs;
+	A = initAcademicYear_courses_student(iD, folder, n);
+
+	chooseCourse(A, n, a, s, c, cs);
+	string dir;
+	dir = getDir_course(folder, A[a].academicYear, A[a].semester_courses[s].semesterName, A[a].semester_courses[s].class_courses[c].className, A[a].semester_courses[s].class_courses[c].courseName[cs]);
+
+	cout << "Scoreboard of " << A[a].semester_courses[s].class_courses[c].className << " - " << A[a].semester_courses[s].class_courses[c].courseName[cs] << ":" << endl;
+	viewScore_student(iD, dir);
 }
