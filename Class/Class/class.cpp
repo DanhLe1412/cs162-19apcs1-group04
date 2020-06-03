@@ -59,7 +59,6 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int &statu
 	{
 		Student *student_users = nullptr; //Student users linked list init
 
-
 		while (!fi.eof())
 		{
 			string temp, pwd;
@@ -128,7 +127,6 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int &statu
 			fo << dob << endl;
 			fo << class_name << endl;
 			fo << student_users->gender << endl;
-			fo << endl;
 			student_users = student_users->next;
 			delete del;
 		}
@@ -187,7 +185,8 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name, int &status)
 	{
 		if (new_student->DoB[i] != '-')
 			fo << new_student->DoB[i];
-		else fo << " ";
+		else
+			fo << " ";
 	}
 	fo << endl;
 	fo << class_name << endl;
@@ -273,7 +272,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 				for (j = 0; j < 4; ++j)
 				{
 					getline(fi, data);
-					if(data != "\n")
+					if (data.length() != 1 && data != "\0")
 						fo << data << endl;
 				}
 			}
@@ -364,7 +363,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 					for (j = 0; j < 4; ++j)
 					{
 						getline(fi, data);
-						if (data != "\n" && data != " ")
+						if (data.length() != 1 && data != "\0")
 							fo << data << endl;
 					}
 				}
@@ -406,22 +405,30 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 			cout << "Failed to open class_" << class_name_B << ".txt file" << endl;
 		else
 		{
-			int count = 0, index;
+			int count = 0, index1 = 0, index2 = 0;
 			for (int i = removed_student.length() - 2; i >= 0; --i)
 			{
 				if (removed_student[i] == ' ')
 				{
-					index = i;
-					break;
+					++count;
+					if(count == 1)
+						index1 = i;
+					else if (count == 2)
+					{
+						index2 = i;
+						break;
+					}
 				}
 			}
+			count = 0;
 			for (int i = 0; i < removed_student.length(); ++i)
 			{
 				if (removed_student[i] == ' ')
 				{
 					++count;
-					if (count == 1 || i == index)
+					if (count == 1 || i == index1 || i == index2)
 						fo << endl;
+					else fo << removed_student[i];
 				}
 				else
 					fo << removed_student[i];
@@ -477,29 +484,20 @@ void view_list_students(ifstream &fi, string class_name)
 		while (!fi.eof())
 		{
 			getline(fi, data);
-			if (data != "\n");
+			if(data.length() != 1 && data != "\0")
 			{
 				++count;
 				cout << count << ", " << data << ", ";
-				for (int i = 0; i < 3; ++i)
-				{
-					getline(fi, data);
-					if (data != "\n")
-					{
-						if (i == 2)
-						{
-							cout << data << endl;
-							break;
-						}
-						else if (data == "0")
-							cout << "Female, ";
-						else if (data == "1")
-							cout << "Male, ";
-						else cout << data << ", ";
-					}
-				}
+				getline(fi, data);
+				cout << data << ", ";
+				getline(fi, data);
+				if (data == "1")
+					cout << "Male, ";
+				else if (data == "0")
+					cout << "Female, ";
+				getline(fi, data);
+				cout << data << endl;
 			}
-			
 		}
 	}
 	fi.close();
