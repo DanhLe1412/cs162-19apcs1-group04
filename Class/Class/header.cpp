@@ -1,5 +1,4 @@
 #include "header.h"
-
 // [13]
 void create_years_semesters(Semester* pHead)
 {
@@ -2067,7 +2066,7 @@ void viewAttendanceList()
             fin >> pStudent->username;
             fin.ignore(1000, '\n');
             getline(fin, pStudent->fullname, '\n');
-			fin >> pStudent->status;
+			      fin >> pStudent->status;
             fin >> pStudent->dob;
             fin >> pStudent->Class;
             fin >> pStudent->midterm >> pStudent->Final >> pStudent->bonus >> pStudent->total;
@@ -2086,7 +2085,7 @@ void viewAttendanceList()
             fin >> curStudent->username;
             fin.ignore(1000, '\n');
             getline(fin, curStudent->fullname, '\n');
-			fin >> curStudent->status;
+			      fin >> curStudent->status;
             fin >> curStudent->dob;
             fin >> curStudent->Class;
             fin >> curStudent->midterm >> curStudent->Final >> curStudent->bonus >> curStudent->total;
@@ -2113,4 +2112,3 @@ void viewAttendanceList()
         cout << endl;
     }
 }
-

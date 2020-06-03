@@ -69,3 +69,10 @@ Le Van E
 Le Van F
 08 07 2004
 19APCS2
+1
+123
+123
+This account for testing student
+01 01 2001
+ADMIN
+1
