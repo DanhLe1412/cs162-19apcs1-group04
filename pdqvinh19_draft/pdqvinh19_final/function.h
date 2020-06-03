@@ -74,6 +74,7 @@ void menu();
 bool checkFile(string dir);
 string getDir(string folder, string file);
 string getDir_course(string folder, string academicYear, string semester, string className, string courseName);
+string getDir_course_csv(string folder, string academicYear, string semester, string className, string courseName);
 string getDir_schedule(string folder, string academicYear, string semester, string className);
 string getDir_class(string folder, string className);
 string getDir_score(string folder, string className, string courseName);
@@ -139,4 +140,17 @@ void checkIn_element(studentType& student, time_t time);
 void searchViewScore();
 // Case 25
 void exportScore();
-// Case 
+// Case 26 30
+void searchViewAttendance();
+// Case 27
+void exportAttendances();
+// Case 28 29
+void searchViewCourse();
+// Case 31
+void editAttendance();
+// Case 32
+void importScore();
+// Case 33
+void searchEditGrade();
+// Case 34
+void searchViewScore();
