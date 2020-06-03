@@ -105,3 +105,4 @@ void viewStudentsInCourse();
 void viewAttendanceList();
 
 //[23]
+void CRUD_Lecturer();

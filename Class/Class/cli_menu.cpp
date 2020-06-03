@@ -1,6 +1,6 @@
 #include "define_cli_menu.h"
 #include "class.h"
-//#include "header.h"
+#include "header.h"
 
 void staff_cli(){
 	cout << "[1]: Import student as csv file" << endl;
@@ -258,6 +258,8 @@ void home_cli(string username, string pass, int type){
 		}
 		case 15:
 		{	//Lecturers
+			CRUD_Lecturer();
+			Sleep(3000);
 			break;
 		}
 		case 16:

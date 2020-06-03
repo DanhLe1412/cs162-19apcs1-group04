@@ -4,19 +4,16 @@ abcdef
 Dinh Ba Tien
 TS
 0
-
 nmhuy
 abcdef
 Nguyen Minh Huy
 ThS
 0
-
 nhminh
 abcdef
 Nguyen Hai Minh
 ThS
 1
-
 dnvu
 dnvu
 Duong Nguyen Vu

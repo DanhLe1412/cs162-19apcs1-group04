@@ -13,6 +13,7 @@ void lalala() {
     closedir(dir);
 }
 */
+/*
 // [13]
 void create_years_semesters(Semester* pHead)
 {
@@ -2119,3 +2120,4 @@ void viewAttendanceList()
     }
 }
 
+*/

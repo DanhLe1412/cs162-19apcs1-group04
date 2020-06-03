@@ -1,5 +1,6 @@
 #include "header.h"
 void CRUD_Lecturer(){
+    cout << "OKEY" << endl;
 }
 void inputLecturer_KeyBoard(Lecturer*& data){
     // Input information of Lecturer
