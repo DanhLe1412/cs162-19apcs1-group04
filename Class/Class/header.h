@@ -8,7 +8,6 @@
 #include <ctime>
 #include <iomanip>
 #include <sys/types.h>
-#include <dirent.h>
 using namespace std;
 
 enum gender {
@@ -60,7 +59,14 @@ struct StudentInCourse {
     string attendance[10];
     StudentInCourse* pNext;
 };
-
+struct Lecturer{
+    string lec_username = "default";
+    string lec_password;
+    string lec_Fullname;
+    string lec_degree;
+    bool gender; //0 : Female, 1: Male
+    Lecturer* lec_pNext;
+};
 // [13]
 void create_years_semesters(Semester* pHead);
 void update_years_semesters(Semester* pHead);
@@ -80,7 +86,6 @@ void addCourseManually();
 // 16
 void editExistingCourse();
 
-// [23]
 // [17]
 void removeCourse();
 
@@ -98,3 +103,5 @@ void viewStudentsInCourse();
 
 // [22]
 void viewAttendanceList();
+
+//[23]
