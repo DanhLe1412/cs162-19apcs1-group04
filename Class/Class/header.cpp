@@ -1,18 +1,5 @@
 #include "header.h"
 
-void lalala() {
-    struct dirent *entry;
-    DIR *dir = opendir("data/");
-
-    if (dir == NULL) {
-        return;
-    }
-    while ((entry = readdir(dir)) != NULL) {
-        cout << entry->d_name << endl;
-    }
-    closedir(dir);
-}
-
 // [13]
 void create_years_semesters(Semester* pHead)
 {
@@ -26,7 +13,7 @@ void create_years_semesters(Semester* pHead)
     cout << "Semester: ";
     cin >> s;
     ifstream fin;
-    Semester* cur;
+    Semester* cur = nullptr;
     fin.open("data/Semester.txt");
     if (fin.is_open()) {
         fin >> n;
@@ -84,7 +71,7 @@ void delete_years_semesters(Semester* pHead)
     system("cls");
     int n;
     cout << ">>> Delete Academic Years and Semester <<<" << endl;
-    Semester* cur;
+    Semester* cur = nullptr;
     string y, s;
     ifstream fin;
     fin.open("data/Semester.txt");
@@ -161,7 +148,7 @@ void update_years_semesters(Semester* pHead)
     system("cls");
     int n;
     cout << ">>> Update Academic Years and Semester <<<" << endl;
-    Semester* cur;
+    Semester* cur = nullptr;
     string y, s;
     ifstream fin;
     fin.open("data/Semester.txt");
@@ -312,61 +299,68 @@ void makeFileCourse(string years, string semester, string Class, Course* course)
     ifstream fin;
     ofstream fout;
     string student;
-    int n;
-    fin.open("data/" + Class + ".txt");
+    int n = 0;
+    fin.open("data/class_" + Class + ".txt");
+	if (!fin.is_open()) return;
+	while (!fin.eof()) {
+		fin >> student;
+		fin.ignore(1000, '\n');
+		getline(fin, student, '\n');
+		fin >> student;
+		fin >> student;
+		n++;
+	}
+	fin.close();
+	fin.open("data/class_" + Class + ".txt");
+	fout << n << endl;
     if (!fin.is_open()) return;
     fout.open("data/" + years + "-" + semester + "-" + Class + "-" + course->CourseId + "-Student.txt");
-    fin >> n;
-    tm t;
-    time_t sec;
-    time(&sec);
-    t = *localtime(&sec);
+	tm t;
+	time_t sec = time(0);
+	localtime_s(&t, &sec);
     fout << n << endl;
     for (int i = 0; i < n; i++) {
         fin >> student;
         fout << student << endl;
-        fin >> student;
-        fout << student << endl;
-        fin.ignore(1000, '\n');
-        getline(fin, student, '\n');
-        fout << student << endl;
-        getline(fin, student, '\n');
-        fout << student << endl;
+		fin.ignore(1000, '\n');
+		getline(fin, student, '\n');
+		fout << student << endl;
         fin >> student;
         fout << student << endl;
         fin >> student;
         fout << student << endl;
+		fout << Class << endl;
         fout << -1 << endl << -1 << endl << -1 << endl << -1 << endl;
-        sscanf(course->StartDate.c_str(), "%4d %2d %2d", &t.tm_year, &t.tm_mon, &t.tm_mday);
+        sscanf_s(course->StartDate.c_str(), "%4d %2d %2d", &t.tm_year, &t.tm_mon, &t.tm_mday);
         fout << t.tm_year << " " << setw(2) << setfill('0') << t.tm_mon << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         t.tm_year -= 1900;
         t.tm_mon -= 1;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
-        t = *localtime(&sec);
+		localtime_s(&t, &sec);
         fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
-        t = *localtime(&sec);
+		localtime_s(&t, &sec);
         fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
-        t = *localtime(&sec);
+		localtime_s(&t, &sec);
         fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
-        t = *localtime(&sec);
+		localtime_s(&t, &sec);
         fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
-        t = *localtime(&sec);
+		localtime_s(&t, &sec);
         fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
-        t = *localtime(&sec);
+		localtime_s(&t, &sec);
         fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
-        t = *localtime(&sec);
+		localtime_s(&t, &sec);
         fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
-        t = *localtime(&sec);
+		localtime_s(&t, &sec);
         fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
-        t = *localtime(&sec);
+		localtime_s(&t, &sec);
         if (i + 1 == n) {
             fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1;
         }
@@ -421,14 +415,13 @@ void importCourses() {
     fin.open("data/Class.txt");
     if (!fin.is_open()) return;
     check = false;
-    fin >> n;
-    for (int i = 0; i < n; i++) {
-        fin >> Class;
-        if (Class == c) {
-            check = true;
-            break;
-        }
-    }
+	while (!fin.eof()) {
+		fin >> Class;
+		if (Class == c) {
+			check = true;
+			break;
+		}
+	}
     fin.close();
     if (!check) {
         cout << "Class does not exist!" << endl;
@@ -442,7 +435,7 @@ void importCourses() {
     if(!fin.is_open()) return;
     string id;
     getline(fin, header, '\n');
-    Course* pHead = nullptr, *cur;
+    Course* pHead = nullptr, *cur = nullptr;
     while(fin.good()) {
         getline(fin, id, ',');
         if (!pHead) {
@@ -557,7 +550,7 @@ void addCourseManually(){
             goto CHECK_SEMESTER;
         }
     }
-    Course* pHead = nullptr, *cur, *tmp = new Course;
+    Course* pHead = nullptr, *cur = nullptr, *tmp = new Course;
     cout << "Input Course ID: ";
     cin >> tmp->CourseId;
     cout << "Input Course Name: ";
@@ -569,14 +562,13 @@ void addCourseManually(){
         fin.open("data/Class.txt");
         if (!fin.is_open()) return;
         check = false;
-        fin >> n;
-        for (int i = 0; i < n; i++) {
-            fin >> Class;
-            if (Class == tmp->Class) {
-                check = true;
-                break;
-            }
-        }
+		while (!fin.eof()) {
+			fin >> Class;
+			if (Class == tmp->Class) {
+				check = true;
+				break;
+			}
+		}
         fin.close();
         if (!check) {
             cout << "Class does not exist!" << endl;
@@ -746,21 +738,20 @@ void editExistingCourse()
             goto CHECK_SEMESTER;
         }
     }
-    Course* pHead = nullptr, *cur, *tmp = new Course;
+    Course* pHead = nullptr, *cur = nullptr, *tmp = new Course;
     CHECK_CLASS: {
         cout << "Input class: ";
         cin >> c;
         fin.open("data/Class.txt");
         if (!fin.is_open()) return;
         check = false;
-        fin >> n;
-        for (int i = 0; i < n; i++) {
-            fin >> Class;
-            if (Class == c) {
-                check = true;
-                break;
-            }
-        }
+		while (!fin.eof()) {
+			fin >> Class;
+			if (Class == c) {
+				check = true;
+				break;
+			}
+		}
         fin.close();
         if (!check) {
             cout << "Class does not exist!" << endl;
@@ -845,19 +836,19 @@ void editExistingCourse()
     for (int i = 1; i < choice; i++) {
         cur = cur->pNext;
     }
-    cout << cur->CourseId << endl;
-    cout << cur->CourseName << endl;
-    cout << cur->Class << endl;
-    cout << cur->LecturerUsername << endl;
-    cout << cur->LecturerName << endl;
-    cout << cur->LecturerDegree << endl;
-    cout << cur->LecturerGender << endl;
-    cout << cur->StartDate << endl;
-    cout << cur->EndDate << endl;
-    cout << cur->DayOfWeek << endl;
-    cout << cur->StartHour << " " << cur->StartMinutes << endl;
-    cout << cur->EndHour << " " << cur->EndMinutes << endl;
-    cout << cur->room << endl;
+    cout << "Course ID: " << cur->CourseId << endl;
+    cout << "Course name: " << cur->CourseName << endl;
+    cout << "Class: " << cur->Class << endl;
+    cout << "Lecturer username: " << cur->LecturerUsername << endl;
+    cout << "Lecturer fullname: " << cur->LecturerName << endl;
+    cout << "Lecturer degree: " << cur->LecturerDegree << endl;
+    cout << "Lecturer gender: " << (stoi(cur->LecturerGender) == male ? "male" : "female") << endl;
+    cout << "Start date: " << cur->StartDate << endl;
+    cout << "End date: " << cur->EndDate << endl;
+    cout << "Day of week: " << cur->DayOfWeek << endl;
+    cout << "Start time: " << cur->StartHour << ":" << cur->StartMinutes << endl;
+    cout << "End time: " << cur->EndHour << ":" << cur->EndMinutes << endl;
+    cout << "Room: " << cur->room << endl;
     cout << "Edit this course? ";
     cin >> choice;
     if (choice == 0) {
@@ -991,21 +982,20 @@ void removeCourse()
             goto CHECK_SEMESTER;
         }
     }
-    Course* pHead = nullptr, *cur, *tmp = new Course;
+    Course* pHead = nullptr, *cur = nullptr, *tmp = new Course;
     CHECK_CLASS: {
         cout << "Input class: ";
         cin >> c;
         fin.open("data/Class.txt");
         if (!fin.is_open()) return;
         check = false;
-        fin >> n;
-        for (int i = 0; i < n; i++) {
-            fin >> Class;
-            if (Class == c) {
-                check = true;
-                break;
-            }
-        }
+		while (!fin.eof()) {
+			fin >> Class;
+			if (Class == c) {
+				check = true;
+				break;
+			}
+		}
         fin.close();
         if (!check) {
             cout << "Class does not exist!" << endl;
@@ -1160,21 +1150,20 @@ void removeStudentFromScore()
             goto CHECK_SEMESTER;
         }
     }
-    Course* pHead = nullptr, *cur;
+    Course* pHead = nullptr, *cur = nullptr;
     CHECK_CLASS: {
         cout << "Input class: ";
         cin >> c;
         fin.open("data/Class.txt");
         if (!fin.is_open()) return;
         check = false;
-        fin >> n;
-        for (int i = 0; i < n; i++) {
-            fin >> Class;
-            if (Class == c) {
-                check = true;
-                break;
-            }
-        }
+		while (!fin.eof()) {
+			fin >> Class;
+			if (Class == c) {
+				check = true;
+				break;
+			}
+		}
         fin.close();
         if (!check) {
             cout << "Class does not exist!" << endl;
@@ -1261,17 +1250,16 @@ void removeStudentFromScore()
     }
     fin.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
     fin >> n;
-    StudentInCourse* pStudent = nullptr, *curStudent;
+    StudentInCourse* pStudent = nullptr, *curStudent = nullptr;
     for (int i = 0; i < n; i++) {
         if (!pStudent) {
             pStudent = new StudentInCourse;
             fin >> pStudent->username;
-            fin >> pStudent->password;
             fin.ignore(1000, '\n');
             getline(fin, pStudent->fullname, '\n');
-            getline(fin, pStudent->dob, '\n');
+			fin >> pStudent->status;
+            fin >> pStudent->dob;
             fin >> pStudent->Class;
-            fin >> pStudent->status;
             fin >> pStudent->midterm >> pStudent->Final >> pStudent->bonus >> pStudent->total;
             fin.ignore(1000, '\n');
             for(int j = 0; j < 10; j++)
@@ -1286,12 +1274,11 @@ void removeStudentFromScore()
             curStudent->pNext = new StudentInCourse;
             curStudent = curStudent->pNext;
             fin >> curStudent->username;
-            fin >> curStudent->password;
             fin.ignore(1000, '\n');
             getline(fin, curStudent->fullname, '\n');
-            getline(fin, curStudent->dob, '\n');
+			fin >> curStudent->status;
+			fin >> curStudent->dob;
             fin >> curStudent->Class;
-            fin >> curStudent->status;
             fin >> curStudent->midterm >> curStudent->Final >> curStudent->bonus >> curStudent->total;
             fin.ignore(1000, '\n');
             for(int j = 0; j < 10; j++)
@@ -1352,11 +1339,10 @@ void removeStudentFromScore()
     fout << --n << endl;
     for (int i = 0; i < n; i++) {
         fout << curStudent->username << endl;
-        fout << curStudent->password << endl;
         fout << curStudent->fullname << endl;
+		fout << curStudent->status << endl;
         fout << curStudent->dob << endl;
         fout << curStudent->Class << endl;
-        fout << curStudent->status << endl;
         fout << curStudent->midterm << endl;
         fout << curStudent->Final << endl;
         fout << curStudent->bonus << endl;
@@ -1406,21 +1392,20 @@ void addStudentToScore()
             goto CHECK_SEMESTER;
         }
     }
-    Course* pHead = nullptr, *cur;
+    Course* pHead = nullptr, *cur = nullptr;
     CHECK_CLASS: {
         cout << "Input class: ";
         cin >> c;
         fin.open("data/Class.txt");
         if (!fin.is_open()) return;
         check = false;
-        fin >> n;
-        for (int i = 0; i < n; i++) {
-            fin >> Class;
-            if (Class == c) {
-                check = true;
-                break;
-            }
-        }
+		while (!fin.eof()) {
+			fin >> Class;
+			if (Class == c) {
+				check = true;
+				break;
+			}
+		}
         fin.close();
         if (!check) {
             cout << "Class does not exist!" << endl;
@@ -1507,17 +1492,16 @@ void addStudentToScore()
     }
     fin.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
     fin >> n;
-    StudentInCourse* pStudent = nullptr, *curStudent;
+    StudentInCourse* pStudent = nullptr, *curStudent = nullptr;
     for (int i = 0; i < n; i++) {
         if (!pStudent) {
             pStudent = new StudentInCourse;
             fin >> pStudent->username;
-            fin >> pStudent->password;
             fin.ignore(1000, '\n');
             getline(fin, pStudent->fullname, '\n');
-            getline(fin, pStudent->dob, '\n');
+			fin >> pStudent->status;
+            fin >> pStudent->dob;
             fin >> pStudent->Class;
-            fin >> pStudent->status;
             fin >> pStudent->midterm >> pStudent->Final >> pStudent->bonus >> pStudent->total;
             fin.ignore(1000, '\n');
             for(int j = 0; j < 10; j++)
@@ -1532,12 +1516,11 @@ void addStudentToScore()
             curStudent->pNext = new StudentInCourse;
             curStudent = curStudent->pNext;
             fin >> curStudent->username;
-            fin >> curStudent->password;
             fin.ignore(1000, '\n');
             getline(fin, curStudent->fullname, '\n');
-            getline(fin, curStudent->dob, '\n');
+			fin >> curStudent->status;
+            fin >> curStudent->dob;
             fin >> curStudent->Class;
-            fin >> curStudent->status;
             fin >> curStudent->midterm >> curStudent->Final >> curStudent->bonus >> curStudent->total;
             fin.ignore(1000, '\n');
             for(int j = 0; j < 10; j++)
@@ -1558,25 +1541,44 @@ void addStudentToScore()
     cout << "Course: " + cur->CourseId << ": " + cur->CourseName << endl;
     cout << "Input Student ID: ";
     cin >> ID;
-    string attendance[10] = curStudent->attendance;
-    int nStudent;
+	string attendance[10];
+	for (int i = 0; i < 10; i++) {
+		attendance[i] = curStudent->attendance[i];
+	}
+    int nStudent = 0;
     fin.open("data/Student.txt");
-    fin >> nStudent;
+	if (!fin.is_open()) return;
+	string skip;
+	while (!fin.eof()) {
+		fin >> skip;
+		fin >> skip;
+		fin.ignore(1000, '\n');
+		getline(fin, skip, '\n');
+		getline(fin, skip, '\n');
+		fin >> skip;
+		fin >> skip;
+		nStudent++;
+	}
+	fin.close();
+	fin.open("data/Student.txt");
     for (int i = 0; i < nStudent; i++) {
         fin >> studentID;
         if (studentID == ID) {
             curStudent->pNext = new StudentInCourse;
             curStudent = curStudent->pNext;
             curStudent->username = studentID;
-            fin >> curStudent->password;
+            fin >> skip;
             fin.ignore(1000, '\n');
             getline(fin, curStudent->fullname, '\n');
             getline(fin, curStudent->dob, '\n');
+			for (int j = 0; j < curStudent->dob.length(); j++) {
+				if (curStudent->dob[j] == ' ') curStudent->dob[j] = '-';
+			}
             fin >> curStudent->Class;
             fin >> curStudent->status;
             curStudent->midterm = curStudent->Final = curStudent->bonus = curStudent->total = "-1";
-            for (int i = 0; i < 10; i++) {
-                curStudent->attendance[i] = attendance[i];
+            for (int j = 0; j < 10; j++) {
+                curStudent->attendance[j] = attendance[j];
             }
             curStudent->pNext = nullptr;
             break;
@@ -1597,11 +1599,10 @@ void addStudentToScore()
     fout << ++n << endl;
     for (int i = 0; i < n; i++) {
         fout << curStudent->username << endl;
-        fout << curStudent->password << endl;
         fout << curStudent->fullname << endl;
+		fout << curStudent->status << endl;
         fout << curStudent->dob << endl;
         fout << curStudent->Class << endl;
-        fout << curStudent->status << endl;
         fout << curStudent->midterm << endl;
         fout << curStudent->Final << endl;
         fout << curStudent->bonus << endl;
@@ -1659,13 +1660,13 @@ void viewCourseInSemester()
         if (!fin.is_open()) return;
         check = false;
         fin >> n;
-        for (int i = 0; i < n; i++) {
-            fin >> Class;
-            if (Class == c) {
-                check = true;
-                break;
-            }
-        }
+		while (!fin.eof()) {
+			fin >> Class;
+			if (Class == c) {
+				check = true;
+				break;
+			}
+		}
         fin.close();
         if (!check) {
             cout << "Class does not exist!" << endl;
@@ -1674,7 +1675,7 @@ void viewCourseInSemester()
         }
     }
     system("cls");
-    Course* pHead = nullptr, *cur;
+    Course* pHead = nullptr, *cur = nullptr;
     cout << ">>> View Course in Semester <<<" << endl;
     cout << "Academic Years: " << y << endl;
     cout << "Semester: " << s << endl;
@@ -1767,21 +1768,20 @@ void viewStudentsInCourse()
             goto CHECK_SEMESTER;
         }
     }
-    Course* pHead = nullptr, *cur;
+    Course* pHead = nullptr, *cur = nullptr;
     CHECK_CLASS: {
         cout << "Input class: ";
         cin >> c;
         fin.open("data/Class.txt");
         if (!fin.is_open()) return;
         check = false;
-        fin >> n;
-        for (int i = 0; i < n; i++) {
-            fin >> Class;
-            if (Class == c) {
-                check = true;
-                break;
-            }
-        }
+		while (!fin.eof()) {
+			fin >> Class;
+			if (Class == c) {
+				check = true;
+				break;
+			}
+		}
         fin.close();
         if (!check) {
             cout << "Class does not exist!" << endl;
@@ -1874,17 +1874,16 @@ void viewStudentsInCourse()
     cout << "Course: " + cur->CourseId << endl;
     fin.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
     fin >> n;
-    StudentInCourse* pStudent = nullptr, *curStudent;
+    StudentInCourse* pStudent = nullptr, *curStudent = nullptr;
     for (int i = 0; i < n; i++) {
         if (!pStudent) {
             pStudent = new StudentInCourse;
             fin >> pStudent->username;
-            fin >> pStudent->password;
             fin.ignore(1000, '\n');
             getline(fin, pStudent->fullname, '\n');
-            getline(fin, pStudent->dob, '\n');
+			fin >> pStudent->status;
+            fin >> pStudent->dob;
             fin >> pStudent->Class;
-            fin >> pStudent->status;
             fin >> pStudent->midterm >> pStudent->Final >> pStudent->bonus >> pStudent->total;
             fin.ignore(1000, '\n');
             for(int j = 0; j < 10; j++)
@@ -1899,12 +1898,11 @@ void viewStudentsInCourse()
             curStudent->pNext = new StudentInCourse;
             curStudent = curStudent->pNext;
             fin >> curStudent->username;
-            fin >> curStudent->password;
             fin.ignore(1000, '\n');
             getline(fin, curStudent->fullname, '\n');
-            getline(fin, curStudent->dob, '\n');
+			fin >> curStudent->status;
+            fin >> curStudent->dob;
             fin >> curStudent->Class;
-            fin >> curStudent->status;
             fin >> curStudent->midterm >> curStudent->Final >> curStudent->bonus >> curStudent->total;
             fin.ignore(1000, '\n');
             for(int j = 0; j < 10; j++)
@@ -1956,21 +1954,20 @@ void viewAttendanceList()
             goto CHECK_SEMESTER;
         }
     }
-    Course* pHead = nullptr, *cur;
+    Course* pHead = nullptr, *cur = nullptr;
     CHECK_CLASS: {
         cout << "Input class: ";
         cin >> c;
         fin.open("data/Class.txt");
         if (!fin.is_open()) return;
         check = false;
-        fin >> n;
-        for (int i = 0; i < n; i++) {
-            fin >> Class;
-            if (Class == c) {
-                check = true;
-                break;
-            }
-        }
+		while (!fin.eof()) {
+			fin >> Class;
+			if (Class == c) {
+				check = true;
+				break;
+			}
+		}
         fin.close();
         if (!check) {
             cout << "Class does not exist!" << endl;
@@ -2063,17 +2060,16 @@ void viewAttendanceList()
     cout << "Course: " + cur->CourseId << endl;
     fin.open("data/" + y + "-" + s + "-" + c + "-" + cur->CourseId + "-Student.txt");
     fin >> n;
-    StudentInCourse* pStudent = nullptr, *curStudent;
+    StudentInCourse* pStudent = nullptr, *curStudent = nullptr;
     for (int i = 0; i < n; i++) {
         if (!pStudent) {
             pStudent = new StudentInCourse;
             fin >> pStudent->username;
-            fin >> pStudent->password;
             fin.ignore(1000, '\n');
             getline(fin, pStudent->fullname, '\n');
-            getline(fin, pStudent->dob, '\n');
+			fin >> pStudent->status;
+            fin >> pStudent->dob;
             fin >> pStudent->Class;
-            fin >> pStudent->status;
             fin >> pStudent->midterm >> pStudent->Final >> pStudent->bonus >> pStudent->total;
             fin.ignore(1000, '\n');
             for(int j = 0; j < 10; j++)
@@ -2088,12 +2084,11 @@ void viewAttendanceList()
             curStudent->pNext = new StudentInCourse;
             curStudent = curStudent->pNext;
             fin >> curStudent->username;
-            fin >> curStudent->password;
             fin.ignore(1000, '\n');
             getline(fin, curStudent->fullname, '\n');
-            getline(fin, curStudent->dob, '\n');
+			fin >> curStudent->status;
+            fin >> curStudent->dob;
             fin >> curStudent->Class;
-            fin >> curStudent->status;
             fin >> curStudent->midterm >> curStudent->Final >> curStudent->bonus >> curStudent->total;
             fin.ignore(1000, '\n');
             for(int j = 0; j < 10; j++)

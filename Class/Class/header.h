@@ -6,9 +6,9 @@
 #include <sstream>
 #include <stdio.h>
 #include <ctime>
+#include <time.h>
 #include <iomanip>
 #include <sys/types.h>
-#include <dirent.h>
 using namespace std;
 
 enum gender {
@@ -51,7 +51,6 @@ struct Course {
 
 struct StudentInCourse {
     string username;
-    string password;
     string fullname;
     string dob;
     string Class;
