@@ -1,5 +1,5 @@
 #include "header.h"
-
+/*
 void lalala() {
     struct dirent *entry;
     DIR *dir = opendir("data/");
@@ -12,7 +12,7 @@ void lalala() {
     }
     closedir(dir);
 }
-
+*/
 // [13]
 void create_years_semesters(Semester* pHead)
 {

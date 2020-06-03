@@ -31,7 +31,16 @@ struct Student
 	Class *student_class;
 	Student* next = nullptr;
 };
-
+//This struct create for read data from file student.txt
+struct readStudent{
+	string userID;
+	string password;
+	string FullName;
+	string DoB;
+	string class_name;
+	bool gender;
+	readStudent *pNext_student;
+};
 struct Staff{
 	User user;
 	string Fullname;
