@@ -272,7 +272,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 				for (j = 0; j < 4; ++j)
 				{
 					getline(fi, data);
-					if (data.length() != 1 && data != "\0")
+					if (data != "\0")
 						fo << data << endl;
 				}
 			}
@@ -363,7 +363,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 					for (j = 0; j < 4; ++j)
 					{
 						getline(fi, data);
-						if (data.length() != 1 && data != "\0")
+						if (data != "\0")
 							fo << data << endl;
 					}
 				}
@@ -433,6 +433,7 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 				else
 					fo << removed_student[i];
 			}
+			fo << endl;
 			cout << "Successfully changed the student " << student_id << " from class " << class_name_A << " to class " << class_name_B << endl;
 			Sleep(3000);
 			status = 1;
@@ -484,7 +485,7 @@ void view_list_students(ifstream &fi, string class_name)
 		while (!fi.eof())
 		{
 			getline(fi, data);
-			if(data.length() != 1 && data != "\0")
+			if(data != "\0")
 			{
 				++count;
 				cout << count << ", " << data << ", ";
