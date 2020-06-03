@@ -433,7 +433,6 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 				else
 					fo << removed_student[i];
 			}
-			fo << endl;
 			cout << "Successfully changed the student " << student_id << " from class " << class_name_A << " to class " << class_name_B << endl;
 			Sleep(3000);
 			status = 1;
