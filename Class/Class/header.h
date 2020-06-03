@@ -6,6 +6,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <ctime>
+#include <time.h>
 #include <iomanip>
 #include <sys/types.h>
 using namespace std;
@@ -50,7 +51,6 @@ struct Course {
 
 struct StudentInCourse {
     string username;
-    string password;
     string fullname;
     string dob;
     string Class;
