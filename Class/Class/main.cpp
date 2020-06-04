@@ -5,6 +5,8 @@ using namespace std;
 
 int main()
 {	
-	SignIn_Menu();
+	// importCourses();
+	addStudentToScore();
+	//SignIn_Menu();
 	return 0;
 }
