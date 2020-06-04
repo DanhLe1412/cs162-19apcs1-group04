@@ -332,40 +332,40 @@ void makeFileCourse(string years, string semester, string Class, Course* course)
 		fout << Class << endl;
         fout << -1 << endl << -1 << endl << -1 << endl << -1 << endl;
         sscanf_s(course->StartDate.c_str(), "%4d %2d %2d", &t.tm_year, &t.tm_mon, &t.tm_mday);
-        fout << t.tm_year << " " << setw(2) << setfill('0') << t.tm_mon << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
+        fout << t.tm_year << " " << setw(2) << setfill('0') << t.tm_mon << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl;
         t.tm_year -= 1900;
         t.tm_mon -= 1;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
 		localtime_s(&t, &sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
 		localtime_s(&t, &sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
 		localtime_s(&t, &sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
 		localtime_s(&t, &sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
 		localtime_s(&t, &sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
 		localtime_s(&t, &sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
 		localtime_s(&t, &sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
 		localtime_s(&t, &sec);
-        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl;
+        fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl;
         sec = mktime(&t) + (7 * 24 * 60 * 60);
 		localtime_s(&t, &sec);
         if (i + 1 == n) {
-            fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1;
+            fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1;
         }
         else {
-            fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << -1 << endl << endl;
+            fout << t.tm_year + 1900 << " " << setw(2) << setfill('0') << t.tm_mon + 1 << " " << setw(2) << setfill('0') << t.tm_mday << " " << course->StartHour << " " << course->StartMinutes << " " << course->EndHour << " " << course->EndMinutes << " " << -1 << endl << endl;
         }
     }
     fin.close();
@@ -1566,8 +1566,21 @@ void addStudentToScore()
     cout << "Input Student ID: ";
     cin >> ID;
 	string attendance[10];
+	tm t;
+	time_t sec = time(0);
+	localtime_s(&t, &sec);
+	sscanf_s(cur->StartDate.c_str(), "%4d %2d %2d", &t.tm_year, &t.tm_mon, &t.tm_mday);
+	t.tm_year -= 1900;
+	t.tm_mon -= 1;
+	string mon, day;
 	for (int i = 0; i < 10; i++) {
-		attendance[i] = curStudent->attendance[i];
+		mon = to_string(t.tm_mon + 1);
+		mon = mon.length() == 1 ? "0" + mon : mon;
+		day = to_string(t.tm_mday);
+		day = day.length() == 1 ? "0" + day : day;
+		attendance[i] = to_string(t.tm_year + 1900) + " " + mon + " " + day + " " + cur->StartHour + " " + cur->StartMinutes + " " + cur->EndHour + " " + cur->EndMinutes + " -1";
+		sec = mktime(&t) + (7 * 24 * 60 * 60);
+		localtime_s(&t, &sec);
 	}
     int nStudent = 0;
     fin.open("data/Student.txt");
