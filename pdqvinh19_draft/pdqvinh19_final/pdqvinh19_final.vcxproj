@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{0803b4fe-b3c0-4def-af3c-2284ceda2f51}</ProjectGuid>
-    <RootNamespace>pdqvinh19</RootNamespace>
+    <ProjectGuid>{2af5222e-2e8d-4292-88ee-5506037fe406}</ProjectGuid>
+    <RootNamespace>pdqvinh19final</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -144,6 +144,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="function.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Files\19APCS1-CS162-Scoreboard.csv" />
+    <None Include="Files\19APCS1-Schedule.csv" />
+    <None Include="Files\19APCS1-Schedule.xlsx" />
+    <None Include="Files\19APCS1-Student.csv" />
+    <None Include="Files\19APCS1-Student.xlsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Files\2019-2020-HK2-19APCS1-CM101-Student.txt" />
+    <Text Include="Files\2019-2020-HK2-19APCS1-CS162-Student.txt" />
+    <Text Include="Files\2019-2020-HK2-Schedule-19APCS1.txt" />
+    <Text Include="Files\Class.txt" />
+    <Text Include="Files\Lecturer.txt" />
+    <Text Include="Files\Notes.txt" />
+    <Text Include="Files\Semester.txt" />
+    <Text Include="Files\Staff.txt" />
+    <Text Include="Files\Student-19APCS1.txt" />
+    <Text Include="Files\Student-19CLC10.txt" />
+    <Text Include="Files\Student-19CLC5.txt" />
+    <Text Include="Files\Student.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

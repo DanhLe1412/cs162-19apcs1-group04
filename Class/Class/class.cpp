@@ -42,11 +42,10 @@ void input_student_info(Student *&student)
 	return;
 }
 
-void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int& status)
+void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int &status)
 {
-	int stt;
-	string data = "", new_file_name = "class_" + csv_name + ".csv", class_name;
-	csv_name += ".csv";
+	string data = "", new_file_name = "data/class_" + csv_name + ".txt", class_name = csv_name, dob;
+	csv_name = "data/" + csv_name + ".csv";
 
 	fi.open(csv_name.c_str());		//Open the loaded csv file
 	fo.open(new_file_name.c_str()); //Create a new csv file to store the data
@@ -58,16 +57,7 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int& statu
 	}
 	else
 	{
-		User *student_users = nullptr; //Student users linked list init
-
-		for (int i = 0; i < csv_name.length(); ++i)
-		{
-			if (csv_name[i] == '.')
-				break;
-			else
-				class_name += csv_name[i];
-		}
-		fo << class_name << endl; //new csv_file first line: class_name
+		Student *student_users = nullptr; //Student users linked list init
 
 		while (!fi.eof())
 		{
@@ -75,76 +65,75 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int& statu
 			Student *new_student = new Student; //Init a student object
 			//Read every line in the loaded csv file
 			getline(fi, data, ',');
-			stt = stoi(data) - 1;
-			temp += data + ',';
 			getline(fi, data, ',');
 			new_student->ID = data;
-			temp += data + ',';
+			fo << data << endl;
 			getline(fi, data, ',');
 			new_student->lastname = data;
-			temp += data + ',';
+			fo << data << " ";
 			getline(fi, data, ',');
 			new_student->firstname = data;
-			temp += data + ',';
+			fo << data << endl;
 			getline(fi, data, ',');
 			if (data.compare("Male") == 0 || data.compare("male") == 0)
 				new_student->gender = true;
 			else if (data.compare("Female") == 0 || data.compare("female") == 0)
 				new_student->gender = false;
 			if (new_student->gender)
-				temp += "1,";
+				data = "1";
 			else
-				temp += "0,";
+				data = "0";
+			fo << data << endl;
 			getline(fi, data);
 			new_student->DoB = data;
-			temp += data;
-
-			fo << temp << endl; //Output to the new csv file
-
-			//Init user's password
-			for (int i = 0; i < new_student->DoB.length(); ++i)
-			{
-				if (new_student->DoB[i] != '-')
-					pwd += new_student->DoB[i];
-			}
-
-			//Init an user object (Type 2(student))
-			User *new_user = new User;
-			new_user->type = 2;
-			new_user->password = pwd;			  // Default password: DoB
-			new_user->username = new_student->ID; // Default username: student ID
+			fo << data << endl;
 
 			//Store the current user to the linked list
 			if (!student_users)
 			{
-				student_users = new_user;
+				student_users = new_student;
 			}
 			else
 			{
-				User *cur = student_users;
+				Student *cur = student_users;
 				while (cur && cur->next)
 					cur = cur->next;
-				cur->next = new_user;
+				cur->next = new_student;
 			}
 		}
 		fi.close();
 		fo.close();
 
 		//Output the linked list to the students.txt
-		fo.open("students.txt", ios::app);
-		User *del;
+		fo.open("data/Student.txt", ios::app);
+		Student *del;
 		while (student_users)
 		{
+			dob = "";
 			del = student_users;
-			fo << student_users->username << endl;
-			fo << student_users->password << endl;
+			fo << student_users->ID << endl;
+			for (int i = 0; i < student_users->DoB.length(); ++i)
+			{
+				if (student_users->DoB[i] != '-')
+				{
+					fo << student_users->DoB[i];
+					dob += student_users->DoB[i];
+				}
+				else
+					dob += " ";
+			}
+			fo << endl;
+			fo << student_users->lastname << " " << student_users->firstname << endl;
+			fo << dob << endl;
+			fo << class_name << endl;
+			fo << student_users->gender << endl;
 			student_users = student_users->next;
 			delete del;
 		}
 		fo.close();
 
 		//Output the class name to the classes.txt for view_list_classes function
-		fo.open("classes.txt", ios::app);
+		fo.open("data/Class.txt", ios::app);
 		fo << class_name << endl;
 		fo.close();
 		cout << "Successfully import " << csv_name << endl;
@@ -154,11 +143,10 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int& statu
 	return;
 }
 
-void add_new_student(ifstream &fi, ofstream &fo, string class_name, int& status)
+void add_new_student(ifstream &fi, ofstream &fo, string class_name, int &status)
 {
-	int stt = -1;
 	bool check = true;
-	string data, temp, classname = "class_" + class_name + ".csv", pwd;
+	string data, temp, classname = "data/class_" + class_name + ".txt", pwd;
 	Student *new_student = new Student;
 	fo.open(classname.c_str(), ios::app);
 	fi.open(classname.c_str());
@@ -172,18 +160,19 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name, int& status)
 		input_student_info(new_student);
 
 		while (!fi.eof())
-		{
-			++stt;
 			getline(fi, data);
-		}
-		fo << stt << "," << new_student->ID << ',' << new_student->lastname << "," << new_student->firstname << ","
-		   << new_student->gender << "," << new_student->DoB << '\n';
+
+		fo << new_student->ID << endl;
+		fo << new_student->lastname << " " << new_student->firstname << endl;
+		fo << new_student->gender << endl;
+		fo << new_student->DoB << endl;
 	}
 	fi.close();
 	fo.close();
 
 	//Create new student's account
-	fo.open("students.txt", ios::app);
+	fo.open("data/Student.txt", ios::app);
+
 	fo << new_student->ID << endl;
 	for (int i = 0; i < new_student->DoB.length(); ++i)
 	{
@@ -191,21 +180,35 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name, int& status)
 			pwd += new_student->DoB[i];
 	}
 	fo << pwd << endl;
+	fo << new_student->lastname << " " << new_student->firstname << endl;
+	for (int i = 0; i < new_student->DoB.length(); ++i)
+	{
+		if (new_student->DoB[i] != '-')
+			fo << new_student->DoB[i];
+		else
+			fo << " ";
+	}
+	fo << endl;
+	fo << class_name << endl;
+	fo << new_student->gender << endl;
+	fo << endl;
+
 	fo.close();
-	cout << "Successfully import "  << endl;
+
+	cout << "Successfully import " << endl;
 	Sleep(3000);
 	status = 1;
 	delete new_student;
 	return;
 }
 
-void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_id,int& status)
+void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_id, int &status)
 {
 	bool check = false;
-	int stt = 0, i = -1;
-	string data, backup_file_name = "backup_" + class_name + ".csv";
-	char *classname = new char[class_name.length() + 11]; // a char* version of the string class_name
-	strcpy_s(classname, class_name.length() + 11, ("class_" + class_name + ".csv").c_str());
+	int i = 0, j = 0, count = 0;
+	string data, backup_file_name = "data/backup_" + class_name + ".txt";
+	char *classname = new char[class_name.length() + 16]; // a char* version of the string class_name
+	strcpy_s(classname, class_name.length() + 16, ("data/class_" + class_name + ".txt").c_str());
 
 	fi.open(classname);
 	fo.open(backup_file_name.c_str());
@@ -220,20 +223,21 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 		fi.close();
 
 		fi.open(classname); //Reopen the original class csv file
-		getline(fi, data);	// Read the first line which is the class name
 		while (!fi.eof())	//check if the student id is in this class
 		{
-			++stt;
-			getline(fi, data, ',');			   //Get to the student id
-			getline(fi, data, ',');			   //Get to the student id
+			++i;
+			getline(fi, data);
 			if (data.compare(student_id) == 0) //If there is the same student id, then break this while loop
 			{
-				cout << stt << endl;
 				check = true;
 				break;
 			}
 			else
-				getline(fi, data); //Go to the next line
+			{
+				//Go to next student
+				for (j = 0; j < 3; ++j)
+					getline(fi, data);
+			}
 		}
 		fi.close();
 
@@ -248,24 +252,35 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 		input_student_info(new_student);
 
 		fi.open(classname);
-		fo.open("temp.csv");
+		fo.open("data/temp.txt");
+
 		while (!fi.eof()) //Remove the old student info and replace with the new one
 		{
-			++i;
-			getline(fi, data);
-			if (i == stt)
+			++count;
+			if (count == i)
 			{
-				fo << stt << "," << new_student->ID << ',' << new_student->lastname << "," << new_student->firstname << ","
-				   << new_student->gender << "," << new_student->DoB << '\n';
-				continue;
+				// Paste the new student in the right index
+				fo << new_student->ID << endl;
+				fo << new_student->lastname << " " << new_student->firstname << endl;
+				fo << new_student->gender << endl;
+				fo << new_student->DoB << endl;
+				for (j = 0; j < 4; ++j)
+					getline(fi, data);
 			}
 			else
-				fo << data << endl;
+			{
+				for (j = 0; j < 4; ++j)
+				{
+					getline(fi, data);
+					if (data != "\0")
+						fo << data << endl;
+				}
+			}
 		}
 		fi.close();
 		fo.close();
 
-		if (remove(classname) == 0 && rename("temp.csv", classname) == 0) //Remove the original class csv and rename the temp.csv
+		if (remove(classname) == 0 && rename("data/temp.txt", classname) == 0) //Remove the original class csv and rename the temp.csv
 		{
 			cout << "Sucessfully edited the student!" << endl;
 			remove(backup_file_name.c_str());
@@ -276,7 +291,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 		{
 			cout << "Failed to edit the student" << endl;
 			remove(classname);
-			remove("temp.csv");
+			remove("temp.txt");
 			rename(backup_file_name.c_str(), classname);
 		}
 	}
@@ -287,10 +302,10 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 string remove_student(ifstream &fi, ofstream &fo, string class_name, string student_id)
 {
 	bool check = false;
-	int stt = 0, i = 0;
-	string data, backup_file_name = "backup_" + class_name + ".csv", removed_student;
-	char *classname = new char[class_name.length() + 11]; // a char* version of the string class_name
-	strcpy_s(classname, class_name.length() + 11, ("class_" + class_name + ".csv").c_str());
+	int i = 0, j = 0, count = 0;
+	string data, backup_file_name = "data/backup_" + class_name + ".txt", removed_student = "";
+	char *classname = new char[class_name.length() + 16]; // a char* version of the string class_name
+	strcpy_s(classname, class_name.length() + 16, ("data/class_" + class_name + ".txt").c_str());
 
 	fi.open(classname);
 	fo.open(backup_file_name.c_str());
@@ -304,19 +319,21 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 		fi.close();
 
 		fi.open(classname); //Reopen the original class csv file
-		getline(fi, data);	// Read the first line which is the class name
 		while (!fi.eof())	//check if the student id is in this class
 		{
-			++stt;
-			getline(fi, data, ',');			   //Get to the student id
-			getline(fi, data, ',');			   //Get to the student id
+			++i;
+			getline(fi, data);
 			if (data.compare(student_id) == 0) //If there is the same student id, then break this while loop
 			{
 				check = true;
 				break;
 			}
 			else
-				getline(fi, data); //Go to the next line
+			{
+				//Go to next student
+				for (j = 0; j < 3; ++j)
+					getline(fi, data);
+			}
 		}
 		fi.close();
 
@@ -325,34 +342,36 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 		else
 		{
 			fi.open(classname);
-			fo.open("temp.csv");
-			getline(fi, data);  //Read the first line which is the class name
+			fo.open("data/temp.txt");
 			check = true;
 			while (!fi.eof()) //Remove the student by passing data from old csv file to a new one without that student info
 			{
-				++i;
-				if (i == stt && check)
+				++count;
+				if (i == count && check)
 				{
-					getline(fi, data, ',');
-					getline(fi, data);
-					removed_student = data;
-					cout << stt << "," << removed_student << endl;
-					--i;
+					//If the current student is the student to be removed, output his/her info
+					for (j = 0; j < 4; ++j)
+					{
+						getline(fi, data);
+						removed_student += data + " ";
+					}
+					cout << removed_student << endl;
 					check = false;
-					continue;
 				}
 				else
 				{
-					getline(fi, data, ',');
-					getline(fi, data);
-					if (data.length() > 1)
-						fo << i << "," << data << endl;
+					for (j = 0; j < 4; ++j)
+					{
+						getline(fi, data);
+						if (data != "\0")
+							fo << data << endl;
+					}
 				}
 			}
 			fi.close();
 			fo.close();
 
-			if (remove(classname) == 0 && rename("temp.csv", classname) == 0) //Remove the original class csv and rename the temp.csv
+			if (remove(classname) == 0 && rename("data/temp.txt", classname) == 0) //Remove the original class csv and rename the temp.csv
 			{
 				cout << "Sucessfully removed the student!" << endl;
 				Sleep(3000);
@@ -363,7 +382,7 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 			{
 				cout << "Failed to remove the student" << endl;
 				remove(classname);
-				remove("temp.csv");
+				remove("temp.txt");
 				rename(backup_file_name.c_str(), classname);
 			}
 			delete[] classname;
@@ -373,37 +392,51 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 	return "Null";
 }
 
-void change_students(ifstream &fi, ofstream &fo, string class_name_A, string class_name_B, string student_id, int& status)
+void change_students(ifstream &fi, ofstream &fo, string class_name_A, string class_name_B, string student_id, int &status)
 {
 	string removed_student = remove_student(fi, fo, class_name_A, student_id);
-	string classname = "class_" + class_name_B + ".csv";
+	string classname = "data/class_" + class_name_B + ".txt";
 	string temp;
-	int stt = 0;
 
 	if (removed_student != "Null")
 	{
-		fi.open(classname.c_str());
-		if (!fi.is_open())
-		{
-			cout << "Failed to open " << class_name_B << "'s csv file" << endl;
-			return;
-		}
+		fo.open(classname.c_str(), ios::app);
+		if (!fo.is_open())
+			cout << "Failed to open class_" << class_name_B << ".txt file" << endl;
 		else
 		{
-			getline(fi, temp);
-			while (!fi.eof())
+			int count = 0, index1 = 0, index2 = 0;
+			for (int i = removed_student.length() - 2; i >= 0; --i)
 			{
-				++stt;
-				getline(fi, temp);
+				if (removed_student[i] == ' ')
+				{
+					++count;
+					if(count == 1)
+						index1 = i;
+					else if (count == 2)
+					{
+						index2 = i;
+						break;
+					}
+				}
 			}
+			count = 0;
+			for (int i = 0; i < removed_student.length(); ++i)
+			{
+				if (removed_student[i] == ' ')
+				{
+					++count;
+					if (count == 1 || i == index1 || i == index2 || i == removed_student.length() - 1)
+						fo << endl;
+					else fo << removed_student[i];
+				}
+				else
+					fo << removed_student[i];
+			}
+			cout << "Successfully changed the student " << student_id << " from class " << class_name_A << " to class " << class_name_B << endl;
+			Sleep(3000);
+			status = 1;
 		}
-		fi.close();
-
-		fo.open(classname.c_str(), ios::app);
-		fo << stt + 1 << "," << removed_student << endl;
-		cout << "Successfully changed the student " << student_id << " from class " << class_name_A << " to class " << class_name_B << endl;
-		Sleep(3000);
-		status = 1;
 		fo.close();
 	}
 	else
@@ -413,10 +446,10 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 
 void view_list_classes(ifstream &fi)
 {
-	fi.open("classes.txt");
+	fi.open("data/Class.txt");
 	if (!fi.is_open())
 	{
-		cout << "Failed to open the class csv file" << endl;
+		cout << "Failed to open the classes file" << endl;
 		return;
 	}
 	else
@@ -436,8 +469,8 @@ void view_list_classes(ifstream &fi)
 
 void view_list_students(ifstream &fi, string class_name)
 {
-	cout << "There are student of class" << class_name << endl;
-	class_name = "class_" + class_name + ".csv";
+	cout << "Students of class " << class_name << endl;
+	class_name = "data/class_" + class_name + ".txt";
 	fi.open(class_name.c_str());
 	if (!fi.is_open())
 	{
@@ -446,22 +479,25 @@ void view_list_students(ifstream &fi, string class_name)
 	}
 	else
 	{
+		int count = 0;
 		string data;
-		getline(fi, data);
-		cout << "List of student of class " << data << ":" << endl;
 		while (!fi.eof())
 		{
-			getline(fi, data, ',');
-			if (data.compare("\n") == 0)
-				break;
-			cout << data << "."; //stt
-			getline(fi, data, ',');
-			cout << data << " "; //Student ID
-			getline(fi, data, ',');
-			cout << data << " "; //last name
-			getline(fi, data, ',');
-			cout << data << endl; //first name
-			getline(fi, data);	  // goto next line
+			getline(fi, data);
+			if(data != "\0")
+			{
+				++count;
+				cout << count << ", " << data << ", ";
+				getline(fi, data);
+				cout << data << ", ";
+				getline(fi, data);
+				if (data == "1")
+					cout << "Male, ";
+				else if (data == "0")
+					cout << "Female, ";
+				getline(fi, data);
+				cout << data << endl;
+			}
 		}
 	}
 	fi.close();

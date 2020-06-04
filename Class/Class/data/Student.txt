@@ -5,7 +5,7 @@ Nguyen Van A
 19APCS1
 1
 19125007
-1234
+03032004
 Nguyen Van B
 03 03 2004
 19APCS1
@@ -69,3 +69,4 @@ Le Van E
 Le Van F
 08 07 2004
 19APCS2
+1

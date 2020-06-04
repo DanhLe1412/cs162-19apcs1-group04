@@ -1,7 +1,7 @@
 2
 CS162
 Introduction to Programming
-19CLC1
+19APCS1
 dbtien
 Dinh Ba Tien
 TS
@@ -13,16 +13,17 @@ TS
 11 30
 I42
 
-MTH252
-Calculus II
-19CLC1
-nttvan
-Nguyen Thi Thu Van
-TS
+CM101
+Communications
+19APCS1
+dnvu
+Duong Nguyen Vu
+GS
 0
 2020 04 01
 2020 06 01
 7
 13 30
 17 30
-I35
+I23
+
