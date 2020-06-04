@@ -1921,7 +1921,9 @@ void viewStudentsInCourse()
         cout << "Date of birth: " << curStudent->dob << endl;
         cout << "Class: " << curStudent->Class << endl;
         cout << "Status: " << curStudent->status << endl << endl;
+		curStudent = curStudent->pNext;
     }
+	system("pause");
 }
 
 void viewAttendanceList()
@@ -2111,6 +2113,8 @@ void viewAttendanceList()
             cout << curStudent->attendance[j] << endl;
         }
         cout << endl;
+		curStudent = curStudent->pNext;
     }
+	system("pause");
 }
 

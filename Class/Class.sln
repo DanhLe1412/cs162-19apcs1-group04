@@ -1,9 +1,30 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29424.173
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1145
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Class", "Class\Class.vcxproj", "{DDB4B0AA-5F81-4B64-9E4B-6B49863C1150}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A1D9C11-3CEC-4FF5-821E-55F603A40829}"
+	ProjectSection(SolutionItems) = preProject
+		Class\19apcs1_student.csv = Class\19apcs1_student.csv
+		Class\19apcs2_student.csv = Class\19apcs2_student.csv
+		Class\CallFunctions.txt = Class\CallFunctions.txt
+		Class\class.cpp = Class\class.cpp
+		Class\class.h = Class\class.h
+		Class\Class.vcxproj = Class\Class.vcxproj
+		Class\Class.vcxproj.filters = Class\Class.vcxproj.filters
+		Class\Class.vcxproj.user = Class\Class.vcxproj.user
+		Class\class_19APCS1_student.csv = Class\class_19APCS1_student.csv
+		Class\classes.txt = Class\classes.txt
+		Class\cli_menu.cpp = Class\cli_menu.cpp
+		Class\define_cli_menu.h = Class\define_cli_menu.h
+		Class\header.cpp = Class\header.cpp
+		Class\header.h = Class\header.h
+		Class\main.cpp = Class\main.cpp
+		Class\Staff.txt = Class\Staff.txt
+		Class\students.txt = Class\students.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
