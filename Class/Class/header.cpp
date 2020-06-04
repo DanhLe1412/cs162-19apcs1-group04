@@ -624,6 +624,7 @@ void addCourseManually(){
     cin >> tmp->room;
     tmp->pNext = nullptr;
     fin.open("data/" + y + "-" + s + "-Schedule-" + tmp->Class + ".txt");
+	n = 0;
     if (fin.is_open()) {
         fin >> n;
         for (int i = 0; i < n; i++) {
@@ -672,8 +673,15 @@ void addCourseManually(){
         }
         fin.close();
     }
-    cur->pNext = new Course;
-    cur->pNext = tmp;
+	if (pHead) {
+		cur->pNext = new Course;
+		cur->pNext = tmp;
+	}
+	else {
+		pHead = new Course;
+		pHead = tmp;
+		pHead->pNext = nullptr;
+	}
     fin.close();
     ofstream fout;
     fout.open("data/" + y + "-" + s + "-Schedule-" + tmp->Class + ".txt");
@@ -807,6 +815,11 @@ void editExistingCourse()
         }
         fin.close();
     }
+	else {
+		cout << "Class does not have Schedule" << endl;
+		system("pause");
+		return;
+	}
     CHOOSE_COURSE: {
         system("cls");
         cout << ">>> Editing an existing course. <<<" << endl;
@@ -862,10 +875,11 @@ void editExistingCourse()
         cout << "Input new Lecturer Username: ";
         cin >> tmp->LecturerUsername;
         fin.open("data/Lecturer.txt");
-        fin >> n;
+		int nLecturer;
+        fin >> nLecturer;
         string lecturer;
         check = false;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < nLecturer; i++) {
             if (tmp->LecturerUsername.size() == 0) {
                 check = true;
                 break;
@@ -1219,6 +1233,11 @@ void removeStudentFromScore()
         }
         fin.close();
     }
+	else {
+		cout << "Class does not have Schedule" << endl;
+		system("pause");
+		return;
+	}
     CHOOSE_COURSE: {
         system("cls");
         cout << ">>> Remove a Student from Course. <<<" << endl;
@@ -1461,6 +1480,11 @@ void addStudentToScore()
         }
         fin.close();
     }
+	else {
+		cout << "Class does not have Schedule" << endl;
+		system("pause");
+		return;
+	}
     CHOOSE_COURSE: {
         system("cls");
         cout << ">>> Add a Student to Course. <<<" << endl;
@@ -1658,7 +1682,6 @@ void viewCourseInSemester()
         fin.open("data/Class.txt");
         if (!fin.is_open()) return;
         check = false;
-        fin >> n;
 		while (!fin.eof()) {
 			fin >> Class;
 			if (Class == c) {
@@ -1728,6 +1751,11 @@ void viewCourseInSemester()
         }
         fin.close();
     }
+	else {
+		cout << "Class does not have Schedule" << endl;
+		system("pause");
+		return;
+	}
     cur = pHead;
     for (int i = 0; i < n; i++) {
         cout << i + 1 << ": " << cur->CourseId << " - " << cur->CourseName << endl;
@@ -1837,6 +1865,11 @@ void viewStudentsInCourse()
         }
         fin.close();
     }
+	else {
+		cout << "Class does not have Schedule" << endl;
+		system("pause");
+		return;
+	}
     CHOOSE_COURSE: {
         system("cls");
         cout << ">>> View list of Students of a Course. <<<" << endl;
