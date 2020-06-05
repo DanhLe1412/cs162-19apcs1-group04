@@ -142,7 +142,7 @@ struct pointType
 struct studentType
 {
     int iD;
-    int password;
+    string password;
     string fullname;
     int gender;
     tm dOB;
