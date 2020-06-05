@@ -3298,24 +3298,8 @@ void searchEditGrade()
     studentType tmp = students[pos];
     studentType* newStudents;
     int newSize;
-    dir = getDir(folder, "Student.txt");
-    updateStudent(tmp, newStudents, newSize, dir);
-    dir = getDir_class(folder, A[c1].class_courses[c2].className);
-    updateStudent_class(tmp, newStudents, newSize, dir);
     dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
     updateScore(tmp, newStudents, newSize, dir);
-
-    semester_courseType* B;
-    int m;
-    B = initSemester_courses_student(tmp.iD, folder, m);
-
-    for (int i = 0; i < m; ++i)
-        for (int j = 0; j < B[i].n_cls; ++j)
-            for (int k = 0; k < B[i].class_courses[j].n_crs; ++k)
-            {
-                dir = getDir_course(folder, B[i].academicYear, B[i].semesterName, B[i].class_courses[j].className, B[i].class_courses[j].courseName[k]);
-                updateCourse(tmp, newStudents, newSize, dir);
-            }
 
     cout << "Edit complete." << endl;
 }
