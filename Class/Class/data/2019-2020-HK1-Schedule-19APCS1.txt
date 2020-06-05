@@ -1,4 +1,4 @@
-3
+4
 CS162
 Introduction to Programming
 19APCS1
@@ -26,6 +26,20 @@ GS
 13 30
 17 30
 I23
+
+CS333
+Bitcoin Mining Beginning Techniques
+19APCS1
+mblanco
+Matthieu Blanco
+GS
+0
+2020 04 06
+2020 06 08
+7
+7 30
+11 30
+I43
 
 CS422
 Software analysis and design
