@@ -1,7 +1,7 @@
 19125006
 Nguyen Van A
 1
-02-03-2004
+19-03-2004
 19125007
 Nguyen Van B
 0
@@ -18,3 +18,7 @@ Nguyen Van E
 Nguyen Van F
 1
 07-03-2004
+19125007
+Nguyen Van B
+1
+19-02-2004

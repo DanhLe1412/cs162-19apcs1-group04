@@ -9,6 +9,8 @@
 #include <time.h>
 #include <iomanip>
 #include <sys/types.h>
+#include <conio.h>
+#include <windows.h>
 using namespace std;
 
 enum gender {
@@ -65,7 +67,7 @@ struct Lecturer{
     string lec_Fullname;
     string lec_degree;
     bool gender; //0 : Female, 1: Male
-    Lecturer* lec_pNext;
+    Lecturer* lec_pNext = nullptr;
 };
 // [13]
 void create_years_semesters(Semester* pHead);
@@ -106,6 +108,14 @@ void viewAttendanceList();
 
 //[23]
 void CRUD_Lecturer();
+void inputLecturer_KeyBoard(Lecturer*& data);
+void create_lecturer(Lecturer*& pLecturer, int& size);
+void saveLecturer_file(Lecturer* lec, int size);
+void getLecrurer_file(Lecturer*& lec, int& size);
+void deleteAllNode(Lecturer*& lec);
+void viewAll_lecturer(Lecturer* lec);
+void updateLecturer(Lecturer* lecturer, int size);
+void delete_one_lecturer(Lecturer* lec, int& size);
 
 // For [24] to [38]
 
