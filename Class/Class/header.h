@@ -221,7 +221,7 @@ void filterCourses(int iD, string*& courses, int& size, string folder, string ac
 durationType readDuration(ifstream& fin);
 int countStudent(ifstream& fin);
 int countStudent_class(ifstream& fin);
-studentType* readStudent(string dir, int& size);
+studentType* readStudents(string dir, int& size);
 studentType* readStudent_array(ifstream& fin, int& size);
 studentType readStudent_element(ifstream& fin);
 studentType* readStudent_class(string dir, int& size);

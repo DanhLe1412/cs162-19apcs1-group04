@@ -2211,7 +2211,7 @@ studentType* readStudent_array(ifstream& fin, int& size)
     return array;
 }
 
-studentType* readStudent(string dir, int& size)
+studentType* readStudents(string dir, int& size)
 {
     ifstream fin;
     studentType* array = nullptr;
@@ -2787,7 +2787,7 @@ void updateStudent_array(studentType*& students, int size, studentType newStuden
 
 void updateStudent(studentType newStudent, studentType*& students, int& size, string dir)
 {
-    students = readStudent(dir, size);
+    students = readStudents(dir, size);
     updateStudent_array(students, size, newStudent);
     writeStudent(students, size, dir);
 }
