@@ -2318,8 +2318,6 @@ studentType readCourse_element(ifstream& fin)
         student.checkIn[i].checkIn = stoi(tmp);
     }
 
-    student.password = -1;
-
     return student;
 }
 
@@ -2601,7 +2599,6 @@ studentType* readScore(string dir, int& size)
             getline(fin, tmp, '\n');
             students[i].point.total = stof(tmp);
 
-            students[i].password = -1;
             students[i].gender = -1;
             students[i].dOB.tm_year = -1 - 1900;
             students[i].dOB.tm_mon = -1 - 1;
@@ -2755,7 +2752,7 @@ void updateStudent_element(studentType& oldStudent, studentType newStudent)
 {
     if (checkUpdate_int(oldStudent.iD, newStudent.iD) == true)
         oldStudent.iD = newStudent.iD;
-    if (checkUpdate_int(oldStudent.password, newStudent.password) == true)
+    if (checkUpdate_string(oldStudent.password, newStudent.password) == true)
         oldStudent.password = newStudent.password;
     if (checkUpdate_string(oldStudent.fullname, newStudent.fullname) == true)
         oldStudent.fullname = newStudent.fullname;
@@ -3620,7 +3617,6 @@ studentType readStudent_class_element(ifstream& fin)
     student.dOB.tm_year = n;
     student.dOB = { 0, 0, 0, student.dOB.tm_mday, student.dOB.tm_mon, student.dOB.tm_year };
 
-    student.password = -1;
     student.point = { -1, -1, -1, -1 };
     for (int i = 0; i < 10; ++i)
     {

@@ -16,5 +16,5 @@ void staff_cli();
 void lecturer_cli();
 void Print_home_page(int& i, int type);
 void changePassword(string username, string& pass, int type);
-bool checkUser_to_print_inf(string username, string pass, int type);
+void checkUser_to_print_inf(string username, string pass, int type);
 #endif
