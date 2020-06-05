@@ -2775,11 +2775,37 @@ void updateStudent_element(studentType& oldStudent, studentType newStudent)
             oldStudent.checkIn[i] = newStudent.checkIn[i];
 }
 
+void updateStudent_withoutScore_element(studentType& oldStudent, studentType newStudent)
+{
+    if (checkUpdate_int(oldStudent.iD, newStudent.iD) == true)
+        oldStudent.iD = newStudent.iD;
+    if (checkUpdate_string(oldStudent.password, newStudent.password) == true)
+        oldStudent.password = newStudent.password;
+    if (checkUpdate_string(oldStudent.fullname, newStudent.fullname) == true)
+        oldStudent.fullname = newStudent.fullname;
+    if (checkUpdate_int(oldStudent.gender, newStudent.gender) == true)
+        oldStudent.gender = newStudent.gender;
+    if (checkUpdate_tm(oldStudent.dOB, newStudent.dOB) == true)
+        oldStudent.dOB = newStudent.dOB;
+    if (checkUpdate_string(oldStudent.className, newStudent.className) == true)
+        oldStudent.className = newStudent.className;
+    for (int i = 0; i < 10; ++i)
+        if (checkUpdate_checkin(oldStudent.checkIn[i], newStudent.checkIn[i]) == true)
+            oldStudent.checkIn[i] = newStudent.checkIn[i];
+}
+
 void updateStudent_array(studentType*& students, int size, studentType newStudent)
 {
     for (int i = 0; i < size; ++i)
         if (students[i].iD == newStudent.iD)
             updateStudent_element(students[i], newStudent);
+}
+
+void updateStudent_withoutScore_array(studentType*& students, int size, studentType newStudent)
+{
+    for (int i = 0; i < size; ++i)
+        if (students[i].iD == newStudent.iD)
+            updateStudent_withoutScore_element(students[i], newStudent);
 }
 
 void updateStudent(studentType newStudent, studentType*& students, int& size, string dir)
@@ -2790,6 +2816,13 @@ void updateStudent(studentType newStudent, studentType*& students, int& size, st
 }
 
 void updateCourse(studentType newStudent, studentType*& students, int& size, string dir)
+{
+    students = readCourse(dir, size);
+    updateStudent_withoutScore_array(students, size, newStudent);
+    writeCourse(students, size, dir);
+}
+
+void updateScore(studentType newStudent, studentType*& students, int& size, string dir)
 {
     students = readCourse(dir, size);
     updateStudent_array(students, size, newStudent);
@@ -3127,7 +3160,7 @@ void importScore()
     {
         dir = getDir_score(folder, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
         if (checkFile(dir) == false)
-            cout << "Appropriate file not found." << endl;
+            cout << "File with correspoding name not found." << endl;
         break;
     }
 
@@ -3137,7 +3170,7 @@ void importScore()
         cin.ignore();
         getline(cin, dir, '\n');
         if (checkFile(dir) == false)
-            cout << "Appropriate file not found." << endl;
+            cout << "File with correspoding name not found." << endl;
         break;
     }
 
@@ -3166,6 +3199,8 @@ void importScore()
             updateStudent(tmp, newStudents, newSize, dir);
             dir = getDir_class(folder, A[c1].class_courses[c2].className);
             updateStudent_class(tmp, newStudents, newSize, dir);
+            dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+            updateScore(tmp, newStudents, newSize, dir);
 
             semester_courseType* B;
             int m;
@@ -3267,6 +3302,8 @@ void searchEditGrade()
     updateStudent(tmp, newStudents, newSize, dir);
     dir = getDir_class(folder, A[c1].class_courses[c2].className);
     updateStudent_class(tmp, newStudents, newSize, dir);
+    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+    updateScore(tmp, newStudents, newSize, dir);
 
     semester_courseType* B;
     int m;

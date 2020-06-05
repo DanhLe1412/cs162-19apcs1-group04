@@ -259,12 +259,15 @@ bool checkUpdate_float(float oldOne, float newOne);
 bool checkUpdate_tm(tm oldOne, tm newOne);
 bool checkUpdate_checkin(checkInType oldOne, checkInType newOne);
 void updateStudent_element(studentType& oldStudent, studentType newStudent);
+void updateStudent_withoutScore_element(studentType& oldStudent, studentType newStudent);
 void updateStudent_array(studentType*& students, int size, studentType newStudent);
+void updateStudent_withoutScore_array(studentType*& students, int size, studentType newStudent);
 void updateStudent(studentType newStudent, studentType*& students, int& size, string dir);
 void updateStudent_class(studentType newStudent, studentType*& students, int& size, string dir);
 void writeCourse(studentType* students, int size, string dir);
 void writeCourse_csv(studentType* students, int size, string dir);
 void updateCourse(studentType newStudent, studentType*& students, int& size, string dir);
+void updateScore(studentType newStudent, studentType*& students, int& size, string dir);
 void writeScore(studentType* students, int size, string dir);
 
 // Viewing Functions
