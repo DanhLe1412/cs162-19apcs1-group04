@@ -100,8 +100,9 @@ void home_cli(string username, string pass, int type){
 		case 2:
 		{
 			//add new student to class
+			system("CLS");
+			cout << ">>>>>>>>>> <<<<<<<<<<" << endl;
 			int check_add = 0;
-		
 			ifstream class_file;
 			class_file.open("data/Class.txt");
 			if (!class_file.is_open())
@@ -130,6 +131,8 @@ void home_cli(string username, string pass, int type){
 		{
 			//Edit an existing student
 				//--------choose class to edit student-----
+			system("CLS");
+			cout << ">>>>>>>>>> <<<<<<<<<<" << endl;
 			string class_file;
 			system("type data\\Class.txt");
 			cout << "choose class to edit student: ";
@@ -155,6 +158,8 @@ void home_cli(string username, string pass, int type){
 			//Remove a student;
 			//
 			//--------Get class to remove student-----
+			system("CLS");
+			cout << ">>>>>>>>>> <<<<<<<<<<" << endl;
 			string class_file;
 			system("type data\\Class.txt");
 			cout << "choose class to remove student: ";
@@ -177,6 +182,8 @@ void home_cli(string username, string pass, int type){
 		case 5:{
 			// Change student to other class;
 			//-----------------Choose class A and class B-------------------
+			system("CLS");
+			cout << ">>>>>>>>>> <<<<<<<<<<" << endl;
 			string class_a;
 			string class_b;
 			system("type data\\Class.txt");
@@ -203,6 +210,8 @@ void home_cli(string username, string pass, int type){
 		}
 		case 6:
 		{	//View list of classes
+			system("CLS");
+			cout << ">>>>>>>>>> <<<<<<<<<<" << endl;
 			cout << "There are class in course" << endl;
 			ifstream fin;
 			view_list_classes(fin);
@@ -210,7 +219,8 @@ void home_cli(string username, string pass, int type){
 		}
 		case 7:
 		{	// View list of students in a class
-
+			system("CLS");
+			cout << ">>>>>>>>>> <<<<<<<<<<" << endl;
 			ifstream class_file;
 			class_file.open("data/Class.txt");
 			if(!class_file.is_open()){
@@ -235,106 +245,113 @@ void home_cli(string username, string pass, int type){
 		case 8:
 		{	//Academic yead
 			CRUD_years_semesters();
-			Sleep(5000);
+			
 			break;
 		}
 		case 9:
 		{	// import course from csv file
 			importCourses();
-			Sleep(5000);
+		
 			break;
 		}
 		case 10:
 		{	//Manually add new course			
 			addCourseManually();
-			Sleep(5000);
+			
 			break;
 		}
 		case 11:{
 			// Edit an existing course
 			editExistingCourse();
-			Sleep(5000);
+		
 			break;
 		}
 		case 12:
 		{	// Remove a course
 			removeCourse();
-			Sleep(5000);
 			break;
 		}
 		case 13:
 		{	//Remove student in course
 			removeStudentFromScore();
-			Sleep(5000);
+		
 			break;
 		}
 		case 14:
 		{	//Add student in course
 			addStudentToScore();
-			Sleep(5000);
+		
 			break;
 		}
 		case 15:
 		{
 			//View course in semester
 			viewCourseInSemester();
-			Sleep(5000);
+		
 			break;
 		}
 		case 16:{
 			// view student of course
 			viewStudentsInCourse();
-			Sleep(5000);
+		
 			break;
 		}
 		case 17:{
 			// view attendace list
 			viewAttendanceList();
-			Sleep(10000);
+			
 			break;
 		}
 		case 18:
 		{	//Lecturers
 			CRUD_Lecturer();
-			Sleep(3000);
 			break;
 		}
 		case 19:{
 			//Search and view the scoreboard of a course
+			searchViewScore();
 			break;
 		}
 		case 20:{
 			// Export a scoreboard to a csv file
+			exportScore();
 			break;
 		}
 		case 21:{
 			// Search and view attendance of a course
+			searchViewAttendance();
 			break;
 		}
 		case 22:{
 			// Export a attendance to a csv file
+			void exportAttendances();
 			break;
 		}
 		case 23:
-		{	// Check-in
+		{
+			// Check-in
+			//void searchCheckIn(int iD);
 			break;
 		}
 		case 24:
 		{	//View check-in result
+			//searchViewCheckIn(int iD);
 			break;
 		}
 		case 25:
 		{	// View schedules
+		//	searchViewSchedule(int iD);
 			break;
 		}
 		case 26:
-		{	//View scores of a course
+		{	
+			//View scores of a course
+			//searchViewScore_student(int iD);
 			break;
 		}
 		case 27:
 		{	//View list course in current semester
 			viewCourseInSemester();
-			Sleep(5000);
 			break;
 		}
 		case 28:
@@ -344,24 +361,45 @@ void home_cli(string username, string pass, int type){
 		}
 		case 29:
 		{	// View attendance list of a course
-			viewAttendanceList();
+			searchViewAttendance();
+			int check_view = 1;
+			while(check_view != 0){
+				cout << "Type [0] to back to main:";
+				cin >> check_view;
+			}
 			break;
 		}
 		case 30:
-		{	//Edit an attendance
+		{	
+			//Edit an attendance
+			editAttendance();
 			break;
 		}
 		case 31:
 		{
 			// Import scoreboard of a course"
+			importScore();
 			break;
 		}
 		case 32:
 		{	//Edit grade of a student
+			searchEditGrade();
+			int check_view = 1;
+			while(check_view != 0){
+				cout << "Type [0] to back to main:";
+				cin >> check_view;
+			}
 			break;
 		}
 		case 33:
-		{	//View scoreboard
+		{	
+			//View scoreboard
+			searchViewScore();
+			int check_view = 1;
+			while(check_view != 0){
+				cout << "Type [0] to back to main:";
+				cin >> check_view;
+			}
 			break;
 		}
 		case 40:
@@ -417,8 +455,9 @@ void SignIn_Menu()
 	}
 	if (checkUser(username, passw, type))
 	{
-		checksign_in = 1;
+		
 		home_cli(username,passw,type);
+		checksign_in = 1;
 	}
 	else
 		
@@ -480,14 +519,26 @@ bool checkUser(string username, string pass, int type){
 			delete [] staff;
 			return false;
 		} else cout << "Cannot open file !!" << endl;
+		fin.close();
 	}
 	else if (type == 2)
 	{
 		fin.open("data/Lecturer.txt");
 		if (fin.is_open())
 		{
-			
+			Lecturer* plec = new Lecturer;
+			int size = 0;
+			getLecrurer_file(plec, size);
+			while (plec->lec_pNext) {
+				if (username.compare(plec->lec_username) == 0 && pass.compare(plec->lec_password) == 0) {
+					return true;
+				}
+				else plec = plec->lec_pNext;
+			}
+			deleteAllNode(plec);
+			return false;
 		}else cout << "Cannot open file !!" << endl;
+		fin.close();
 	}
 	else if (type == 3)
 	{	
@@ -516,11 +567,6 @@ bool checkUser(string username, string pass, int type){
 				//
 				if (username.compare(tmp->userID)==0 && pass.compare(tmp->password)==0)
 				{
-					cout << endl << "--------------" << endl;
-					cout << username << "---" << pass << endl;
-					cout << "here: " << tmp->userID << endl;
-					cout << tmp->password << endl;
-					cout << "Here okey" << endl;
 					RemoveList(student);
 					return true;
 				}
@@ -535,6 +581,7 @@ bool checkUser(string username, string pass, int type){
 			RemoveList(student);
 			return false;
 		}else cout << "Cannot open file !!" << endl;
+		fin.close();
 	}
 	else
 	{

@@ -1,6 +1,6 @@
 3
 dbtien
-abcdef
+123456
 Dinh Ba Tien
 TS
 0
@@ -19,8 +19,3 @@ abcdef
 Nguyen Hai Minh
 ThS
 1
-dnvu
-dnvu
-Duong Nguyen Vu
-GS
-0
