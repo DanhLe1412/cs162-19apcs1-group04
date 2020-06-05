@@ -39,7 +39,7 @@ struct readStudent{
 	string DoB;
 	string class_name;
 	bool gender;
-	readStudent *pNext_student;
+	readStudent *pNext_student=nullptr;
 };
 struct Staff{
 	User user;
