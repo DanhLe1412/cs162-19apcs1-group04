@@ -2847,30 +2847,48 @@ string* readSchedule_course(string dir, int& size)
 
 void chooseCourse(semester_courseType* A, int size, int& c1, int& c2, int& c3)
 {
-    cout << "Please choose semester: " << endl;
-    for (int i = 0; i < size; ++i)
-        cout << "[" << i + 1 << "]: " << A[i].academicYear << " - " << A[i].semesterName << endl;
-    cin >> c1;
-    --c1;
-
-    cout << "Please choose class: " << endl;
-    for (int i = 0; i < A[c1].n_cls; ++i)
-        cout << "[" << i + 1 << "]: " << A[c1].class_courses[i].className << endl;
-    cin >> c2;
-    --c2;
-
-    if (A[c1].class_courses[c2].n_crs == 0)
+    if (A == nullptr)
     {
         cout << "No courses found." << endl;
-        c3 = -1;
+        c1 = -1;
     }
     else
     {
-        cout << "Please choose course: " << endl;
-        for (int i = 0; i < A[c1].class_courses[c2].n_crs; ++i)
-            cout << "[" << i + 1 << "]: " << A[c1].class_courses[c2].courseName[i] << endl;
-        cin >> c3;
-        --c3;
+        cout << "Please choose semester: " << endl;
+        for (int i = 0; i < size; ++i)
+            cout << "[" << i + 1 << "]: " << A[i].academicYear << " - " << A[i].semesterName << endl;
+        cin >> c1;
+        --c1;
+
+        if (A[c1].n_cls == 0)
+        {
+            cout << "No classes found." << endl;
+            c2 = -1;
+        }
+        else
+        {
+
+            cout << "Please choose class: " << endl;
+            for (int i = 0; i < A[c1].n_cls; ++i)
+                cout << "[" << i + 1 << "]: " << A[c1].class_courses[i].className << endl;
+            cin >> c2;
+            --c2;
+
+            if (A[c1].class_courses[c2].n_crs == 0)
+            {
+                cout << "No courses found." << endl;
+                c3 = -1;
+            }
+            else
+            {
+                cout << "Please choose course: " << endl;
+                for (int i = 0; i < A[c1].class_courses[c2].n_crs; ++i)
+                    cout << "[" << i + 1 << "]: " << A[c1].class_courses[c2].courseName[i] << endl;
+                cin >> c3;
+                --c3;
+            }
+
+        }
     }
 }
 
@@ -3017,15 +3035,18 @@ void exportScore()
     A = initSemester_courses(folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    string dir;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+    if (c1 != -1 && c2 != -1 && c3 != -1)
+    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
 
-    studentType* students;
-    int size;
-    students = readCourse(dir, size);
-    dir = getDir_score(folder, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
-    writeScore(students, size, dir);
-    cout << "Mission complete." << endl;
+        studentType* students;
+        int size;
+        students = readCourse(dir, size);
+        dir = getDir_score(folder, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+        writeScore(students, size, dir);
+        cout << "Mission complete." << endl;
+    }
 }
 
 void searchViewAttendance()
@@ -3036,10 +3057,13 @@ void searchViewAttendance()
     A = initSemester_courses(folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    string dir;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+    if (c1 != -1 && c2 != -1 && c3 != -1)
+    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
 
-    viewCourse(dir);
+        viewCourse(dir);
+    }
 }
 
 void searchViewAttendance_lecturer(string username)
@@ -3050,7 +3074,7 @@ void searchViewAttendance_lecturer(string username)
     A = initSemester_courses_lecturer(username, folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    if (c3 != -1)
+    if (c1 != -1 && c2 != -1 && c3 != -1)
     {
         string dir;
         dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
@@ -3073,15 +3097,18 @@ void exportAttendances()
     A = initSemester_courses(folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    string dir;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+    if (c1 != -1 && c2 != -1 && c3 != -1)
+    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
 
-    studentType* students;
-    int size;
-    students = readCourse(dir, size);
-    dir = getDir_course_csv(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
-    writeCourse_csv(students, size, dir);
-    cout << "Mission complete." << endl;
+        studentType* students;
+        int size;
+        students = readCourse(dir, size);
+        dir = getDir_course_csv(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+        writeCourse_csv(students, size, dir);
+        cout << "Mission complete." << endl;
+    }
 }
 
 void editAttendance(string username)
@@ -3092,7 +3119,7 @@ void editAttendance(string username)
     A = initSemester_courses_lecturer(username, folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    if (c3 != -1)
+    if (c1 != -1 && c2 != -1 && c3 != -1)
     {
         string dir;
         dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
@@ -3173,7 +3200,7 @@ void importScore(string username)
     string dir;
 
     chooseCourse(A, n, c1, c2, c3);
-    if (c3 != -1)
+    if (c1 != -1 && c2 != -1 && c3 != -1)
     {
         folder = "import";
 
@@ -3257,7 +3284,7 @@ void searchEditGrade(string username)
     A = initSemester_courses_lecturer(username, folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    if (c3 != -1)
+    if (c1 != -1 && c2 != -1 && c3 != -1)
     {
         string dir;
         dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
@@ -3367,10 +3394,13 @@ void searchViewScore()
     A = initSemester_courses(folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    string dir;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
-    cout << "Scoreboard of " << A[c1].class_courses[c2].courseName[c3] << ":" << endl;
-    viewScore(dir);
+    if (c1 != -1 && c2 != -1 && c3 != -1)
+    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+        cout << "Scoreboard of " << A[c1].class_courses[c2].courseName[c3] << ":" << endl;
+        viewScore(dir);
+    }
 }
 
 void searchViewScore_lecturer(string username)
@@ -3382,7 +3412,7 @@ void searchViewScore_lecturer(string username)
 
     chooseCourse(A, n, c1, c2, c3);
 
-    if (c3 != -1)
+    if (c1 != -1 && c2 != -1 && c3 != -1)
     {
         string dir;
         dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
@@ -3399,7 +3429,7 @@ void searchCheckIn(int iD)
     A = initSemester_courses_student(iD, folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    if (c3 != -1)
+    if (c1 != -1 && c2 != -1 && c3 != -1)
     {
         string dir;
         dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
@@ -3421,7 +3451,7 @@ void searchViewCheckIn(int iD)
 
     chooseCourse(A, n, c1, c2, c3);
 
-    if (c3 != -1)
+    if (c1 != -1 && c2 != -1 && c3 != -1)
     {
         string dir;
         dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
@@ -3439,7 +3469,7 @@ void searchViewSchedule(int iD)
 
     chooseCourse(A, n, c1, c2, c3);
 
-    if (c3 != -1)
+    if (c1 != -1 && c2 != -1 && c3 != -1)
     {
         string dir = getDir_schedule(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className);
         cout << "Schedule: " << endl;
@@ -3456,7 +3486,7 @@ void searchViewScore_student(int iD)
 
     chooseCourse(A, n, c1, c2, c3);
 
-    if (c3 != -1)
+    if (c1 != -1 && c2 != -1 && c3 != -1)
     {
         string dir;
         dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
