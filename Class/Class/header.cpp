@@ -3244,6 +3244,7 @@ void searchEditGrade()
     cout << "[2]: Final Point" << endl;
     cout << "[3]: Bonus Point" << endl;
     cout << "[4]: Total Point" << endl;
+    cout << "[5]: All of the above" << endl;
     cin >> choice;
     switch (choice)
     {
@@ -3288,6 +3289,27 @@ void searchEditGrade()
         float input;
         cin >> input;
         students[pos].point.total = input;
+        break;
+    }
+
+    case 5:
+    {
+        cout << "Student's current point:" << endl;
+        cout << "Midterm Final   Bonus   Total   " << endl;
+        cout.setf(ios::adjustfield, ios::left);
+        cout << setw(8) << students[pos].point.midterm;
+        cout << setw(8) << students[pos].point.final;
+        cout << setw(8) << students[pos].point.bonus;
+        cout << setw(8) << students[pos].point.total;
+        cout.unsetf(ios::adjustfield);
+        cout << endl;
+        cout << "Enter new point (\"midterm final bonus total\"):" << endl;
+        float input1, input2, input3, input4;
+        cin >> input1 >> input2 >> input3 >> input4;
+        students[pos].point.midterm = input1;
+        students[pos].point.final = input2;
+        students[pos].point.bonus = input3;
+        students[pos].point.total = input4;
         break;
     }
 
