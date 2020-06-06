@@ -3647,6 +3647,8 @@ semester_courseType* initSemester_courses_student(int iD, string folder, int& si
         }
     }
 
+    refreshSemester_courses(A, size);
+
     return A;
 }
 
@@ -3667,6 +3669,8 @@ semester_courseType* initSemester_courses_lecturer(string username, string folde
         }
     }
 
+    refreshSemester_courses(A, size);
+
     return A;
 }
 
@@ -3679,17 +3683,27 @@ void filterSemesters(string folder, semester_courseType*& semesters, int& size)
     int tmp;
 
     bool** marker;
-    marker = new bool* [size];
-    for (int i = 0; i < size; ++i)
-        marker[i] = new bool[cls_size];
-    for (int i = 0; i < size; ++i)
-        for (int j = 0; j < cls_size; ++j)
-            marker[i][j] = 0;
+    if (size == 0)
+        marker = nullptr;
+    else
+    {
+        marker = new bool* [size];
+        for (int i = 0; i < size; ++i)
+            marker[i] = new bool[cls_size];
+        for (int i = 0; i < size; ++i)
+            for (int j = 0; j < cls_size; ++j)
+                marker[i][j] = 0;
+    }
 
     bool* marker2;
-    marker2 = new bool[size];
-    for (int i = 0; i < size; ++i)
-        marker2[i] = 0;
+    if (size == 0)
+        marker2 = nullptr;
+    else
+    {
+        marker2 = new bool[size];
+        for (int i = 0; i < size; ++i)
+            marker2[i] = 0;
+    }
 
     for (int i = 0; i < size; ++i)
     {
@@ -3700,10 +3714,12 @@ void filterSemesters(string folder, semester_courseType*& semesters, int& size)
                 if (tmp == i)
                 {
                     ++newSize;
-                    marker2[i] = 1;
+                    if (marker2 != nullptr)
+                        marker2[i] = 1;
                     ++tmp;
                 }
-                marker[i][j] = 1;
+                if (marker != nullptr)
+                    marker[i][j] = 1;
             }
     }
 
@@ -3721,11 +3737,14 @@ void filterSemesters(string folder, semester_courseType*& semesters, int& size)
 
         for (int i = 0; i < size; ++i)
         {
-            if (marker2[i] == 1)
+            if (marker2 != nullptr)
             {
-                newSemesters[pos].academicYear = semesters[i].academicYear;
-                newSemesters[pos].semesterName = semesters[i].semesterName;
-                ++pos;
+                if (marker2[i] == 1)
+                {
+                    newSemesters[pos].academicYear = semesters[i].academicYear;
+                    newSemesters[pos].semesterName = semesters[i].semesterName;
+                    ++pos;
+                }
             }
         }
 
@@ -3739,35 +3758,56 @@ void filterSemesters(string folder, semester_courseType*& semesters, int& size)
         {
             for (int j = 0; j < cls_size; ++j)
             {
-                if (marker[i][j] == 1)
+                if (marker != nullptr)
                 {
-                    ++newSemesters[pos].n_cls;
+                    if (marker[i][j] == 1)
+                    {
+                        ++newSemesters[pos].n_cls;
+                    }
                 }
             }
-            if (marker2[i] == 1)
-                ++pos;
+            if (marker2 != nullptr)
+            {
+                if (marker2[i] == 1)
+                    ++pos;
+            }
         }
 
         pos = 0;
         int pos2 = 0;
         for (int i = 0; i < size; ++i)
         {
-            if (marker2[i] == 1)
-                if (newSemesters[pos].n_cls != 0)
-                    newSemesters[pos].class_courses = new class_courseType[newSemesters[pos].n_cls];
-            for (int j = 0; j < cls_size; ++j)
+            if (marker2 != nullptr)
             {
-                if (marker[i][j] == 1)
+                if (marker2[i] == 1)
                 {
-                    newSemesters[pos].class_courses[pos2].className = classes[j].className;
-                    ++pos2;
+                    pos2 = 0;
+                    if (newSemesters[pos].n_cls != 0)
+                        newSemesters[pos].class_courses = new class_courseType[newSemesters[pos].n_cls];
+                    else
+                        newSemesters[pos].class_courses = nullptr;
                 }
             }
-            if (marker2[i] == 1)
-                ++pos;
+            for (int j = 0; j < cls_size; ++j)
+            {
+                if (marker != nullptr)
+                {
+                    if (marker[i][j] == 1)
+                    {
+                        newSemesters[pos].class_courses[pos2].className = classes[j].className;
+                        ++pos2;
+                    }
+                }
+            }
+            if (marker2 != nullptr)
+            {
+                if (marker2[i] == 1)
+                    ++pos;
+            }
         }
 
     }
+
 
     delete[] semesters;
     size = newSize;
@@ -3940,4 +3980,63 @@ void updateStudent_class(studentType newStudent, studentType*& students, int& si
     students = readStudent_class(dir, size);
     updateStudent_array(students, size, newStudent);
     writeStudent_class(students, size, dir);
+}
+
+void refreshSemester_courses(semester_courseType*& semesters, int& size)
+{
+    semester_courseType* newSemesters;
+    int newSize = size;
+    int tmp;
+
+    bool* marker;
+    if (size == 0)
+        marker = nullptr;
+    else
+    {
+        marker = new bool[size];
+        for (int i = 0; i < size; ++i)
+            marker[i] = 0;
+    }
+
+    for (int i = 0; i < size; ++i)
+    {
+        tmp = i;
+        for (int j = 0; j < semesters[i].n_cls; ++j)
+        {
+            if (semesters[i].class_courses[j].n_crs == 0)
+            {
+                if (tmp == i)
+                {
+                    --newSize;
+                    marker[i] = 1;
+                    ++tmp;
+                }
+            }
+        }
+    }
+
+    if (newSize == 0)
+        newSemesters = nullptr;
+    else
+        newSemesters = new semester_courseType[newSize];
+
+    if (newSize != 0)
+    {
+        int pos = 0;
+        for (int i = 0; i < size; ++i)
+        {
+            if (marker[i] == 0)
+            {
+                newSemesters[pos].academicYear = semesters[i].academicYear;
+                newSemesters[pos].semesterName = semesters[i].semesterName;
+                newSemesters[pos].n_cls = semesters[i].n_cls;
+                newSemesters[pos].class_courses = semesters[i].class_courses;
+                ++pos;
+            }
+        }
+    }
+
+    delete[] semesters;
+    size = newSize;
+    semesters = newSemesters;
 }

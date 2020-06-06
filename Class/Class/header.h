@@ -228,6 +228,7 @@ void chooseCourse(semester_courseType* A, int size, int& c1, int& c2, int& c3);
 semester_courseType* initSemester_courses(string folder, int& size);
 semester_courseType* initSemester_courses_lecturer(string username, string folder, int& size);
 semester_courseType* initSemester_courses_student(int iD, string folder, int& size);
+void refreshSemester_courses(semester_courseType*& semesters, int& size);
 string* initCourses(string folder, string academicYear, string semester, string className, int& size);
 string* initCourses_lecturer(string username, string folder, string academicYear, string semester, string className, int& size);
 void filterSemesters(string folder, semester_courseType*& semesters, int& size);
