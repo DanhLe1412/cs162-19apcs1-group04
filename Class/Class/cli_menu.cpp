@@ -222,7 +222,7 @@ void home_cli(string username, string pass, int type, int& con_stop)
 				system("type data\\Class.txt");
 				cout << "Which class get student (Class A):";
 				cin >> class_a;
-				cout << "Choose class remove to (class B):";
+				cout << "which class will this student be moved to ?(class B):";
 				cin >> class_b;
 				//---------- Get Student To Moving in Class A ------------
 				ifstream student_fin;
