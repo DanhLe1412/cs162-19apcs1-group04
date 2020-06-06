@@ -2859,11 +2859,19 @@ void chooseCourse(semester_courseType* A, int size, int& c1, int& c2, int& c3)
     cin >> c2;
     --c2;
 
-    cout << "Please choose course: " << endl;
-    for (int i = 0; i < A[c1].class_courses[c2].n_crs; ++i)
-        cout << "[" << i + 1 << "]: " << A[c1].class_courses[c2].courseName[i] << endl;
-    cin >> c3;
-    --c3;
+    if (A[c1].class_courses[c2].n_crs == 0)
+    {
+        cout << "No courses found." << endl;
+        c3 = -1;
+    }
+    else
+    {
+        cout << "Please choose course: " << endl;
+        for (int i = 0; i < A[c1].class_courses[c2].n_crs; ++i)
+            cout << "[" << i + 1 << "]: " << A[c1].class_courses[c2].courseName[i] << endl;
+        cin >> c3;
+        --c3;
+    }
 }
 
 time_t getCurrentTime()
@@ -3034,6 +3042,23 @@ void searchViewAttendance()
     viewCourse(dir);
 }
 
+void searchViewAttendance_lecturer(string username)
+{
+    string folder = "data";
+    semester_courseType* A;
+    int n, c1, c2, c3;
+    A = initSemester_courses_lecturer(username, folder, n);
+
+    chooseCourse(A, n, c1, c2, c3);
+    if (c3 != -1)
+    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+
+        viewCourse(dir);
+    }
+}
+
 string getDir_course_csv(string folder, string academicYear, string semester, string className, string courseName)
 {
     string dir = folder + "/" + academicYear + "-" + semester + "-" + className + "-" + courseName + "-Attendances.csv";
@@ -3059,271 +3084,279 @@ void exportAttendances()
     cout << "Mission complete." << endl;
 }
 
-void editAttendance()
+void editAttendance(string username)
 {
     string folder = "data";
     semester_courseType* A;
     int n, c1, c2, c3;
-    A = initSemester_courses(folder, n);
+    A = initSemester_courses_lecturer(username, folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    string dir;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
-
-    studentType* students;
-    int size;
-    students = readCourse(dir, size);
-    viewCourse(dir);
-
-    cout << "Enter student's ordinal number or ID:" << endl;
-    int choice;
-    cin >> choice;
-    int pos = positionOfStudent_array(choice, students, size);
-    cout << "Please choose type of information:" << endl;
-    cout << "[1]: Fullname" << endl;
-    cout << "[2]: Date of birth" << endl;
-    cin >> choice;
-    switch (choice)
+    if (c3 != -1)
     {
-    case 1:
-    {
-        cout << "Student's current fullname:" << endl;
-        cout << students[pos].fullname << endl;
-        cout << "Enter new fullname:" << endl;
-        cin.ignore();
-        string input;
-        getline(cin, input, '\n');
-        students[pos].fullname = input;
-        break;
-    }
-
-    case 2:
-    {
-        cout << "Student's current DOB:" << endl;
-        cout << setw(2) << setfill('0') << students[pos].dOB.tm_mday << "-" << setw(2) << setfill('0') << students[pos].dOB.tm_mon + 1 << "-" << students[pos].dOB.tm_year + 1900 << endl;
-        cout << "Enter new DOB in format \"dd mm yyyy\":" << endl;
-        int day, mon, year;
-        cin >> day >> mon >> year;
-        students[pos].dOB.tm_mday = day;
-        students[pos].dOB.tm_mon = mon - 1;
-        students[pos].dOB.tm_year = year - 1900;
-        break;
-    }
-
-    default:
-        break;
-    }
-    studentType tmp = students[pos];
-    studentType* newStudents;
-    int newSize;
-    dir = getDir(folder, "Student.txt");
-    updateStudent(tmp, newStudents, newSize, dir);
-    dir = getDir_class(folder, A[c1].class_courses[c2].className);
-    updateStudent_class(tmp, newStudents, newSize, dir);
-
-    semester_courseType* B;
-    int m;
-    B = initSemester_courses_student(tmp.iD, folder, m);
-
-    for (int i = 0; i < m; ++i)
-        for (int j = 0; j < B[i].n_cls; ++j)
-            for (int k = 0; k < B[i].class_courses[j].n_crs; ++k)
-            {
-                dir = getDir_course(folder, B[i].academicYear, B[i].semesterName, B[i].class_courses[j].className, B[i].class_courses[j].courseName[k]);
-                updateCourse(tmp, newStudents, newSize, dir);
-            }
-
-    cout << "Edit complete." << endl;
-}
-
-void importScore()
-{
-    string folder = "data";
-    semester_courseType* A;
-    int n, c1, c2, c3;
-    A = initSemester_courses(folder, n);
-    string dir;
-
-    chooseCourse(A, n, c1, c2, c3);
-
-    folder = "import";
-
-    cout << "Enter file directory:" << endl;
-    cout << "[1]: Use default directory" << endl;
-    cout << "[2]: Enter new directory" << endl;
-    int choice;
-    cin >> choice;
-
-    switch (choice)
-    {
-    case 1:
-    {
-        dir = getDir_score(folder, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
-        if (checkFile(dir) == false)
-            cout << "File with correspoding name not found." << endl;
-        break;
-    }
-
-    case 2:
-    {
-        cout << "Enter your directory below, use \"/\" instead of \"\\\":" << endl;
-        cin.ignore();
-        getline(cin, dir, '\n');
-        if (checkFile(dir) == false)
-            cout << "File with correspoding name not found." << endl;
-        break;
-    }
-
-    default:
-        break;
-    }
-
-    if (checkFile(dir) == true)
-    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
 
         studentType* students;
         int size;
-        students = readScore(dir, size);
+        students = readCourse(dir, size);
+        viewCourse(dir);
 
-        studentType tmp;
-        studentType* newStudents;
-        int newSize;
-        folder = "data";
-
-        for (int k = 0; k < size; ++k)
+        cout << "Enter student's ordinal number or ID:" << endl;
+        int choice;
+        cin >> choice;
+        int pos = positionOfStudent_array(choice, students, size);
+        cout << "Please choose type of information:" << endl;
+        cout << "[1]: Fullname" << endl;
+        cout << "[2]: Date of birth" << endl;
+        cin >> choice;
+        switch (choice)
         {
-            tmp = students[k];
-            studentType* newStudents;
-            int newSize;
-            dir = getDir(folder, "Student.txt");
-            updateStudent(tmp, newStudents, newSize, dir);
-            dir = getDir_class(folder, A[c1].class_courses[c2].className);
-            updateStudent_class(tmp, newStudents, newSize, dir);
-            dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
-            updateScore(tmp, newStudents, newSize, dir);
-
-            semester_courseType* B;
-            int m;
-            B = initSemester_courses_student(tmp.iD, folder, m);
-
-            for (int i = 0; i < m; ++i)
-                for (int j = 0; j < B[i].n_cls; ++j)
-                    for (int k = 0; k < B[i].class_courses[j].n_crs; ++k)
-                    {
-                        dir = getDir_course(folder, B[i].academicYear, B[i].semesterName, B[i].class_courses[j].className, B[i].class_courses[j].courseName[k]);
-                        updateCourse(tmp, newStudents, newSize, dir);
-                    }
+        case 1:
+        {
+            cout << "Student's current fullname:" << endl;
+            cout << students[pos].fullname << endl;
+            cout << "Enter new fullname:" << endl;
+            cin.ignore();
+            string input;
+            getline(cin, input, '\n');
+            students[pos].fullname = input;
+            break;
         }
 
-        cout << "Import complete." << endl;
+        case 2:
+        {
+            cout << "Student's current DOB:" << endl;
+            cout << setw(2) << setfill('0') << students[pos].dOB.tm_mday << "-" << setw(2) << setfill('0') << students[pos].dOB.tm_mon + 1 << "-" << students[pos].dOB.tm_year + 1900 << endl;
+            cout << "Enter new DOB in format \"dd mm yyyy\":" << endl;
+            int day, mon, year;
+            cin >> day >> mon >> year;
+            students[pos].dOB.tm_mday = day;
+            students[pos].dOB.tm_mon = mon - 1;
+            students[pos].dOB.tm_year = year - 1900;
+            break;
+        }
+
+        default:
+            break;
+        }
+        studentType tmp = students[pos];
+        studentType* newStudents;
+        int newSize;
+        dir = getDir(folder, "Student.txt");
+        updateStudent(tmp, newStudents, newSize, dir);
+        dir = getDir_class(folder, A[c1].class_courses[c2].className);
+        updateStudent_class(tmp, newStudents, newSize, dir);
+
+        semester_courseType* B;
+        int m;
+        B = initSemester_courses_student(tmp.iD, folder, m);
+
+        for (int i = 0; i < m; ++i)
+            for (int j = 0; j < B[i].n_cls; ++j)
+                for (int k = 0; k < B[i].class_courses[j].n_crs; ++k)
+                {
+                    dir = getDir_course(folder, B[i].academicYear, B[i].semesterName, B[i].class_courses[j].className, B[i].class_courses[j].courseName[k]);
+                    updateCourse(tmp, newStudents, newSize, dir);
+                }
+
+        cout << "Edit complete." << endl;
     }
 }
 
-void searchEditGrade()
+void importScore(string username)
 {
     string folder = "data";
     semester_courseType* A;
     int n, c1, c2, c3;
-    A = initSemester_courses(folder, n);
+    A = initSemester_courses_lecturer(username, folder, n);
+    string dir;
 
     chooseCourse(A, n, c1, c2, c3);
-    string dir;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
-
-    viewScore(dir);
-    studentType* students;
-    int size;
-    students = readCourse(dir, size);
-
-    cout << "Enter student's ordinal number or ID:" << endl;
-    int choice;
-    cin >> choice;
-    int pos = positionOfStudent_array(choice, students, size);
-    cout << "Please choose kind of point:" << endl;
-    cout << "[1]: Midterm Point" << endl;
-    cout << "[2]: Final Point" << endl;
-    cout << "[3]: Bonus Point" << endl;
-    cout << "[4]: Total Point" << endl;
-    cout << "[5]: All of the above" << endl;
-    cin >> choice;
-    switch (choice)
+    if (c3 != -1)
     {
-    case 1:
+        folder = "import";
+
+        cout << "Enter file directory:" << endl;
+        cout << "[1]: Use default directory" << endl;
+        cout << "[2]: Enter new directory" << endl;
+        int choice;
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+        {
+            dir = getDir_score(folder, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+            if (checkFile(dir) == false)
+                cout << "File with correspoding name not found." << endl;
+            break;
+        }
+
+        case 2:
+        {
+            cout << "Enter your directory below, use \"/\" instead of \"\\\":" << endl;
+            cin.ignore();
+            getline(cin, dir, '\n');
+            if (checkFile(dir) == false)
+                cout << "File with correspoding name not found." << endl;
+            break;
+        }
+
+        default:
+            break;
+        }
+
+        if (checkFile(dir) == true)
+        {
+
+            studentType* students;
+            int size;
+            students = readScore(dir, size);
+
+            studentType tmp;
+            studentType* newStudents;
+            int newSize;
+            folder = "data";
+
+            for (int k = 0; k < size; ++k)
+            {
+                tmp = students[k];
+                studentType* newStudents;
+                int newSize;
+                dir = getDir(folder, "Student.txt");
+                updateStudent(tmp, newStudents, newSize, dir);
+                dir = getDir_class(folder, A[c1].class_courses[c2].className);
+                updateStudent_class(tmp, newStudents, newSize, dir);
+                dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+                updateScore(tmp, newStudents, newSize, dir);
+
+                semester_courseType* B;
+                int m;
+                B = initSemester_courses_student(tmp.iD, folder, m);
+
+                for (int i = 0; i < m; ++i)
+                    for (int j = 0; j < B[i].n_cls; ++j)
+                        for (int k = 0; k < B[i].class_courses[j].n_crs; ++k)
+                        {
+                            dir = getDir_course(folder, B[i].academicYear, B[i].semesterName, B[i].class_courses[j].className, B[i].class_courses[j].courseName[k]);
+                            updateCourse(tmp, newStudents, newSize, dir);
+                        }
+            }
+
+            cout << "Import complete." << endl;
+        }
+    }
+}
+
+void searchEditGrade(string username)
+{
+    string folder = "data";
+    semester_courseType* A;
+    int n, c1, c2, c3;
+    A = initSemester_courses_lecturer(username, folder, n);
+
+    chooseCourse(A, n, c1, c2, c3);
+    if (c3 != -1)
     {
-        cout << "Student's current point:" << endl;
-        cout << students[pos].point.midterm << endl;
-        cout << "Enter new point:" << endl;
-        float input;
-        cin >> input;
-        students[pos].point.midterm = input;
-        break;
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+
+        viewScore(dir);
+        studentType* students;
+        int size;
+        students = readCourse(dir, size);
+
+        cout << "Enter student's ordinal number or ID:" << endl;
+        int choice;
+        cin >> choice;
+        int pos = positionOfStudent_array(choice, students, size);
+        cout << "Please choose kind of point:" << endl;
+        cout << "[1]: Midterm Point" << endl;
+        cout << "[2]: Final Point" << endl;
+        cout << "[3]: Bonus Point" << endl;
+        cout << "[4]: Total Point" << endl;
+        cout << "[5]: All of the above" << endl;
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+        {
+            cout << "Student's current point:" << endl;
+            cout << students[pos].point.midterm << endl;
+            cout << "Enter new point:" << endl;
+            float input;
+            cin >> input;
+            students[pos].point.midterm = input;
+            break;
+        }
+
+        case 2:
+        {
+            cout << "Student's current point:" << endl;
+            cout << students[pos].point.final << endl;
+            cout << "Enter new point:" << endl;
+            float input;
+            cin >> input;
+            students[pos].point.final = input;
+            break;
+        }
+
+        case 3:
+        {
+            cout << "Student's current point:" << endl;
+            cout << students[pos].point.bonus << endl;
+            cout << "Enter new point:" << endl;
+            float input;
+            cin >> input;
+            students[pos].point.bonus = input;
+            break;
+        }
+
+        case 4:
+        {
+            cout << "Student's current point:" << endl;
+            cout << students[pos].point.total << endl;
+            cout << "Enter new point:" << endl;
+            float input;
+            cin >> input;
+            students[pos].point.total = input;
+            break;
+        }
+
+        case 5:
+        {
+            cout << "Student's current points:" << endl;
+            cout << "Midterm Final   Bonus   Total   " << endl;
+            cout.setf(ios::adjustfield, ios::left);
+            cout << setw(8) << students[pos].point.midterm;
+            cout << setw(8) << students[pos].point.final;
+            cout << setw(8) << students[pos].point.bonus;
+            cout << setw(8) << students[pos].point.total;
+            cout.unsetf(ios::adjustfield);
+            cout << endl;
+            cout << "Enter new points (enter in format \"midterm final bonus total\"):" << endl;
+            float input1, input2, input3, input4;
+            cin >> input1 >> input2 >> input3 >> input4;
+            students[pos].point.midterm = input1;
+            students[pos].point.final = input2;
+            students[pos].point.bonus = input3;
+            students[pos].point.total = input4;
+            break;
+        }
+
+        default:
+            break;
+        }
+
+        studentType tmp = students[pos];
+        studentType* newStudents;
+        int newSize;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+        updateScore(tmp, newStudents, newSize, dir);
+
+        cout << "Edit complete." << endl;
     }
-
-    case 2:
-    {
-        cout << "Student's current point:" << endl;
-        cout << students[pos].point.final << endl;
-        cout << "Enter new point:" << endl;
-        float input;
-        cin >> input;
-        students[pos].point.final = input;
-        break;
-    }
-
-    case 3:
-    {
-        cout << "Student's current point:" << endl;
-        cout << students[pos].point.bonus << endl;
-        cout << "Enter new point:" << endl;
-        float input;
-        cin >> input;
-        students[pos].point.bonus = input;
-        break;
-    }
-
-    case 4:
-    {
-        cout << "Student's current point:" << endl;
-        cout << students[pos].point.total << endl;
-        cout << "Enter new point:" << endl;
-        float input;
-        cin >> input;
-        students[pos].point.total = input;
-        break;
-    }
-
-    case 5:
-    {
-        cout << "Student's current point:" << endl;
-        cout << "Midterm Final   Bonus   Total   " << endl;
-        cout.setf(ios::adjustfield, ios::left);
-        cout << setw(8) << students[pos].point.midterm;
-        cout << setw(8) << students[pos].point.final;
-        cout << setw(8) << students[pos].point.bonus;
-        cout << setw(8) << students[pos].point.total;
-        cout.unsetf(ios::adjustfield);
-        cout << endl;
-        cout << "Enter new point (\"midterm final bonus total\"):" << endl;
-        float input1, input2, input3, input4;
-        cin >> input1 >> input2 >> input3 >> input4;
-        students[pos].point.midterm = input1;
-        students[pos].point.final = input2;
-        students[pos].point.bonus = input3;
-        students[pos].point.total = input4;
-        break;
-    }
-
-    default:
-        break;
-    }
-
-    studentType tmp = students[pos];
-    studentType* newStudents;
-    int newSize;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
-    updateScore(tmp, newStudents, newSize, dir);
-
-    cout << "Edit complete." << endl;
 }
 
 void searchViewScore()
@@ -3340,6 +3373,24 @@ void searchViewScore()
     viewScore(dir);
 }
 
+void searchViewScore_lecturer(string username)
+{
+    string folder = "data";
+    semester_courseType* A;
+    int n, c1, c2, c3;
+    A = initSemester_courses_lecturer(username, folder, n);
+
+    chooseCourse(A, n, c1, c2, c3);
+
+    if (c3 != -1)
+    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+        cout << "Scoreboard of " << A[c1].class_courses[c2].courseName[c3] << ":" << endl;
+        viewScore(dir);
+    }
+}
+
 void searchCheckIn(int iD)
 {
     string folder = "data";
@@ -3348,14 +3399,17 @@ void searchCheckIn(int iD)
     A = initSemester_courses_student(iD, folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    string dir;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+    if (c3 != -1)
+    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
 
-    cout << "Enter 1 to check-in: ";
-    int one;
-    cin >> one;
-    if (one == 1)
-        checkIn(iD, dir);
+        cout << "Enter 1 to check-in: ";
+        int one;
+        cin >> one;
+        if (one == 1)
+            checkIn(iD, dir);
+    }
 }
 
 void searchViewCheckIn(int iD)
@@ -3366,10 +3420,14 @@ void searchViewCheckIn(int iD)
     A = initSemester_courses_student(iD, folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    string dir;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
 
-    viewCheckIn(iD, dir);
+    if (c3 != -1)
+    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+
+        viewCheckIn(iD, dir);
+    }
 }
 
 void searchViewSchedule(int iD)
@@ -3381,9 +3439,12 @@ void searchViewSchedule(int iD)
 
     chooseCourse(A, n, c1, c2, c3);
 
-    string dir = getDir_schedule(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className);
-    cout << "Schedule: " << endl;
-    viewSchedule(A[c1].class_courses[c2].courseName[c3], dir);
+    if (c3 != -1)
+    {
+        string dir = getDir_schedule(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className);
+        cout << "Schedule: " << endl;
+        viewSchedule(A[c1].class_courses[c2].courseName[c3], dir);
+    }
 }
 
 void searchViewScore_student(int iD)
@@ -3394,11 +3455,15 @@ void searchViewScore_student(int iD)
     A = initSemester_courses_student(iD, folder, n);
 
     chooseCourse(A, n, c1, c2, c3);
-    string dir;
-    dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
 
-    cout << "Scoreboard of " << A[c1].class_courses[c2].className << " - " << A[c1].class_courses[c2].courseName[c3] << ":" << endl;
-    viewScore_student(iD, dir);
+    if (c3 != -1)
+    {
+        string dir;
+        dir = getDir_course(folder, A[c1].academicYear, A[c1].semesterName, A[c1].class_courses[c2].className, A[c1].class_courses[c2].courseName[c3]);
+
+        cout << "Scoreboard of " << A[c1].class_courses[c2].className << " - " << A[c1].class_courses[c2].courseName[c3] << ":" << endl;
+        viewScore_student(iD, dir);
+    }
 }
 
 string* initCourses(string folder, string academicYear, string semester, string className, int& size)
@@ -3437,6 +3502,71 @@ string* initCourses(string folder, string academicYear, string semester, string 
     delete[] courses;
     size = newSize;
     courses = newCourses;
+
+    return courses;
+}
+
+int* positionOfLecturer_array(string username, scheduleType* schedules, int size, int& n_pos)
+{
+    int* pos = nullptr;
+    string tmp = "";
+    n_pos = 0;
+    for (int i = 0; i < size; ++i)
+    {
+        if (schedules[i].courseName != tmp && schedules[i].lecturer == username)
+        {
+            ++n_pos;
+            tmp = schedules[i].courseName;
+        }
+    }
+
+    if (n_pos > 0)
+    {
+        pos = new int[n_pos];
+
+        tmp = "";
+        int k = 0;
+        for (int i = 0; i < size; ++i)
+        {
+            if (schedules[i].courseName != tmp && schedules[i].lecturer == username)
+            {
+                pos[k] = i;
+                ++k;
+                tmp = schedules[i].courseName;
+            }
+        }
+    }
+
+    return pos;
+}
+
+string* initCourses_lecturer(string username, string folder, string academicYear, string semester, string className, int& size)
+{
+    scheduleType* schedules;
+    schedules = readSchedule(getDir_schedule(folder, academicYear, semester, className), size);
+    int newSize = 0;
+    int* pos_lec;
+
+    pos_lec = positionOfLecturer_array(username, schedules, size, newSize);
+
+    string* courses;
+    if (newSize == 0)
+        courses = nullptr;
+    else
+        courses = new string[newSize];
+
+    int pos = 0;
+    if (newSize != 0)
+    {
+        for (int i = 0; i < newSize; ++i)
+        {
+            courses[pos] = schedules[pos_lec[i]].courseName;
+            ++pos;
+        }
+    }
+
+    delete[] schedules;
+    size = newSize;
 
     return courses;
 }
@@ -3514,6 +3644,26 @@ semester_courseType* initSemester_courses_student(int iD, string folder, int& si
         for (int j = 0; j < A[i].n_cls; ++j)
         {
             filterCourses(iD, A[i].class_courses[j].courseName, A[i].class_courses[j].n_crs, folder, A[i].academicYear, A[i].semesterName, A[i].class_courses[j].className);
+        }
+    }
+
+    return A;
+}
+
+semester_courseType* initSemester_courses_lecturer(string username, string folder, int& size)
+{
+    ifstream fin;
+    semester_courseType* A;
+
+    A = readSemester(getDir(folder, "Semester.txt"), size);
+
+    filterSemesters(folder, A, size);
+
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = 0; j < A[i].n_cls; ++j)
+        {
+            A[i].class_courses[j].courseName = initCourses_lecturer(username, folder, A[i].academicYear, A[i].semesterName, A[i].class_courses[j].className, A[i].class_courses[j].n_crs);
         }
     }
 

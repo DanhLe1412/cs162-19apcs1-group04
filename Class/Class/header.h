@@ -179,23 +179,26 @@ void searchViewScore();
 // [25]
 void exportScore();
 
-// [26] [30]
+// [26]
 void searchViewAttendance();
 
 // [27]
 void exportAttendances();
 
+// [30]
+void searchViewAttendance_lecturer(string username);
+
 // [31]
-void editAttendance();
+void editAttendance(string username);
 
 // [32]
-void importScore();
+void importScore(string username);
 
 // [33]
-void searchEditGrade();
+void searchEditGrade(string username);
 
 // [34]
-void searchViewScore();
+void searchViewScore_lecturer(string username);
 
 // [35]
 void searchCheckIn(int iD);
@@ -220,10 +223,13 @@ string getDir_class(string folder, string className);
 string getDir_score(string folder, string className, string courseName);
 int positionOfStudent_array(int& no, studentType* students, int size);
 int positionOfCourse_array(string courseName, scheduleType* schedules, int size);
+int* positionOfLecturer_array(string username, scheduleType* schedules, int size, int& n_pos);
 void chooseCourse(semester_courseType* A, int size, int& c1, int& c2, int& c3);
 semester_courseType* initSemester_courses(string folder, int& size);
+semester_courseType* initSemester_courses_lecturer(string username, string folder, int& size);
 semester_courseType* initSemester_courses_student(int iD, string folder, int& size);
 string* initCourses(string folder, string academicYear, string semester, string className, int& size);
+string* initCourses_lecturer(string username, string folder, string academicYear, string semester, string className, int& size);
 void filterSemesters(string folder, semester_courseType*& semesters, int& size);
 void filterCourses(int iD, string*& courses, int& size, string folder, string academicYear, string semester, string className);
 

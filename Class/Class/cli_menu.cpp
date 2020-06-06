@@ -515,7 +515,7 @@ void home_cli(string username, string pass, int type, int& con_stop)
 		{ // View attendance list of a course
 			if (type == 2)
 			{
-				searchViewAttendance();
+				searchViewAttendance_lecturer(username);
 				int check_view = 1;
 				while (check_view != 0)
 				{
@@ -530,7 +530,7 @@ void home_cli(string username, string pass, int type, int& con_stop)
 			//Edit an attendance
 			if (type == 2)
 			{
-				editAttendance();
+				editAttendance(username);
 			}
 			break;
 		}
@@ -539,7 +539,7 @@ void home_cli(string username, string pass, int type, int& con_stop)
 			// Import scoreboard of a course"
 			if (type == 2)
 			{
-				importScore();
+				importScore(username);
 			}
 			break;
 		}
@@ -547,7 +547,7 @@ void home_cli(string username, string pass, int type, int& con_stop)
 		{ //Edit grade of a student
 			if (type == 2)
 			{
-				searchEditGrade();
+				searchEditGrade(username);
 				int check_view = 1;
 				while (check_view != 0)
 				{
@@ -562,7 +562,7 @@ void home_cli(string username, string pass, int type, int& con_stop)
 			//View scoreboard
 			if (type == 2)
 			{
-				searchViewScore();
+				searchViewScore_lecturer(username);
 				int check_view = 1;
 				while (check_view != 0)
 				{
