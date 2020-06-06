@@ -68,11 +68,12 @@ void Print_home_page(int &i, int type)
 		break;
 	}
 	cout << "[40]: Change Password" << endl;
-	cout << "[41]: Exit program" << endl;
+	cout << "[41]: Log out" << endl;
+	cout << "[42]: Exit program" << endl;
 	cin >> i;
 }
 
-void home_cli(string username, string pass, int type)
+void home_cli(string username, string pass, int type, int& con_stop)
 {
 	pass.erase(pass.end() - 1, pass.end());
 	int checksign = 0;
@@ -90,7 +91,7 @@ void home_cli(string username, string pass, int type)
 			while(check_view != 0)
 			{
 			system("CLS");
-			//checkUser_to_print_inf(username,pass,type);
+					checkUser_to_print_inf(username,pass,type);
 					cout << "[0] back to main" << endl;
 					cin >> check_view;
 				}
@@ -379,7 +380,14 @@ void home_cli(string username, string pass, int type)
 			//Search and view the scoreboard of a course
 			if (type == 1)
 			{
-				searchViewScore();
+				
+				int checkview = 1;
+				while (checkview != 0) {
+					system("CLS");
+					searchViewScore();
+					cout << "[0]: to back to main ";
+					cin >> checkview;
+				}
 			}
 			break;
 		}
@@ -396,8 +404,14 @@ void home_cli(string username, string pass, int type)
 		{
 			// Search and view attendance of a course
 			if (type == 1)
-			{
-				searchViewAttendance();
+			{	
+				int checkview = 1;
+				while (checkview != 0) {
+					system("CLS");
+					searchViewAttendance();
+					cout << "[0]: to back to main ";
+					cin >> checkview;
+				}
 			}
 			break;
 		}
@@ -571,8 +585,14 @@ void home_cli(string username, string pass, int type)
 				}
 			break;
 		}
-		case 41:
+		case 41: {
+			checksign = 1;
+			system("CLS");
+			break;
+		}
+		case 42:
 		{
+			con_stop = 1;
 			checksign = 1;
 			break;
 		}
@@ -622,14 +642,14 @@ void SignIn_Menu()
 		if (checkUser(username, passw, type))
 		{
 
-			home_cli(username, passw, type);
-			checksign_in = 1;
+			home_cli(username, passw, type,checksign_in);
 		}
 		else
-
+		{
 			system("CLS");
-		cout << "User not valid !!" << endl;
-		cout << "May username or password were uncorrect !!" << endl;
+			cout << "User not valid !!" << endl;
+			cout << "May username or password were uncorrect !!" << endl;
+		}
 	}
 }
 
@@ -913,12 +933,12 @@ void changePassword(string username, string &pass, int type)
 
 
 
-/*
+
 void checkUser_to_print_inf(string username, string pass, int type)
 {
 	cout << ">>>>> VIEW ACCOUNT <<<<<" << endl;
 	ifstream fin;
-	pass.erase(pass.end() - 1, pass.end());
+	
 	if (type == 1)
 	{
 		fin.open("data/Staff.txt");
@@ -927,12 +947,12 @@ void checkUser_to_print_inf(string username, string pass, int type)
 			Staff *staff;
 			int amount_staff;
 			
-			amount of staff
-			username
-			password
-			Full name 	
-			Gender
-			
+			//amount of staff
+			//username
+			//password
+			//Full name 	
+			//Gender
+		
 			fin >> amount_staff;
 			staff = new Staff[amount_staff];
 			for (int i = 0; i < amount_staff; ++i)
@@ -945,12 +965,13 @@ void checkUser_to_print_inf(string username, string pass, int type)
 				if (username.compare(staff[i].user.username) == 0 && pass.compare(staff[i].user.password) == 0)
 				{
 					
-					cout << username << endl;
-					cout << staff[i].Fullname << endl;
-					if(staff[i].gender==0) cout << "Female" << endl;
-					else cout << "Male" << endl;
+					cout << "-> " << username << endl;
+					cout << "-> " << staff[i].Fullname << endl;
+					if(staff[i].gender==0) cout << "-> " << "Female" << endl;
+					else cout << "-> " << "Male" << endl;
 					return;
 				}
+				
 			}
 			delete[] staff;
 
@@ -971,11 +992,11 @@ void checkUser_to_print_inf(string username, string pass, int type)
 			{
 				if (username.compare(plec->lec_username) == 0 && pass.compare(plec->lec_password) == 0)
 				{
-					cout << plec->lec_username << endl;
-					cout << plec->lec_Fullname << endl;
-					cout << plec->lec_degree << endl;
-					if(plec->gender==0) cout << "Male" << endl;
-					else cout << "Female" << endl;
+					cout << "-> " << plec->lec_username << endl;
+					cout << "-> " << plec->lec_Fullname << endl;
+					cout << "-> " << plec->lec_degree << endl;
+					if(plec->gender==0) cout << "-> " << "Male" << endl;
+					else cout << "-> " << "Female" << endl;
 					return;
 				}
 				else
@@ -1004,12 +1025,12 @@ void checkUser_to_print_inf(string username, string pass, int type)
 				fin >> tmp->gender;
 				if (username.compare(tmp->userID) == 0 && pass.compare(tmp->password) == 0)
 				{
-					cout << tmp->userID << endl;
-					cout << tmp->FullName << endl;
-					cout << tmp->DoB << endl;
-					cout << tmp->class_name << endl;
-					if(tmp->gender==0) cout << "Female" << endl;
-					else cout << "Male" << endl;
+					cout << "-> " << tmp->userID << endl;
+					cout << "-> " << tmp->FullName << endl;
+					cout << "-> " << tmp->DoB << endl;
+					cout << "-> " << tmp->class_name << endl;
+					if(tmp->gender==0) cout << "-> " << "Female" << endl;
+					else cout << "-> " << "Male" << endl;
 					RemoveList(student);
 					return;
 				}
@@ -1034,4 +1055,3 @@ void checkUser_to_print_inf(string username, string pass, int type)
 	}
 	//	return true;
 }
-*/

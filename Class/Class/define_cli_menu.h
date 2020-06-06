@@ -9,7 +9,7 @@ using namespace std;
 
 
 void SignIn_Menu();
-void home_cli(string username, string pass, int type);
+void home_cli(string username, string pass, int type,int& con_stop);
 bool checkUser(string username, string pass, int type);
 void student_cli();
 void staff_cli();
