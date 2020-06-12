@@ -137,7 +137,7 @@ void import_students_csv(ifstream &fi, ofstream &fo, string csv_name, int &statu
 		fo << class_name << endl;
 		fo.close();
 		cout << "Successfully import " << csv_name << endl;
-		Sleep(3000);
+		
 		status = 1;
 	}
 	return;
@@ -196,7 +196,6 @@ void add_new_student(ifstream &fi, ofstream &fo, string class_name, int &status)
 	fo.close();
 
 	cout << "Successfully import " << endl;
-	Sleep(3000);
 	status = 1;
 	delete new_student;
 	return;
@@ -285,7 +284,7 @@ void edit_student(ifstream &fi, ofstream &fo, string class_name, string student_
 			cout << "Sucessfully edited the student!" << endl;
 			remove(backup_file_name.c_str());
 			status = 1;
-			Sleep(3000);
+			
 		}
 		else
 		{
@@ -374,7 +373,11 @@ string remove_student(ifstream &fi, ofstream &fo, string class_name, string stud
 			if (remove(classname) == 0 && rename("data/temp.txt", classname) == 0) //Remove the original class csv and rename the temp.csv
 			{
 				cout << "Sucessfully removed the student!" << endl;
-				Sleep(3000);
+				int stop = 1;
+				while (stop != 0) {
+					cout << "[0] back to main ";
+						cin >> stop;
+				}
 				remove(backup_file_name.c_str());
 				return removed_student;
 			}
@@ -434,7 +437,6 @@ void change_students(ifstream &fi, ofstream &fo, string class_name_A, string cla
 					fo << removed_student[i];
 			}
 			cout << "Successfully changed the student " << student_id << " from class " << class_name_A << " to class " << class_name_B << endl;
-			Sleep(3000);
 			status = 1;
 		}
 		fo.close();
@@ -463,7 +465,7 @@ void view_list_classes(ifstream &fi)
 		}
 	}
 	fi.close();
-	Sleep(3000);
+	
 	return;
 }
 
@@ -501,6 +503,5 @@ void view_list_students(ifstream &fi, string class_name)
 		}
 	}
 	fi.close();
-	Sleep(5000);
 	return;
 }

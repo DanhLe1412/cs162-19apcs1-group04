@@ -112,7 +112,12 @@ void home_cli(string username, string pass, int type, int& con_stop)
 					//-----------------Call function ----------
 					ifstream fin;
 					ofstream fout;
-					import_students_csv(fin, fout, file_csv, check_import);
+					int stop = 1;
+					while (stop != 0) {
+						import_students_csv(fin, fout, file_csv, check_import);
+						cout << "[0]: back to main " ;
+						cin >> stop;
+					}
 				}
 			}
 			break;
@@ -144,7 +149,12 @@ void home_cli(string username, string pass, int type, int& con_stop)
 						//--------------Call function -------
 						ifstream fin;
 						ofstream fout;
-						add_new_student(fin, fout, file_class, check_add);
+						int stop = 1;
+						while (stop != 0) {
+							add_new_student(fin, fout, file_class, check_add);
+							cout << "[0]: back to main " ;
+							cin >> stop;
+						}
 					}
 				}
 			}
@@ -175,7 +185,12 @@ void home_cli(string username, string pass, int type, int& con_stop)
 				ofstream fout;
 				while (check_edit == 0)
 				{
-					edit_student(fin, fout, class_file, studentId, check_edit);
+					int stop = 1;
+					while (stop != 0) {
+						edit_student(fin, fout, class_file, studentId, check_edit);
+						cout << "[0] back to main: ";
+						cin >> stop;
+					}
 				}
 			}
 			break;
@@ -238,7 +253,12 @@ void home_cli(string username, string pass, int type, int& con_stop)
 				int check_change = 0;
 				while (check_change == 0)
 				{
-					change_students(fin, fout, class_a, class_b, studentId, check_change);
+					int stop = 1;
+					while (stop != 0) {
+						change_students(fin, fout, class_a, class_b, studentId, check_change);
+						cout << "[0] back to main ";
+						cin >> stop;
+					}
 				}
 			}
 			break;
@@ -251,35 +271,45 @@ void home_cli(string username, string pass, int type, int& con_stop)
 				cout << ">>>>>>>>>> <<<<<<<<<<" << endl;
 				cout << "There are class in course" << endl;
 				ifstream fin;
-				view_list_classes(fin);
+				int stop = 1;
+				while (stop != 0) {
+					view_list_classes(fin);
+					cout << "[0] back to main ";
+					cin >> stop;
+				}
 			}
 			break;
 		}
 		case 7:
 		{ // View list of students in a class
-			if (type == 1){
+			if (type == 1) {
 				system("CLS");
-			cout << ">>>>>>>>>> <<<<<<<<<<" << endl;
-			ifstream class_file;
-			class_file.open("data/Class.txt");
-			if (!class_file.is_open())
-			{
-				cout << "Empty class" << endl;
-			}
-			else
-			{
-				//----- Show list class --------
-				class_file.close();
-				cout << "List of classes:" << endl;
-				system("type data\\Class.txt");
-				string file_class;
-				cout << endl;
-				cout << "choose class to view student: ";
-				cin >> file_class;
-				//-------------Call Function --------------
-				ifstream fin; // argument
-				view_list_students(fin, file_class);
-			}
+				cout << ">>>>>>>>>> <<<<<<<<<<" << endl;
+				ifstream class_file;
+				class_file.open("data/Class.txt");
+				if (!class_file.is_open())
+				{
+					cout << "Empty class" << endl;
+				}
+				else
+				{
+					//----- Show list class --------
+					class_file.close();
+					cout << "List of classes:" << endl;
+					system("type data\\Class.txt");
+					string file_class;
+					cout << endl;
+					cout << "choose class to view student: ";
+					cin >> file_class;
+					//-------------Call Function --------------
+					ifstream fin; // argument
+					int stop = 1;
+					while (stop != 0) {
+						view_list_students(fin, file_class);
+						cout << "[0] back to main ";
+						cin >> stop;
+					}
+				}
 			}
 			break;
 		}
@@ -408,7 +438,8 @@ void home_cli(string username, string pass, int type, int& con_stop)
 				int checkview = 1;
 				while (checkview != 0) {
 					system("CLS");
-					searchViewAttendance();
+					//searchViewAttendance();
+					viewAttendanceList();
 					cout << "[0]: to back to main ";
 					cin >> checkview;
 				}
@@ -419,8 +450,14 @@ void home_cli(string username, string pass, int type, int& con_stop)
 		{
 			// Export a attendance to a csv file
 			if (type == 1)
-			{
+			{	
+				int stop = 1;
+				
 				exportAttendances();
+				while (stop != 0) {
+					cout << "[0] back to main ";
+					cin >> stop;
+				}
 			}
 			break;
 		}
@@ -515,7 +552,8 @@ void home_cli(string username, string pass, int type, int& con_stop)
 		{ // View attendance list of a course
 			if (type == 2)
 			{
-				searchViewAttendance_lecturer(username);
+				//searchViewAttendance_lecturer(username);
+				viewAttendanceList();
 				int check_view = 1;
 				while (check_view != 0)
 				{
