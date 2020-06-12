@@ -383,6 +383,7 @@ string convertDate(string date) {
     return token[2] + " " + token[0] + " " + token[1];
 }
 void importCourses() {
+    system("cls");
     cout << ">>> Import Course to Semester <<<" << endl;
     ifstream fin;
     fin.open("data/Semester.txt");
@@ -521,6 +522,7 @@ void importCourses() {
 
 // [15]
 void addCourseManually(){
+    system("cls");
     cout << ">>> Manually add a new course. <<<" << endl;
     ifstream fin;
     int n;
@@ -717,6 +719,7 @@ void addCourseManually(){
 // [16]
 void editExistingCourse()
 {
+    system("cls");
     cout << ">>> Editing an existing course. <<<" << endl;
     ifstream fin;
     int n;
@@ -967,6 +970,7 @@ void editExistingCourse()
 // [17]
 void removeCourse()
 {
+    system("cls");
     cout << ">>> Remove an existing course. <<<" << endl;
     ifstream fin;
     int n;
@@ -1135,6 +1139,7 @@ void removeCourse()
 
 void removeStudentFromScore()
 {
+    system("cls");
     cout << ">>> Remove a Student from Course. <<<" << endl;
     ifstream fin;
     int n;
@@ -1382,6 +1387,7 @@ void removeStudentFromScore()
 
 void addStudentToScore()
 {
+    system("cls");
     cout << ">>> Add a Student to Course. <<<" << endl;
     ifstream fin;
     int n;
@@ -1661,6 +1667,7 @@ void addStudentToScore()
 // [20]
 void viewCourseInSemester()
 {
+    system("cls");
     cout << ">>> View Course in Semester <<<" << endl;
     ifstream fin;
     int n;
@@ -1780,6 +1787,7 @@ void viewCourseInSemester()
 // [21]
 void viewStudentsInCourse()
 {
+    system("cls");
     cout << ">>> View list of Students of a Course. <<<" << endl;
     ifstream fin;
     int n;
@@ -1973,6 +1981,7 @@ void viewStudentsInCourse()
 
 void viewAttendanceList()
 {
+    system("cls");
     cout << ">>> View Attendance list of a Course. <<<" << endl;
     ifstream fin;
     int n;
@@ -2155,6 +2164,17 @@ void viewAttendanceList()
         cout << "Class: " << curStudent->Class << endl;
         cout << "Status: " << curStudent->status << endl;
         for (int j = 0; j < 10; j++) {
+            int lengthStr = curStudent->attendance[j].length();
+            string str = "";
+            int p;
+            for (p = lengthStr - 1; p > -1; p--) {
+                if (curStudent->attendance[j][p] != ' ') str = curStudent->attendance[j][p] + str;
+                else break;
+            }
+            int val = stoi(str);
+            if (val == -1) curStudent->attendance[j].replace(p + 1, 2, "Not checkin");
+            else if (val == 0) curStudent->attendance[j].replace(p + 1, 1, "Absent");
+            else curStudent->attendance[j].replace(p + 1, 1, "Present");
             cout << curStudent->attendance[j] << endl;
         }
         cout << endl;
